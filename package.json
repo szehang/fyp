@@ -1,0 +1,22 @@
+{
+  "name": "electron-login",
+  "version": "1.0.0",
+  "description": "create a login interface unsing electron.js for demo",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beebeebeeebeee/electron-login.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/beebeebeeebeee/electron-login/issues"
+  },
+  "homepage": "https://github.com/beebeebeeebeee/electron-login#readme",
+  "devDependencies": {
+    "electron": "^10.1.1"
+  }
+}
