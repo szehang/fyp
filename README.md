@@ -5,7 +5,7 @@ create a login interface unsing electron.js for demo
 npm i -D electron@latest
 
 # git clone project
-git clone https://github.com/beebeebeeebeee/electron-login.git
+git clone https://github.com/beebeebeeebeee/fyp.git
 
 # cd into the project
 cd electron-login
