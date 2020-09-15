@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/login.css" rel="stylesheet">
     <title>Login Interface</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
+
 <body>
-    <form class="center" action="#" id="login">
-        <label for="account">Account:</label>
-        <input type="text" name="account" id="account">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password">
-        <input type="submit" value="Login">
-    </form>
+    <nav>
+        <span>Login</span>
+    </nav>
+    <main>
+        <form action="#" id="login">
+            <div class="inputContainer">
+                <input id="accountInput" type="text" required>
+                <label for="accountInput">account</label>
+            </div>
+            <div class="inputContainer">
+                <input id="passwordInput" type="password" required>
+                <label for="passwordInput">password</label>
+            </div>
+            <input id="submitInput" type="submit" value="Login">
+        </form>
+    </main>
 
     <script src="js/login.js"></script>
 </body>
+
 </html>

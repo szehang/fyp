@@ -8,8 +8,8 @@ submitForm.addEventListener("submit", function(e){
     //disable actually submit the form
     e.preventDefault();
 
-    account = document.getElementById("account").value;
-    password = document.getElementById("password").value;
+    account = document.getElementById("accountInput").value;
+    password = document.getElementById("passwordInput").value;
     //send the account and password to the main.js
     ipcRenderer.send("login:send", account, password);
 })

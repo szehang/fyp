@@ -1,25 +1,93 @@
-input[type=text],
-input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
+* {
+    margin: 0;
+    padding: 0%;
     box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-input[type=button],
-input[type=submit],
-input[type=reset] {
+body {
+    font-size: 1em;
+}
+
+nav {
+    text-align: center;
+    padding: 2em;
+    background-color: teal;
+}
+
+nav>span {
+    padding: 0 3%;
+    font-size: 2em;
+    color: white;
+}
+
+/* main {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    text-align: center;
+} */
+
+main {
+    text-align: center;
+    padding: 5px;
+}
+
+main>form {
+    grid-column: 2/3;
+    grid-row: 2/3;
     width: 100%;
-    background-color: #c9cac9;
-    border: none;
-    color: rgb(0, 0, 0);
-    padding: 16px 32px;
-    text-decoration: none;
-    margin: 4px 2px;
-    cursor: pointer;
+    background-color: skyblue;
+    padding: 1em;
+    border-radius: 0.3em;
 }
 
-.center {
-    margin: auto;
-    padding: 10px;
-  }
+main>form input {
+    width: 100%;
+}
+
+.inputContainer {
+    position: relative;
+    height: 3em;
+    border-bottom: steelblue 2px solid;
+    margin-bottom: 1em;
+}
+
+.inputContainer>* {
+    padding: 0 1%;
+}
+
+.inputContainer>label {
+    position: absolute;
+    left: 0;
+    bottom: 0em;
+    transition: bottom 0.5s ease;
+    color: steelblue;
+}
+
+.inputContainer>input {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-size: 1em;
+    color: darkslateblue;
+}
+
+input[type=submit] {
+    height: 2em;
+    font-size: 1em;
+    outline: none;
+    border: 1px solid steelblue;
+    border-radius: 0.2em;
+}
+
+input[type=text]:valid+label,
+input[type=text]:focus+label,
+input[type=password]:valid+label,
+input[type=password]:focus+label {
+    bottom: 1.5em;
+    color: white;
+}
