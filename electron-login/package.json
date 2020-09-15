@@ -1,7 +1,7 @@
 {
   "name": "electron-login",
   "version": "1.0.0",
-  "description": "create a login interface unsing electron.js for demo",
+  "description": "create a login interface using electron.js for demo",
   "main": "main.js",
   "scripts": {
     "start": "electron ."

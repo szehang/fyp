@@ -91,3 +91,7 @@ input[type=password]:focus+label {
     bottom: 1.5em;
     color: white;
 }
+
+#loginStatus {
+    color: red;
+}
