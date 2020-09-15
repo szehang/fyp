@@ -1,9 +1,7 @@
 # FYP
 
 ## electron-login
-```
 create a login interface using electron.js for demo
-```
 ###### first install electron
 ```
 npm i -D electron@latest
