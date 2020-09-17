@@ -18,5 +18,9 @@
   "homepage": "https://github.com/beebeebeeebeee/electron-login#readme",
   "devDependencies": {
     "electron": "^10.1.1"
+  },
+  "dependencies": {
+    "electron-reload": "^1.5.0",
+    "express": "^4.17.1"
   }
 }

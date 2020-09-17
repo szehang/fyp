@@ -1,4 +1,9 @@
 const electron = require("electron");
+// Enable live reload for all the files inside your project directory
+require('electron-reload')(__dirname, {
+    // Note that the path to electron may vary according to the main file
+    electron: require(`${__dirname}/node_modules/electron`)
+});
 const url = require("url");
 const path = require("path");
 //the place witch store actual account and password
@@ -12,6 +17,7 @@ app.on("ready", function () {
     height: 600,
     webPreferences: {
       //enable client side .js can use require node.js
+      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
     },
   });
