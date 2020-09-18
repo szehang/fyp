@@ -2,7 +2,6 @@ const electron = require("electron");
 const { ipcRenderer } = electron;
 
 const submitForm = document.getElementById("login");
-const register = document.getElementById("register");
 
 //add action listener when form is submitted
 submitForm.addEventListener("submit", function (e) {
@@ -14,11 +13,6 @@ submitForm.addEventListener("submit", function (e) {
   //send the account and password to the ipcmain.js
   ipcRenderer.send("login:send", account, password);
 });
-
-//add action listener for register account
-register.onclick = function () {
-  ipcRenderer.send("signup:request");
-};
 
 ipcRenderer.on("login:error", function (e) {
   //tell user login failed

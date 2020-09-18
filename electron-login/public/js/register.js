@@ -2,7 +2,6 @@ const electron = require("electron");
 const { ipcRenderer } = electron;
 
 const signupForm = document.getElementById("signup");
-const back = document.getElementById("back");
 
 //add action listener when form is submitted
 signupForm.addEventListener("submit", function (e) {
@@ -28,6 +27,8 @@ ipcRenderer.on("signup:error", function (e) {
   document.getElementById("accountInput").select();
 });
 
-back.onclick = function () {
-  ipcRenderer.send("signup:back");
-};
+//handel sign-up success
+ipcRenderer.on("signup:success", function (e) {
+  alert('Your signup is successful!');
+  window.location.href = 'login.html';
+});
