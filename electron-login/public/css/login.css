@@ -82,6 +82,7 @@ input[type=submit] {
     outline: none;
     border: 1px solid steelblue;
     border-radius: 0.2em;
+    cursor: pointer;
 }
 
 input[type=text]:valid+label,
@@ -94,4 +95,17 @@ input[type=password]:focus+label {
 
 #loginStatus {
     color: red;
+}
+
+a.signupLink{
+    display: block;
+    margin-top: 1rem;
+    color: slategray;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: 0.5s ease color;
+}
+
+a.signupLink:hover{
+   color: white;
 }
