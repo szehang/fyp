@@ -11,4 +11,4 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-let server = require('./express/app');
+let server = require('./express/index');
