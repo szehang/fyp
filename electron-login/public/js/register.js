@@ -1,28 +1,24 @@
 const electron = require("electron");
 const { ipcRenderer } = electron;
 
-const submitForm = document.getElementById("login");
-const register = document.getElementById("register");
+const signupForm = document.getElementById("signup");
+const back = document.getElementById("back");
 
 //add action listener when form is submitted
-submitForm.addEventListener("submit", function (e) {
+signupForm.addEventListener("submit", function (e) {
   //disable actually submit the form
   e.preventDefault();
 
   account = document.getElementById("accountInput").value;
   password = document.getElementById("passwordInput").value;
   //send the account and password to the ipcmain.js
-  ipcRenderer.send("login:send", account, password);
+  ipcRenderer.send("signup:send", account, password);
 });
 
-//add action listener for register account
-register.onclick = function () {
-  ipcRenderer.send("signup:request");
-};
-
-ipcRenderer.on("login:error", function (e) {
+//handel sign-up errors
+ipcRenderer.on("signup:error", function (e) {
   //tell user login failed
-  document.getElementById("loginStatus").innerHTML = "Login failed!";
+  document.getElementById("signupStatus").innerHTML = "Sign up failed!";
 
   //reset the account and password input value
   document.getElementById("accountInput").value = "";
@@ -31,3 +27,7 @@ ipcRenderer.on("login:error", function (e) {
   //select the account input
   document.getElementById("accountInput").select();
 });
+
+back.onclick = function () {
+  ipcRenderer.send("signup:back");
+};

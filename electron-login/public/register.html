@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
-    <title>Login Interface</title>
+    <title>Sign up Interface</title>
     <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
+    <span id="back">Go back</span>
     <nav>
-        <span>Login</span>
+        <span>Sign up here</span>
     </nav>
     <main>
-        <form action="#" id="login">
+        <form action="#" id="signup">
             <div class="inputContainer">
                 <input id="accountInput" type="text" required>
                 <label for="accountInput">Account</label>
@@ -23,13 +24,12 @@
                 <input id="passwordInput" type="password" required>
                 <label for="passwordInput">Password</label>
             </div>
-            <input id="submitInput" type="submit" value="Login">
+            <input id="submitInput" type="submit" value="sign up">
         </form>
-        <div id="register">Not yet registered? Click here.</div>
-        <div id="loginStatus"></div>
+        <div id="signupStatus"></div>
     </main>
 
-    <script src="js/login.js"></script>
+    <script src="js/register.js"></script>
 </body>
 
 </html>
