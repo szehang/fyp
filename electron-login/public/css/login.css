@@ -1,3 +1,8 @@
+/* 
+
+*/
+
+
 * {
     margin: 0;
     padding: 0%;
@@ -7,12 +12,13 @@
 
 body {
     font-size: 1em;
+    background-color: #5E5C65;
 }
 
 nav {
     text-align: center;
     padding: 2em;
-    background-color: teal;
+    background-color: #41A19C;
 }
 
 nav>span {
@@ -37,7 +43,7 @@ main>form {
     grid-column: 2/3;
     grid-row: 2/3;
     width: 100%;
-    background-color: skyblue;
+    background-color:#2B2639;
     padding: 1em;
     border-radius: 0.3em;
 }
@@ -49,7 +55,7 @@ main>form input {
 .inputContainer {
     position: relative;
     height: 3em;
-    border-bottom: steelblue 2px solid;
+    border-bottom: #41A19C 2px solid;
     margin-bottom: 1em;
 }
 
@@ -62,7 +68,7 @@ main>form input {
     left: 0;
     bottom: 0em;
     transition: bottom 0.5s ease;
-    color: steelblue;
+    color: #41A19C;
 }
 
 .inputContainer>input {
@@ -73,17 +79,19 @@ main>form input {
     border: none;
     background-color: transparent;
     font-size: 1em;
-    color: darkslateblue;
+    color: white;
 }
 
 input[type=submit] {
     height: 2em;
     font-size: 1em;
     outline: none;
-    border: 1px solid steelblue;
+    border: 0;
     border-radius: 0.2em;
     cursor: pointer;
+    background-color: #62BAB9;
 }
+
 
 input[type=text]:valid+label,
 input[type=text]:focus+label,
@@ -97,15 +105,33 @@ input[type=password]:focus+label {
     color: red;
 }
 
-a.signupLink{
+a#signupLink{
     display: block;
     margin-top: 1rem;
-    color: slategray;
+    color: #62BAB9;
     text-decoration: underline;
     cursor: pointer;
     transition: 0.5s ease color;
 }
 
-a.signupLink:hover{
+a#signupLink:hover{
    color: white;
+}
+
+/* register.html */
+a#back {
+    position: absolute;
+    margin: 0.5rem;
+    padding: 0;
+    left: 0;
+    top: 0;
+    font-size: 1.2rem;
+    cursor: pointer;
+color:#5E5C65;
+    transition: 0.3s ease font-size ;
+    text-decoration: none;
+}
+
+a#back:hover {
+    font-size: 1.3rem;
 }
