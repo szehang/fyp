@@ -4,6 +4,8 @@ const config = require("../config");
 const url = require("url");
 const path = require("path");
 const signUpDebug = require('debug')('fyp:signup')
+const loginDebug = require('debug')('fyp:login')
+const logoutDebug = require('debug')('fyp:logout')
 
 const { app, BrowserWindow, ipcMain } = electron;
 
@@ -12,27 +14,53 @@ const { app, BrowserWindow, ipcMain } = electron;
 //----------------------------------------------------------
 //listen for login:send event from login.js
 ipcMain.on("login:send", function (e, account, password) {
-  //console log on server side for testing.
-  console.log("[login]: login data received!");
-  console.log(`[login]: account: ${account} \n[login]: password: ${password}`);
+  const resBody = JSON.stringify({ account: account, password: password })
+
+  loginDebug('Authenticating users...')
 
   //checking process...
-  //if true redirect/ create a new window for mainWindow.html, close login.html
-  if (account == config.account && password == config.password) {
-    //console log on server side for testing.
-    console.log("[login]: login successful.");
+  const request = net.request({
+    method: 'POST',
+    protocol: 'http:',
+    hostname: 'localhost',
+    port: 3000,
+    path: '/api/auth',
 
-    //crate new window for after login success interface
-    createWindow("main");
-    //close the login window
-    loginWindow.close();
-  } else {
-    //console log on server side for testing.
-    console.log("[login]: login failed.");
+  })
 
-    //if else send error to loginWindow.webContents.send("login:error");
-    loginWindow.webContents.send("login:error");
-  }
+  request.on('response', (res) => {
+    const statusCode = res.statusCode
+    loginDebug(`[Response]STATUS: ${res.statusCode}`);
+
+    res.on('data', (body) => {
+      const response = body.toString()
+
+      if (statusCode == 200) {
+        loginDebug(`[Response]: Login succuess. ${response} is logined`);
+
+        //crate new window for after login success interface
+        createWindow("main");
+
+        //close the login window
+        loginWindow.close();
+      }else{
+        loginDebug(`[Response]: Login failed. ${response}`);
+        
+        //if else send error to registerWindow.webContents.send("signup:error");
+        loginWindow.webContents.send("login:error", response);
+
+      }
+      // console.log(`BODY: ${body}`);
+    })
+  })
+
+  request.on('error', (error) => { 
+    console.log(`ERROR: ${JSON.stringify(error)}`) 
+  });
+
+  request.setHeader('Content-Type', 'application/json'); 
+  request.write(resBody, 'utf-8'); 
+  request.end();
 });
 
 //----------------------------------------------------------
@@ -40,7 +68,6 @@ ipcMain.on("login:send", function (e, account, password) {
 //----------------------------------------------------------
 //handel signup:send request from register.js
 ipcMain.on("signup:send", function (e, account, password) {
-  let success = false;
   const resBody = JSON.stringify({ account: account, password: password })
 
   signUpDebug(`Signing up ...`);
@@ -58,6 +85,7 @@ ipcMain.on("signup:send", function (e, account, password) {
 
   request.on('response', (res) => {
     const statusCode = res.statusCode
+
     signUpDebug(`[Response]STATUS: ${res.statusCode}`);
 
     res.on('data', (body) => {
@@ -90,7 +118,7 @@ ipcMain.on("signup:send", function (e, account, password) {
 //----------------------------------------------------------
 //listen for logout:send event from mainWindow.js
 ipcMain.on("logout:send", function (e) {
-  console.log("[logout]: logout requested.");
+  logoutDebug("Logout requested.");
   //crate new window for login interface
   createWindow("login");
   //close the main window
@@ -110,6 +138,7 @@ function createWindow(name) {
         webPreferences: {
           //enable client side .js can use require node.js
           nodeIntegration: true,
+          preload: path.join(__dirname, '/../preload.js'),
         },
       });
       //load html into window

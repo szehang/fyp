@@ -9,6 +9,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 
 // Requiring routers
 const users = require('./routes/users')
+const auth = require('./routes/auth')
 
 // Connecting to mongoDB
 mongoose.connect('mongodb://localhost/electron-login', {useNewUrlParser: true, useUnifiedTopology: true})
@@ -23,6 +24,7 @@ app.get('/', function(req, res) {
 // Middleware
 app.use(express.json())
 app.use('/api/users', users)
+app.use('/api/auth', auth)
 
 // Listening to port
 const port = process.env.PORT || 3000;

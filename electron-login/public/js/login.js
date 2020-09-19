@@ -14,9 +14,11 @@ submitForm.addEventListener("submit", function (e) {
   ipcRenderer.send("login:send", account, password);
 });
 
-ipcRenderer.on("login:error", function (e) {
+ipcRenderer.on("login:error", function (e, args) {
   //tell user login failed
+  document.getElementById("loginStatus").style.color = "red"
   document.getElementById("loginStatus").innerHTML = "Login failed!";
+  document.getElementById("loginStatus").innerHTML += args
 
   //reset the account and password input value
   document.getElementById("accountInput").value = "";
