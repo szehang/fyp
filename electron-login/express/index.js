@@ -3,7 +3,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
-const dbDebugger = require('debug')('login:db')
+const dbDebugger = require('debug')('fyp:db')
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 

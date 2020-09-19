@@ -1,7 +1,9 @@
 const electron = require("electron");
+const { net } = require('electron')
 const config = require("../config");
 const url = require("url");
 const path = require("path");
+const signUpDebug = require('debug')('fyp:signup')
 
 const { app, BrowserWindow, ipcMain } = electron;
 
@@ -38,21 +40,49 @@ ipcMain.on("login:send", function (e, account, password) {
 //----------------------------------------------------------
 //handel signup:send request from register.js
 ipcMain.on("signup:send", function (e, account, password) {
-  console.log("[signup]: signup data received!");
-  console.log(`[signup]: account: ${account} \n[signup]: password: ${password}`);
-  //handel request ...
+  let success = false;
+  const resBody = JSON.stringify({ account: account, password: password })
 
-  success = true;
-  //redirect back to sign up
-  if (success) {
-    console.log("[signup]: signup successful.");
-    loginWindow.webContents.send("signup:success");
-  } else {
-    console.log("[signup]: signup failed.");
+  signUpDebug(`Signing up ...`);
+  
+  // Handling request ...
+  // Hardcoded the POST address for simplicity
+  const request = net.request({
+    method: 'POST',
+    protocol: 'http:',
+    hostname: 'localhost',
+    port: 3000,
+    path: '/api/users',
 
-    //if else send error to registerWindow.webContents.send("signup:error");
-    loginWindow.webContents.send("signup:error");
-  }
+  })
+
+  request.on('response', (res) => {
+    const statusCode = res.statusCode
+    signUpDebug(`[Response]STATUS: ${res.statusCode}`);
+
+    res.on('data', (body) => {
+      const response = body.toString()
+      if (statusCode == 200) {
+        signUpDebug(`[Response]: Signup succuess. ${response} is saved.`);
+        loginWindow.webContents.send("signup:success", response);
+      }else{
+        signUpDebug(`[Response]: Signup failed. ${response}`);
+        
+        //if else send error to registerWindow.webContents.send("signup:error");
+        loginWindow.webContents.send("signup:error", response);
+
+      }
+      // console.log(`BODY: ${body}`);
+    })
+  })
+
+  request.on('error', (error) => { 
+    console.log(`ERROR: ${JSON.stringify(error)}`) 
+  });
+
+  request.setHeader('Content-Type', 'application/json'); 
+  request.write(resBody, 'utf-8'); 
+  request.end();
 });
 
 //----------------------------------------------------------

@@ -3,6 +3,7 @@ const { modelNames } = require('mongoose')
 const router = require('express').Router()
 const { User, validateUser } = require('../models/user')
 const bcrypt = require('bcrypt')
+const dbDebugger = require('debug')('fyp:db')
 
 // POST /api/users
 router.post('/', async (req, res) => {
@@ -22,8 +23,9 @@ router.post('/', async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt)
 
   await user.save()
+  dbDebugger(`${user.account} has been saved to DB!`)
 
-  res.send(user)
+  res.send(user.account)
 })
 
 

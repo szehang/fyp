@@ -15,9 +15,11 @@ signupForm.addEventListener("submit", function (e) {
 });
 
 //handel sign-up errors
-ipcRenderer.on("signup:error", function (e) {
+ipcRenderer.on("signup:error", function (e, args) {
   //tell user login failed
-  document.getElementById("signupStatus").innerHTML = "Sign up failed!";
+  document.getElementById("signupStatus").style.color = "red"
+  document.getElementById("signupStatus").innerHTML = `Sign up failed <br>`;
+  document.getElementById("signupStatus").innerHTML += `${args}`;
 
   //reset the account and password input value
   document.getElementById("accountInput").value = "";
@@ -28,7 +30,7 @@ ipcRenderer.on("signup:error", function (e) {
 });
 
 //handel sign-up success
-ipcRenderer.on("signup:success", function (e) {
-  alert('Your signup is successful!');
+ipcRenderer.on("signup:success", function (e, args) {
+  alert(`${args} is registered successfully!`);
   window.location.href = 'login.html';
 });
