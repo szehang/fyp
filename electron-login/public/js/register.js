@@ -31,6 +31,6 @@ ipcRenderer.on("signup:error", function (e, args) {
 
 //handel sign-up success
 ipcRenderer.on("signup:success", function (e, args) {
-  alert(`${args} is registered successfully!`);
+  alert(`"${args}" is registered successfully!`);
   window.location.href = 'login.html';
 });
