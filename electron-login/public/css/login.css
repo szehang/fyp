@@ -10,7 +10,7 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-body {
+html, body {
     font-size: 1em;
     background-color: #5E5C65;
 }
@@ -27,25 +27,17 @@ nav>span {
     color: white;
 }
 
-/* main {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    text-align: center;
-} */
-
 main {
     text-align: center;
-    padding: 5px;
+    height: 82%;
+    background-color: #2B2639;
 }
 
 main>form {
-    grid-column: 2/3;
-    grid-row: 2/3;
     width: 100%;
-    background-color:#2B2639;
-    padding: 1em;
-    border-radius: 0.3em;
+    height: 100%;
+    display: block;
+    padding: 2em;
 }
 
 main>form input {
@@ -83,7 +75,7 @@ main>form input {
 }
 
 input[type=submit] {
-    height: 2em;
+    height: 3em;
     font-size: 1em;
     outline: none;
     border: 0;
@@ -105,17 +97,16 @@ input[type=password]:focus+label {
     color: red;
 }
 
-a#signupLink{
-    display: block;
-    margin-top: 1rem;
+a#signupLink {
+    display: inline;
     color: #62BAB9;
-    text-decoration: underline;
+    text-decoration: none;
     cursor: pointer;
     transition: 0.5s ease color;
 }
 
-a#signupLink:hover{
-   color: white;
+a#signupLink:hover {
+    color: white;
 }
 
 /* register.html */
@@ -127,11 +118,18 @@ a#back {
     top: 0;
     font-size: 1.2rem;
     cursor: pointer;
-color:#5E5C65;
-    transition: 0.3s ease font-size ;
+    color: #5E5C65;
+    transition: 0.3s ease font-size;
     text-decoration: none;
 }
 
 a#back:hover {
     font-size: 1.3rem;
+}
+
+.text {
+    display: inline-block;
+    margin-top: 13em;
+    width: 100%;
+    color: #9b9a9a;
 }

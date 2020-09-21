@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0%;
+    box-sizing: border-box;
+    background-color: #5E5C65;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.top {
+    text-align: right;
+    padding: 1em;
+    background-color: #2B2639;
+}
+
+.main{
+    color: #ffffff;
+    text-align: center;
+    font-size: 30px;
+}
+
+button {
+    width: 10em;
+    height: 3em;
+    font-size: 1em;
+    outline: none;
+    border: 0;
+    border-radius: 0.2em;
+    cursor: pointer;
+    background-color: #62BAB9;
+}

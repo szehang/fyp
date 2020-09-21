@@ -12,8 +12,8 @@
 <body>
     
     <nav>
-        <a id="back" href="./login.html">&lt Go back</a>
-        <span>Sign-up</span>
+        <a id="back" href="./login.html">&#8592;</a>
+        <span>Create Account</span>
     </nav>
     <main>
         <form action="#" id="signup">
@@ -25,9 +25,13 @@
                 <input id="passwordInput" type="password" required>
                 <label for="passwordInput">Password</label>
             </div>
-            <input id="submitInput" type="submit" value="Sign-up">
+            <input id="submitInput" type="submit" value="SIGN UP">
             <div id="signupStatus"></div>
+
+            <span class="text">Already have an account? <a href="./login.html" id="signupLink">Sign in</a></span>
         </form>
+
+        
     </main>
 
     <script src="js/register.js"></script>
