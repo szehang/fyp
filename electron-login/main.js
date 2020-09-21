@@ -23,6 +23,7 @@ app.on("ready", function () {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    resizable: false,
   });
   //load html into window
   loginWindow.loadURL(

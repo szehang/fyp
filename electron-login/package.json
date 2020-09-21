@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/beebeebeeebeee/electron-login#readme",
   "devDependencies": {
-    "electron": "^10.1.1"
+    "electron": "^10.1.2"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

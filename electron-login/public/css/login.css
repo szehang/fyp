@@ -1,4 +1,4 @@
-/* 
+/*
 
 */
 
@@ -127,9 +127,11 @@ a#back:hover {
     font-size: 1.3rem;
 }
 
-.text {
-    display: inline-block;
-    margin-top: 13em;
+footer {
+    position: absolute;
+    bottom: 1rem;
+    text-align: center;
+    /* margin-top: 13em; */
     width: 100%;
     color: #9b9a9a;
 }
