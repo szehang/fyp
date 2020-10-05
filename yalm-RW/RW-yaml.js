@@ -2,7 +2,7 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 
 try {
-    let fileContents = fs.readFileSync('./test.yaml', 'utf8');
+    let fileContents = fs.readFileSync('./test-input.yaml', 'utf8');
     let data = yaml.safeLoad(fileContents);
 
     console.log(data);
