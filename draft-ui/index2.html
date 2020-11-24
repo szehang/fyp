@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <section id="address-profile-section">
+        <h2>Address Profile</h2>
+        <form class="form-group">
+            <div class="input-group">
+                <label for="address-profile-country">country:</label>
+                <select id="address-profile-country">
+                <option disabled selected hidden>(iso3166Code)</option>
+                <option value="aaa">aaa</option>
+                <option value="bbb">bbb</option>
+                <option value="ccc">ccc</option>
+                <option value="ddd">ddd</option>
+            </select>
+            </div>
+
+            <button class="submit">create</button>
+
+        </form>
+    </section>
+
+    <section id="address-class-profile-section">
+        <h2>Address Class Profile</h2>
+        <form class="form-group">
+            <div class="input-group">
+                <label for="address-class-profile-id">id:</label>
+                <input class="form-group-input" type="number" id="address-class-profile-id" required>
+            </div>
+            <div class="input-group">
+                <label for="address-class-profile-type">type:</label>
+                <input type="text" id="address-class-profile-type" required>
+            </div>
+            <div class="input-group">
+                <label for="address-class-profile-description">description:</label>
+                <textarea id="address-class-profile-description" cols="30" rows="1" required></textarea>
+            </div>
+            <div class="input-group">
+                <label for="address-class-profile-localization">localization:</label>
+                <input type="text" id="address-class-profile-localization" required>
+            </div>
+            <div class="input-group">
+                <label for="address-class-profile-timeToLive">timeToLive:</label>
+                <input type="number" id="address-class-profile-timeToLive" required>
+            </div>
+            <div class="input-group">
+                <label for="address-class-profile-validity">validity:</label>
+                <input type="text" id="address-class-profile-validity" required>
+            </div>
+
+            <button class="submit">create</button>
+
+        </form>
+    </section>
+
+    <section id="address-component-profile-section">
+        <h2>Address Component Profile</h2>
+        <form class="form-group">
+            <div class="input-group">
+                <label for="address-component-profile-key">key:</label>
+                <input type="text" id="address-component-profile-key" required>
+            </div>
+            <div class="input-group">
+                <label for="address-component-profile-description">description:</label>
+                <input type="text" id="address-component-profile-description" required>
+            </div>
+
+            <button class="submit">create</button>
+
+        </form>
+    </section>
+</body>
+
+</html>
