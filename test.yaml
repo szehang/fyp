@@ -1,0 +1,214 @@
+AddressProfile:
+ country: #O N
+  iso3166Code
+ addressProfile: #0..*
+  AddressClassProfile
+ componentProfile: #0..*
+  AddressComponentProfile
+
+AddressClassProfile:
+ id: CharacterString #M 1 #{type by user}
+ type: CharacterString #M 1 #is that fixed? -> "iso-19160-address-profile" {normal text}
+ description: CharacterString #M 1
+ localization: Localization #M 1
+ signature: Signature #O 1  #skip
+ areaApplicbility: #O N
+  iso19115MD_SpatialRepresentation #don't have this doc
+ timeToLive : Integer #M 1  #have sample?
+ validity: Validity #M 1  #have sample?
+ componentProfile: #0..*  #lack of object name  #what dose the normal line relation means {just give it a name}
+  AddressComponentProfile: AddressComponentProfile #M 1 [name only]
+  AddressComponentSpecification: AddressComponentSpecification #M 1 
+ attributeProfile: #0..*
+  AttributeProfile
+
+AddressComponentProfile:
+ key: CharacterString #M 1
+ description: CharacterString #M 1
+ example: CharacterString #O 1  #what is this use for, sample
+ attributeProfile: #0..*
+  AttributeProfile #[name only]
+ profile: ProfileCompliantAddressComponent # what is this, what is the content
+
+AddressComponentSpecification:
+ maxCardinality: Integer #M 1
+ minCardinality: Integer #M 1
+
+{ #don't know doing what
+AttributeProfile: #{hold}
+ name: CharacterString #M 1
+ minCardinality: Integer #O 1
+ maxCardinality: Integer #O 1
+ valueType: CharacterString #O 1
+#  addressClassProfile: AddressClassProfile #should we have this? {no need}
+#  addressComponentProfile: AddressComponentProfile #should we have this? {no need}
+
+ProfileCompliantAddressComponent: #extends from AddressComponent
+#  profile: AddressComponentProfile
+ #...from AddressComponent
+
+ProfileCompliantAddress: #extends from Address
+ addressClassProfile: AddressClassProfile
+ #?profileCompliantAddressComponent: ProfileCompliantAddressComponent
+ #?addressComponentSpecification: AddressComponentSpecification
+ #...from Address
+
+AddressComponent: #from 19160-1
+ address: Address
+
+Address: #from 19160-1
+ addressComponent: AddressComponent
+}
+
+# do we need this part for our project? What is the usage of these Classes?
+InterchangeAddressClassProfile: # extends from AddressClassProfile
+ id: CharacterString #M 1
+ type: CharacterString #M 1
+ descirption: CharacterString #M 1
+ localization: Localization #M 1
+ signature: Signature #O 1
+ areaApplicbility: #O N
+  iso19115MD_SpatialRepresentation 
+ timeToLive : Integer #M 1
+ validity: Validity #M1
+ componentProfile: #0..*
+  AddressComponentProfile: AddressComponentProfile
+  AddressComponentSpecification: AddressComponentSpecification
+ formTemplate: #0..*
+  FormTemplate
+ displayTemplate: #0..*
+  DisplayTemplate
+ attributeProfile: #0..*
+  attributeProfileSignature : AttributeProfileSignature
+  attributeProfileAddressFeature: AttributeProfileAddressFeature
+  attributeProfileValidity: AttributeProfileValidity
+  
+
+FormTemplate: #entends from LayoutTemplate
+ id: CharacterString #M 1
+ name: CharacterString #M 1
+ descirption: CharacterString #M 1
+ localization: Localization #M 1
+ dimension: LayoutDimension #O N
+ orientation: LayoutOrientation #O 1
+ lines: LayoutLine #O N
+ formLine: #1..* 
+  FormLine
+
+DisplayTemplate: #entends from LayoutTemplate
+ id: CharacterString #M 1
+ name: CharacterString #M 1
+ descirption: CharacterString #M 1
+ localization: Localization #M 1
+ dimension: LayoutDimension #O N
+ orientation: LayoutOrientation #O 1
+ lines: LayoutLine #O N
+ formLine: #1..*
+  DisplayLine 
+
+AttributeProfileSignature: #extends from AttributeProfile
+ name: "signature"
+ minCardinality: 0
+ maxCardinality: 1
+ valueType: Signature
+ addressClassProfile: InterchangeAddressClassProdile
+
+AttributeProfileAddressFeature: #extends from AttributeProfile
+ name: "feature"
+ minCardinality: 0
+ maxCardinality: Infinfity
+ valueType: AddressFeature
+ addressClassProfile: InterchangeAddressClassProdile
+
+AttributeProfileValidity: #extends from AttributeProfile
+ name: "validity"
+ minCardinality: 0
+ maxCardinality: 1
+ valueType: Validity
+ addressClassProfile: InterchangeAddressClassProdile
+
+AddressFeature:
+ signature: Signature #O 1
+
+SpecificationLevel: #extends form AddressFeature
+ signature: Signature #O 1
+ value: SpecificationLevelValue #M 1
+
+QualityStatus: #extends form AddressFeature
+ signature: Signature #O 1
+ value: QualityCode #M 1
+
+Geolocation: #extends form AddressFeature
+ signature: Signature #O 1
+ value: iso19115EX_Extent #M 1
+
+SpecificationLevelValue:
+#  the value can be the following
+#   unstructured
+#   partial
+#   full
+
+QualityCode: 
+#  the value can be the following
+#   confirmedCorrect
+#   mostlyCorrect
+#   possiblyCorrect
+#   structurallyCorrect
+#   unknown
+
+LayoutTemplate:
+ id: CharacterString #M 1
+ name: CharacterString #M 1
+ descirption: CharacterString #M 1
+ localization: Localization #M 1
+ dimension: LayoutDimension #O N
+ orientation: LayoutOrientation #O 1
+ lines: LayoutLine #O N
+
+LayoutDimension:
+ width: Integer #O 1
+ height: Integer #O 1
+
+LayoutOrientation:
+#  the value can be the following
+#   horizontal
+#   vertical
+
+LayoutLine:
+ dimensions: LayoutDimension #M 1
+
+DisplayLine: #Extends from LayoutLine
+ dimensions: LayoutDimension #M 1
+ element: #1..*
+  DisplayLineElement
+
+FormLine: #Extends from LayoutLine
+ dimensions: LayoutDimension #M 1
+ element: #1..*
+  FormLineElement
+
+DisplayLineElement:
+
+TextElement: #Extends from DisplayLineElement
+ text: CharacterString #M 1
+
+DataElement: #Extends from DisplayLineElement and FormLineElement
+ value: CharacterString #M 1
+
+FormLineElement:
+
+SelectionElement: #Extends from FormLineElement
+ map: SelectionPair #M N
+
+StaticTextElement: #Extends from FormLineElement
+ value: CharacterString #M 1
+
+# DataElement: #Extends from FormLineElement
+#  value: CharacterString #M 1
+
+DataElementWithConditions: #Extends from DataElement
+ value: iso19115MD_Constraints #M 1
+
+SelectionPair:
+ key: CharacterString #M 1
+ displayAs: CharacterString #M 1
