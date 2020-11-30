@@ -6,7 +6,34 @@
 }
 
 .hide {
-  display: none;
+  display: none !important;
+}
+
+div.add-item-btn-div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+div.add-item-btn-div div.add-item-btn {
+  font-size: 4rem;
+  border-radius: 50%;
+  border: 1px gray solid;
+  text-align: center;
+  width: 5rem;
+  height: 5rem;
+  margin: 1rem 0;
+}
+
+div.add-item-btn-div div.add-item-btn:hover {
+  font-weight: bold;
+  cursor: pointer;
 }
 
 html {
@@ -21,10 +48,96 @@ html body {
   height: 100vh;
 }
 
-html body .form-group {
-  width: 50vw;
+html body section {
+  width: 50rem;
+  margin: 1rem;
   border: 1px gray solid;
-  padding: 1rem;
+}
+
+html body section h2,
+html body section h3 {
+  width: 100%;
+  padding: 0 1rem;
+  margin-top: 1rem;
+}
+
+html body section button {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 2rem;
+  text-transform: uppercase;
+  height: 5rem;
+  margin-top: 1rem;
+}
+
+html body section ul {
+  list-style: none;
+  margin: 0 1rem;
+  min-height: 10rem;
+  max-height: 25rem;
+  overflow-y: auto;
+  border: 1px gray solid;
+}
+
+html body section ul .expend-li {
+  max-height: 60rem;
+}
+
+html body section ul .expend-span {
+  white-space: pre-wrap !important;
+}
+
+html body section ul li {
+  padding: 0.5rem;
+  border: 1px gray solid;
+  max-height: 5.7rem;
+  -webkit-transition: max-height 1s ease;
+  transition: max-height 1s ease;
+  overflow: hidden;
+}
+
+html body section ul li div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+html body section ul li div span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+html body section ul li div ul {
+  width: 100%;
+  margin: 0;
+}
+
+html body section ul li div ul li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+html body section ul li div ul li div {
+  display: inline-block;
+}
+
+html body section ul li div ul li div div {
+  display: block;
+  font-size: 0.6rem;
+  line-height: 1;
+  margin: 0;
+}
+
+html body .form-group {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -34,10 +147,10 @@ html body .form-group {
           flex-direction: row;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  margin: 1rem;
 }
 
 html body .form-group .input-group {
-  margin: 1rem 0rem 1rem 0;
   width: 100%;
 }
 
@@ -46,7 +159,7 @@ html body .form-group .input-group * {
   padding: 0.25rem;
 }
 
-html body .form-group .submit {
-  width: 100%;
+html body .form-group button {
+  margin-top: 1rem;
 }
 /*# sourceMappingURL=style.css.map */

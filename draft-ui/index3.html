@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <section id="address-profile-list-section">
+        <h2>Address Profile</h2>
+        <ul id="address-profile-list">
+        </ul>
+        <div id="new-address-profile-div">
+            <button id="new-address-profile-btn">create address profile</button>
+            <form action="#" class="form-group hide" id="new-address-profile-form">
+                <div class="input-group">
+                    <label for="create-new-address-profile-country">country:</label>
+                    <select id="create-new-address-profile-country" required>
+                        <option disabled selected hidden>(iso3166Code)</option>
+                        <option value="ABW">ABW</option>
+                        <option value="AFG">AFG</option>
+                        <option value="GLP">GLP</option>
+                        <option value="HKG">HKG</option>
+                        <option value="IDN">IDN</option>
+                    </select>
+                </div>
+
+                <button id="create-new-address-profile-btn">create</button>
+
+            </form>
+        </div>
+    </section>
+
+    <section id="address-profile-section" class="hide">
+        <h2 id="currentAddressProfileName">DOM</h2>
+
+        <h3>Address Class Profiles:</h3>
+        <ul id="address-class-profiles">
+            <li>
+                <div>
+                    <span>component 1 (ID)</span>
+                    <span>type: dsadas</span>
+                </div>
+                <div>
+                    <span class="expend-span">desc: this is a desc fdsfsdfsdfds fsd fsdfsd fsd fsdf sdf sd fdfsd fds fsdfds</span>
+                </div>
+
+                <div>
+                    <span>localization: dasda das adas da</span>
+                </div>
+                <div>
+                    <span>time to live: dsadasdas das asd fds fgsdf  da</span>
+                </div>
+                <div>
+                    <span>validity: dasda das adas da</span>
+                </div>
+                <div>
+                    <span>component:</span>
+
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                            <div>component 1</div>
+                            <div>
+                                <div>min: 1</div>
+                                <div>max: 3</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="add-item-btn-div">
+                    <div class="add-item-btn">+</div>
+                </div>
+            </li>
+        </ul>
+        <div class="add-item-btn-div">
+            <div class="add-item-btn" id="new-address-class-profile-btn">+</div>
+        </div>
+        <div id="new-address-class-profile-div" class="hide">
+            <form action="#" class="form-group">
+                <h4>new address class profile:</h4>
+                <div class="input-group">
+                    <label for="address-class-profile-id">id:</label>
+                    <input class="form-group-input" type="number" id="address-class-profile-id" required value=1>
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-type">type:</label>
+                    <input type="text" id="address-class-profile-type" required value="type1">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-description">description:</label>
+                    <textarea id="address-class-profile-description" cols="30" rows="1" required>desc1</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-localization">localization:</label>
+                    <input type="text" id="address-class-profile-localization" required value="localization1">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-timeToLive">timeToLive:</label>
+                    <input type="number" id="address-class-profile-timeToLive" required value="10">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-validity">validity:</label>
+                    <input type="text" id="address-class-profile-validity" required value="validity1">
+                </div>
+
+                <button id="create-new-address-class-profile-btn">create</button>
+            </form>
+        </div>
+
+        <h3>Address Component Profiles:</h3>
+        <ul id="address-class-profiles">
+            <li>
+                <div>
+                    <span>component 1(KEY)</span>
+                </div>
+                <div>
+                    <span>desc: ds dasd asdsa dasd asdasda wdd asd asdas dasd asd as</span>
+                </div>
+            </li>
+        </ul>
+        <div class="add-item-btn-div">
+            <div class="add-item-btn">+</div>
+        </div>
+
+    </section>
+    </section>
+</body>
+<script>
+    let addressProfiles = [];
+    let currentAddressProfile;
+
+    document.querySelector("#new-address-class-profile-btn").addEventListener("click", (even) => {
+        document.querySelector("#new-address-class-profile-div").classList.remove("hide");
+        document.querySelector("#new-address-class-profile-btn").classList.add("hide");
+    });
+
+    document.querySelector("#create-new-address-class-profile-btn").addEventListener("click", (event) => {
+        currentAddressProfile.addressClassProfiles.push({
+            id: document.querySelector("#address-class-profile-id").value,
+            type: document.querySelector("#address-class-profile-type").value,
+            description: document.querySelector("#address-class-profile-description").value,
+            locatization: document.querySelector("#address-class-profile-localization").value,
+            timeToLive: document.querySelector("#address-class-profile-timeToLive").value,
+            validity: document.querySelector("#address-class-profile-validity").value,
+        });
+        console.log(addressProfiles);
+
+        document.querySelector("#new-address-class-profile-div").classList.add("hide");
+        document.querySelector("#new-address-class-profile-btn").classList.remove("hide");
+        currentAddressProfile.addressClassProfiles.forEach((item) => {
+
+            const li = document.createElement("li");
+            li.innerHTML +=
+                `
+                <div>
+                    <span>${item.id}</span>
+                    <span>type: ${item.type}</span>
+                </div>
+                <div>
+                    <span class="expend-span">desc: ${item.description}</span>
+                </div>
+
+                <div>
+                    <span>localization: ${item.locatization}</span>
+                </div>
+                <div>
+                    <span>time to live: ${item.timeToLive}</span>
+                </div>
+                <div>
+                    <span>validity: ${item.validity}</span>
+                </div>
+                <div>
+                    <span>component:</span>
+
+                </div>
+
+                <div>
+                    <ul>
+                        <li>
+                            <div>component 1</div>
+                            <div>
+                                <div>min: 1</div>
+                                <div>max: 3</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                
+                <div class="add-item-btn-div">
+                    <div class="add-item-btn">+</div>
+                </div>
+            `;
+            li.addEventListener("click", (event) => {
+                li.classList.contains("expend-li") ?
+                    li.classList.remove("expend-li") :
+                    li.classList.add(("expend-li"));
+            });
+            document.querySelector("#address-class-profiles").appendChild(li);
+
+        });
+    });
+
+    document.querySelector("#new-address-profile-btn").addEventListener("click", (event) => {
+        document.querySelector("#new-address-profile-btn").classList.add("hide");
+        document.querySelector("#new-address-profile-form").classList.remove("hide");
+    });
+
+    document.querySelector("#create-new-address-profile-btn").addEventListener("click", (event) => {
+        addressProfiles.push({
+            code: document.querySelector("#create-new-address-profile-country").value,
+            addressClassProfiles: [],
+            addressComponentProfiles: []
+        });
+        const addressProfileLi = document.createElement("li");
+        addressProfileLi.appendChild(document.createTextNode(document.querySelector("#create-new-address-profile-country").value));
+        addressProfileLi.addEventListener("click", (event) => {
+            document.querySelector("#address-profile-list-section").classList.add("hide");
+            document.querySelector("#address-profile-section").classList.remove("hide");
+
+            addressProfiles.forEach(item => {
+                if (item.code == document.querySelector("#create-new-address-profile-country").value) {
+                    currentAddressProfile = item;
+                }
+            });
+            //display information in a address profile
+            document.querySelector("#currentAddressProfileName").innerHTML = currentAddressProfile.code;
+            document.querySelector("#address-class-profiles").innerHTML = "";
+            currentAddressProfile.addressClassProfiles.forEach((item) => {
+                document.querySelector("#address-class-profiles").innerHTML +=
+                    `
+                <li>
+                <div>
+                    <span>${item.id}</span>
+                    <span>type: ${item.type}</span>
+                </div>
+                <div>
+                    <span class="expend-span">desc: ${item.description}</span>
+                </div>
+
+                <div>
+                    <span>localization: ${item.locatization}</span>
+                </div>
+                <div>
+                    <span>time to live: ${item.timeToLive}</span>
+                </div>
+                <div>
+                    <span>validity: ${item.validity}</span>
+                </div>
+                <div>
+                    <span>component:</span>
+
+                </div>
+
+                <div>
+                    <ul>
+                        <li>
+                            <div>component 1</div>
+                            <div>
+                                <div>min: 1</div>
+                                <div>max: 3</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                
+                <div class="add-item-btn-div">
+                    <div class="add-item-btn">+</div>
+                </div>
+            </li>
+            `;
+
+            });
+
+        });
+        document.querySelector("#address-profile-list").appendChild(addressProfileLi);
+
+        document.querySelector("#new-address-profile-btn").classList.remove("hide");
+        document.querySelector("#new-address-profile-form").classList.add("hide");
+    });
+</script>
+
+</html>
