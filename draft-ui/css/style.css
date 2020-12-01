@@ -94,6 +94,7 @@ html body section ul li {
   -webkit-transition: max-height 1s ease;
   transition: max-height 1s ease;
   overflow: hidden;
+  cursor: pointer;
 }
 
 html body section ul li div {
