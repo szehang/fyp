@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div id="container">
+        Select the country code:
+        <input list="country_codes" name="country_code" id="country_code" placeholder="(iso3166code)">
+        <datalist id="country_codes">
+            <option value="Hong Kong">
+            <option value="UK">
+            <option value="US">
+        </datalist>
+        <input type="submit" value="Select" onclick="set_country();">
+    </div>
+
+    <script>
+        const address_class_profiles = [];
+        const address_component_profiles = [];
+
+        const set_country = () => {
+            country_code = document.getElementById("country_code").value;
+
+            document.getElementById("container").innerHTML =
+                `
+            <header> (iso3166code) country_code: ${country_code}</header>
+            address_class_profiles: <button onclick="create_address_class_profile()">+ NEW</button>
+            <div id="address_class_profiles">
+                
+            </div>
+            address_component_profiles: <button onclick="create_address_component_profiles()">+ NEW</button>
+            <div id="address_component_profiles">
+            </div>
+            `;
+        }
+
+        const create_address_class_profile = () => {
+            if (address_component_profiles.length == 0) {
+                alert("please create address_component_profile first!")
+            } else {
+                div = document.getElementById("address_class_profiles")
+                address_component_profiles_list = ""
+                address_component_profiles.forEach(element => {
+                    address_component_profiles_list +=
+                        `
+                    <option value="${element.key}">
+                    `
+                })
+                div.innerHTML =
+                    ` 
+                    <div id="new_address_class_profiles">
+                        <div class="input-group">
+                            <label for="address-class-profile-id">id:</label>
+                            <input class="form-group-input" type="number" id="address-class-profile-id" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="address-class-profile-type">type:</label>
+                            <input type="text" id="address-class-profile-type" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="address-class-profile-description">description:</label>
+                            <textarea id="address-class-profile-description" cols="30" rows="1" required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="address-class-profile-localization">localization:</label>
+                            <input type="text" id="address-class-profile-localization" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="address-class-profile-timeToLive">timeToLive:</label>
+                            <input type="number" id="address-class-profile-timeToLive" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="address-class-profile-validity">validity:</label>
+                            <input type="text" id="address-class-profile-validity" required>
+                        </div>
+                        <div class="input-group" id="edit_components">
+                            <label for="address_component_profile">address_component_profile:</label>
+                            <input list="address_component_profiles" name="address_component_profile" id="address_component_profile" onchange="append_component(this.value, this)">
+                            <datalist id="address_component_profiles">
+                                ${address_component_profiles_list}
+                            </datalist>
+                        </div>
+
+
+                        <button onclick="new_address_class_profiles()">create</button>
+                    </div>
+                    ${div.innerHTML}
+                    `;
+            }
+        }
+
+        const append_component = (component, element) => {
+            element.value = "";
+            console.log(component);
+            div = document.getElementById("edit_components");
+            div.innerHTML += 
+            `
+            <div>
+            <button>${component}</button>
+            <input type="number" placeholder="MAX">
+            <input type="number" placeholder="MIN">
+            <button>Delete</button>
+            </div>
+            `;
+        }
+        const create_address_component_profiles = () => {
+            div = document.getElementById("address_component_profiles")
+            div.innerHTML =
+                ` 
+            <div id="new_address_component_profiles">
+                    <div class="input-group">
+                        <label for="address-component-profile-key">key:</label>
+                        <input type="text" id="address-component-profile-key" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="address-component-profile-description">description:</label>
+                        <input type="text" id="address-component-profile-description" required>
+                    </div>
+                    <button onclick="new_address_component_profiles()">create</button>
+            </div>
+            ${div.innerHTML}
+            `;
+        }
+
+        const new_address_component_profiles = () => {
+            key = document.getElementById("address-component-profile-key").value;
+            description = document.getElementById("address-component-profile-description").value;
+
+            address_component_profiles.push({
+                key: key,
+                description: description
+            });
+
+            div = document.getElementById("address_component_profiles")
+            div.innerHTML = "";
+            address_component_profiles.forEach(Element => {
+                div.innerHTML =
+                    ` 
+                    <div>
+                        <button>${Element.key}</button>
+                    </div>
+                    ${div.innerHTML}
+                    `;
+            })
+        }
+
+        const new_address_class_profiles = () => {
+            id = document.getElementById("address-class-profile-id").value;
+            type = document.getElementById("address-class-profile-type").value;
+            description = document.getElementById("address-class-profile-description").value;
+            localization = document.getElementById("address-class-profile-localization").value;
+            timeToLive = document.getElementById("address-class-profile-timeToLive").value;
+            validity = document.getElementById("address-class-profile-validity").value;
+            address_component_profile = document.getElementById("address_component_profile").value;
+
+            address_class_profiles.push({
+                id: id,
+                type: type,
+                description: description,
+                localization: localization,
+                timeToLive: timeToLive,
+                validity: validity,
+                address_component_profile: address_component_profile,
+            });
+
+            div = document.getElementById("address_class_profiles")
+            div.innerHTML = "";
+            address_class_profiles.forEach(Element => {
+                div.innerHTML =
+                    ` 
+                    <div>
+                        <button>${Element.id}</button>
+                    </div>
+                    ${div.innerHTML}
+                    `;
+            })
+        }
+    </script>
+
+    <style>
+        header {
+            background-color: rgb(133, 133, 133);
+            color: white;
+        }
+    </style>
+</body>
+
+</html>

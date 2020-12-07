@@ -9,186 +9,158 @@
 </head>
 
 <body>
-    <div id="container">
-        Select the country code:
-        <input list="country_codes" name="country_code" id="country_code" placeholder="(iso3166code)">
-        <datalist id="country_codes">
-            <option value="Hong Kong">
-            <option value="UK">
-            <option value="US">
-        </datalist>
-        <input type="submit" value="Select" onclick="set_country();">
-    </div>
+    <!-- ADDRESS PROFILE LIST PAGE = HOME PAGE -->
+    <!-- ADDRESS PROFILE PAGE = PAGE TO SHOW THING INSIDE AN ADDRESS PROFILE -->
 
-    <script>
-        const address_class_profiles = [];
-        const address_component_profiles = [];
+    <!-- ADDRESS PROFILE LIST PAGE START -->
+    <section id="address-profile-list-section">
+        <h2>Address Profile</h2>
+        <ul id="address-profile-list">
+        </ul>
+        <div id="new-address-profile-div">
+            <button id="new-address-profile-btn">create address profile</button>
+            <form action="#" class="form-group hide" id="new-address-profile-form">
+                <div class="input-group">
+                    <label for="create-new-address-profile-country">country:</label>
+                    <select id="create-new-address-profile-country" required>
+                        <option disabled selected hidden>(iso3166Code)</option>
+                        <option value="ABW">ABW</option>
+                        <option value="AFG">AFG</option>
+                        <option value="GLP">GLP</option>
+                        <option value="HKG">HKG</option>
+                        <option value="IDN">IDN</option>
+                    </select>
+                </div>
 
-        const set_country = () => {
-            country_code = document.getElementById("country_code").value;
+                <button id="create-new-address-profile-btn">create</button>
 
-            document.getElementById("container").innerHTML =
-                `
-            <header> (iso3166code) country_code: ${country_code}</header>
-            address_class_profiles: <button onclick="create_address_class_profile()">+ NEW</button>
-            <div id="address_class_profiles">
-                
-            </div>
-            address_component_profiles: <button onclick="create_address_component_profiles()">+ NEW</button>
-            <div id="address_component_profiles">
-            </div>
-            `;
-        }
+            </form>
+        </div>
+    </section>
+    <!-- ADDRESS PROFILE LIST PAGE END -->
 
-        const create_address_class_profile = () => {
-            if (address_component_profiles.length == 0) {
-                alert("please create address_component_profile first!")
-            } else {
-                div = document.getElementById("address_class_profiles")
-                address_component_profiles_list = ""
-                address_component_profiles.forEach(element => {
-                    address_component_profiles_list +=
-                        `
-                    <option value="${element.key}">
-                    `
-                })
-                div.innerHTML =
-                    ` 
-                    <div id="new_address_class_profiles">
-                        <div class="input-group">
-                            <label for="address-class-profile-id">id:</label>
-                            <input class="form-group-input" type="number" id="address-class-profile-id" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="address-class-profile-type">type:</label>
-                            <input type="text" id="address-class-profile-type" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="address-class-profile-description">description:</label>
-                            <textarea id="address-class-profile-description" cols="30" rows="1" required></textarea>
-                        </div>
-                        <div class="input-group">
-                            <label for="address-class-profile-localization">localization:</label>
-                            <input type="text" id="address-class-profile-localization" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="address-class-profile-timeToLive">timeToLive:</label>
-                            <input type="number" id="address-class-profile-timeToLive" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="address-class-profile-validity">validity:</label>
-                            <input type="text" id="address-class-profile-validity" required>
-                        </div>
-                        <div class="input-group" id="edit_components">
-                            <label for="address_component_profile">address_component_profile:</label>
-                            <input list="address_component_profiles" name="address_component_profile" id="address_component_profile" onchange="append_component(this.value, this)">
-                            <datalist id="address_component_profiles">
-                                ${address_component_profiles_list}
-                            </datalist>
-                        </div>
+    <!-- ADDRESS PROFILE PAGE START -->
+    <section id="address-profile-section" class="hide">
+        <!-- currentAddressProfileName will show the current selected profile iso3166Code -->
+        <h2 id="currentAddressProfileName">DOM</h2>
+
+        <h3>Address Class Profiles:</h3>
+        <ul id="address-class-profiles">
+            <li>
+                <div>
+                    <span>component 1 (ID)</span>
+                    <span>type: dsadas</span>
+                </div>
+                <div>
+                    <span class="expend-span">desc: this is a desc fdsfsdfsdfds fsd fsdfsd fsd fsdf sdf sd fdfsd fds
+                        fsdfds</span>
+                </div>
+
+                <div>
+                    <span>localization: dasda das adas da</span>
+                </div>
+                <div>
+                    <span>time to live: dsadasdas das asd fds fgsdf da</span>
+                </div>
+                <div>
+                    <span>validity: dasda das adas da</span>
+                </div>
+                <div>
+                    <span>component:</span>
+
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                            <div>component 1</div>
+                            <div>
+                                <div>min: 1</div>
+                                <div>max: 3</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="add-item-btn-div">
+                    <div class="add-item-btn">+</div>
+                </div>
+            </li>
+        </ul>
+        <div class="add-item-btn-div">
+            <div class="add-item-btn" id="new-address-class-profile-btn">+</div>
+        </div>
+        <div id="new-address-class-profile-div" class="hide">
+            <form action="#" class="form-group">
+                <h4>new address class profile:</h4>
+                <div class="input-group">
+                    <label for="address-class-profile-id">id:</label>
+                    <input class="form-group-input" type="text" id="address-class-profile-id" required value=1>
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-type">type:</label>
+                    <input type="text" id="address-class-profile-type" required value="type1">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-description">description:</label>
+                    <textarea id="address-class-profile-description" cols="30" rows="1" required>desc1</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-localization">localization:</label>
+                    <input type="text" id="address-class-profile-localization" required value="localization1">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-timeToLive">timeToLive:</label>
+                    <input type="text" id="address-class-profile-timeToLive" required value="10">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-validity">validity:</label>
+                    <input type="text" id="address-class-profile-validity" required value="validity1">
+                </div>
+
+                <button id="create-new-address-class-profile-btn">create</button>
+            </form>
+        </div>
+
+        <h3>Address Component Profiles:</h3>
+        <ul id="address-component-profiles">
+            <li>
+                <div>
+                    <span>component 1(KEY)</span>
+                </div>
+                <div>
+                    <span>desc: ds dasd asdsa dasd asdasda wdd asd asdas dasd asd as</span>
+                </div>
+            </li>
+        </ul>
+        <div class="add-item-btn-div">
+            <div class="add-item-btn" id="new-address-component-profile-btn">+</div>
+        </div>
+        <div id="new-address-component-profile-div" class="hide">
+            <form action="#" class="form-group">
+                <h4>new address component profile:</h4>
+                <div class="input-group">
+                    <label for="address-component-profile-key">key:</label>
+                    <input class="form-group-input" type="text" id="address-component-profile-key" required
+                        value="component 1">
+                </div>
+                <div class="input-group">
+                    <label for="address-component-profile-description">description:</label>
+                    <textarea id="address-component-profile-description" cols="30" rows="1" required>desc 1</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="address-component-profile-example">example:</label>
+                    <input type="text" id="address-component-profile-example" required value="example 1">
+                </div>
 
 
-                        <button onclick="new_address_class_profiles()">create</button>
-                    </div>
-                    ${div.innerHTML}
-                    `;
-            }
-        }
+                <button id="create-new-address-component-profile-btn">create</button>
+            </form>
+        </div>
 
-        const append_component = (component, element) => {
-            element.value = "";
-            console.log(component);
-            div = document.getElementById("edit_components");
-            div.innerHTML += 
-            `
-            <div>
-            <button>${component}</button>
-            <input type="number" placeholder="MAX">
-            <input type="number" placeholder="MIN">
-            <button>Delete</button>
-            </div>
-            `;
-        }
-        const create_address_component_profiles = () => {
-            div = document.getElementById("address_component_profiles")
-            div.innerHTML =
-                ` 
-            <div id="new_address_component_profiles">
-                    <div class="input-group">
-                        <label for="address-component-profile-key">key:</label>
-                        <input type="text" id="address-component-profile-key" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="address-component-profile-description">description:</label>
-                        <input type="text" id="address-component-profile-description" required>
-                    </div>
-                    <button onclick="new_address_component_profiles()">create</button>
-            </div>
-            ${div.innerHTML}
-            `;
-        }
-
-        const new_address_component_profiles = () => {
-            key = document.getElementById("address-component-profile-key").value;
-            description = document.getElementById("address-component-profile-description").value;
-
-            address_component_profiles.push({
-                key: key,
-                description: description
-            });
-
-            div = document.getElementById("address_component_profiles")
-            div.innerHTML = "";
-            address_component_profiles.forEach(Element => {
-                div.innerHTML =
-                    ` 
-                    <div>
-                        <button>${Element.key}</button>
-                    </div>
-                    ${div.innerHTML}
-                    `;
-            })
-        }
-
-        const new_address_class_profiles = () => {
-            id = document.getElementById("address-class-profile-id").value;
-            type = document.getElementById("address-class-profile-type").value;
-            description = document.getElementById("address-class-profile-description").value;
-            localization = document.getElementById("address-class-profile-localization").value;
-            timeToLive = document.getElementById("address-class-profile-timeToLive").value;
-            validity = document.getElementById("address-class-profile-validity").value;
-            address_component_profile = document.getElementById("address_component_profile").value;
-
-            address_class_profiles.push({
-                id: id,
-                type: type,
-                description: description,
-                localization: localization,
-                timeToLive: timeToLive,
-                validity: validity,
-                address_component_profile: address_component_profile,
-            });
-
-            div = document.getElementById("address_class_profiles")
-            div.innerHTML = "";
-            address_class_profiles.forEach(Element => {
-                div.innerHTML =
-                    ` 
-                    <div>
-                        <button>${Element.id}</button>
-                    </div>
-                    ${div.innerHTML}
-                    `;
-            })
-        }
-    </script>
-
-    <style>
-        header {
-            background-color: rgb(133, 133, 133);
-            color: white;
-        }
-    </style>
+    </section>
+    <!-- ADDRESS PROFILE PAGE END -->
 </body>
+
+<script src="script.js"></script>
 
 </html>
