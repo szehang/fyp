@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- ADDRESS PROFILE LIST PAGE = HOME PAGE -->
+    <!-- ADDRESS PROFILE PAGE = PAGE TO SHOW THING INSIDE AN ADDRESS PROFILE -->
+
+    <!-- HOVER WINDOW START -->
+    <section id="hover-section" class="hide">
+        <div id="add-address-conponent-profile-to-address-class-profile-div" class="hover-section-div hide">
+            <form class="form-group" action="#">
+                <span class="hover-section-close-btn">x</span>
+                <h3>add address component profile to address class profile</h3>
+                <h4 id="add-address-conponent-profile-to-address-class-profile-address-class-profile-name">-> address class profile 1 </h4>
+                <div class="input-group">
+                    <label for="add-address-conponent-profile-to-address-class-profile-components-select">address componetn profile</label>
+                    <select name="" id="add-address-conponent-profile-to-address-class-profile-components-select">
+                        <option value="addressComponentProfile1">component 1</option>
+                        <option value="addressComponentProfile1">component 2</option>
+                        <option value="addressComponentProfile1">component 3</option>
+                    </select>
+                    <label for="add-address-conponent-profile-to-address-class-profile-minCardinality">mincardinality</label>
+                    <input type="text" id="add-address-conponent-profile-to-address-class-profile-minCardinality" value=1>
+                    <label for="add-address-conponent-profile-to-address-class-profile-maxCardinality">maxcardinality</label>
+                    <input type="text" id="add-address-conponent-profile-to-address-class-profile-maxCardinality" value=1>
+                </div>
+                <button id="add-address-conponent-profile-to-address-class-profile-add-btn">add</button>
+            </form>
+        </div>
+
+        <div id="add-attribute-profile-to-address-component-profile-div" class="hover-section-div hide">
+            <form class="form-group" action="#">
+                <span class="hover-section-close-btn">x</span>
+                <h3>add attrubite profile to address component profile</h3>
+                <h4 id="add-attribute-profile-to-address-component-profile-attribute-profile-name">-> attribute profile 1 </h4>
+                <div class="input-group">
+                    <label for="add-attribute-profile-to-address-component-profile-attributes-select">attribute profile</label>
+                    <select name="" id="add-attribute-profile-to-address-component-profile-attributes-select">
+                        <option value="attributeProfile1">attribute 2</option>
+                        <option value="attributeProfile1">attribute 1</option>
+                        <option value="attributeProfile1">attribute 3</option>
+                    </select>
+                    <label for="add-attribute-profile-to-address-component-profile-minCardinality">mincardinality</label>
+                    <input type="text" id="add-attribute-profile-to-address-component-profile-minCardinality" value=1>
+                    <label for="add-attribute-profile-to-address-component-profile-maxCardinality">maxcardinality</label>
+                    <input type="text" id="add-attribute-profile-to-address-component-profile-maxCardinality" value=1>
+                </div>
+                <button id="add-attribute-profile-to-address-component-profile-add-btn">add</button>
+            </form>
+        </div>
+
+        <!-- <div id="add-attribute-profile-to-address-component-profile-div" class="hide>
+            <form class=" form-group" action="#">
+                <h3>add attribute profile to component profile</h3>
+                <h4>-> address component profile 1 </h4>
+                <div class="input-group">
+                    <label for="">attribute profile</label>
+                    <select name="" id="">
+                        <option value="attributeProfile1">attribute 1</option>
+                        <option value="attributeProfile2">attribute 2</option>
+                        <option value="attributeProfile3">attribute 3</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="">minCardinality</label>
+                    <input type="number">
+                </div>
+                <div class="input-group">
+                    <label for="">maxCardinality</label>
+                    <input type="number">
+                </div>
+                <button>add</button>
+            </form>
+        </div> -->
+
+    </section>
+    <!-- HOVER WINDOW END -->
+
+    <!-- ADDRESS PROFILE LIST PAGE START -->
+    <section id="address-profile-list-section">
+        <h2>Address Profile</h2>
+        <ul id="address-profile-list">
+        </ul>
+        <div id="new-address-profile-div">
+            <button id="new-address-profile-btn">create address profile</button>
+            <form action="#" class="form-group hide" id="new-address-profile-form">
+                <div class="input-group">
+                    <label for="create-new-address-profile-country">country:</label>
+                    <select id="create-new-address-profile-country" required>
+                        <option disabled selected hidden>(iso3166Code)</option>
+                        <option value="ABW">ABW</option>
+                        <option value="AFG">AFG</option>
+                        <option value="GLP">GLP</option>
+                        <option value="HKG">HKG</option>
+                        <option value="IDN">IDN</option>
+                    </select>
+                </div>
+
+                <button id="create-new-address-profile-btn">create</button>
+
+            </form>
+        </div>
+    </section>
+    <!-- ADDRESS PROFILE LIST PAGE END -->
+
+    <!-- ADDRESS PROFILE PAGE START -->
+    <section id="address-profile-section" class="hide">
+        <!-- currentAddressProfileName will show the current selected profile iso3166Code -->
+        <h2 id="currentAddressProfileName">DOM</h2>
+
+        <h3>Address Class Profiles:</h3>
+        <ul id="address-class-profiles">
+            <li>
+                <div>
+                    <span>component 1 (ID)</span>
+                    <span>type: dsadas</span>
+                </div>
+                <div>
+                    <span class="expend-span">desc: this is a desc fdsfsdfsdfds fsd fsdfsd fsd fsdf sdf sd fdfsd fds fsdfds</span>
+                </div>
+
+                <div>
+                    <span>localization: dasda das adas da</span>
+                </div>
+                <div>
+                    <span>time to live: dsadasdas das asd fds fgsdf  da</span>
+                </div>
+                <div>
+                    <span>validity: dasda das adas da</span>
+                </div>
+                <div>
+                    <span>component:</span>
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                            <div>component 1</div>
+                            <div>
+                                <div>min: 1</div>
+                                <div>max: 3</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="add-item-btn-div">
+                    <div class="add-item-btn">+</div>
+                </div>
+            </li>
+        </ul>
+        <div class="add-item-btn-div">
+            <div class="add-item-btn" id="new-address-class-profile-btn">+</div>
+        </div>
+        <div id="new-address-class-profile-div" class="hide">
+            <form action="#" class="form-group">
+                <h4>new address class profile:</h4>
+                <div class="input-group">
+                    <label for="address-class-profile-id">id:</label>
+                    <input class="form-group-input" type="text" id="address-class-profile-id" required value="address class profile 1">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-type">type:</label>
+                    <input type="text" id="address-class-profile-type" required value="type1">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-description">description:</label>
+                    <textarea id="address-class-profile-description" cols="30" rows="1" required>desc1</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-localization">localization:</label>
+                    <input type="text" id="address-class-profile-localization" required value="localization1">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-timeToLive">timeToLive:</label>
+                    <input type="text" id="address-class-profile-timeToLive" required value="10">
+                </div>
+                <div class="input-group">
+                    <label for="address-class-profile-validity">validity:</label>
+                    <input type="text" id="address-class-profile-validity" required value="validity1">
+                </div>
+
+                <button id="create-new-address-class-profile-btn">create</button>
+            </form>
+        </div>
+
+        <h3>Address Component Profiles:</h3>
+        <ul id="address-component-profiles">
+            <li>
+                <div>
+                    <span>component 1(KEY)</span>
+                </div>
+                <div>
+                    <span>desc: ds dasd asdsa dasd asdasda wdd asd asdas dasd asd as</span>
+                </div>
+            </li>
+        </ul>
+        <div class="add-item-btn-div">
+            <div class="add-item-btn" id="new-address-component-profile-btn">+</div>
+        </div>
+        <div id="new-address-component-profile-div" class="hide">
+            <form action="#" class="form-group">
+                <h4>new address component profile:</h4>
+                <div class="input-group">
+                    <label for="address-component-profile-key">key:</label>
+                    <input class="form-group-input" type="text" id="address-component-profile-key" required value="component 1">
+                </div>
+                <div class="input-group">
+                    <label for="address-component-profile-description">description:</label>
+                    <textarea id="address-component-profile-description" cols="30" rows="1" required>desc 1</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="address-component-profile-example">example:</label>
+                    <input type="text" id="address-component-profile-example" required value="example 1">
+                </div>
+
+
+                <button id="create-new-address-component-profile-btn">create</button>
+            </form>
+        </div>
+
+        <h3>Attribute Profiles:</h3>
+        <ul id="attribute-profiles">
+            <li>
+                <div>
+                    <span>attribute 1(NAME)</span>
+                    <div>min: 1</div>
+                </div>
+                <div>
+                    <div>valueType: type 1</div>
+                    <div>max: 1</div>
+                </div>
+            </li>
+        </ul>
+        <div class="add-item-btn-div">
+            <div class="add-item-btn" id="new-attribute-profile-btn">+</div>
+        </div>
+        <div id="new-attribute-profile-div" class="hide">
+            <form action="#" class="form-group">
+                <h4>new attribute profile:</h4>
+                <div class="input-group">
+                    <label for="attribute-profile-name">name:</label>
+                    <input class="form-group-input" type="text" id="attribute-profile-name" required value="name 1">
+                </div>
+                <div class="input-group">
+                    <label for="attribute-profile-valueType">valueType:</label>
+                    <input class="form-group-input" type="text" id="attribute-profile-valueType" required value="valueType 1">
+                </div>
+                <div class="input-group">
+                    <label for="attribute-profile-minCardinality">minCardinality:</label>
+                    <input type="text" id="attribute-profile-minCardinality" required value=min>
+                </div>
+                <div class="input-group">
+                    <label for="attribute-profile-maxCardinality">minCardinality:</label>
+                    <input type="text" id="attribute-profile-maxCardinality" required value=max>
+                </div>
+                <button id="create-new-attribute-profile-btn">create</button>
+            </form>
+        </div>
+
+    </section>
+    <!-- ADDRESS PROFILE PAGE END -->
+</body>
+<script src="./js/script.js"></script>
+
+</html>
