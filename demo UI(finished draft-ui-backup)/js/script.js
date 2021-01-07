@@ -310,9 +310,11 @@ const refreshAddressProfile = () => {
             const addressComponentLi = document.createElement("li");
             addressComponentLi.innerHTML =
                 `
-                    <div>${addressComponentItem.component.name}</div>
-                    <div>valueType: ${addressComponentItem.component.valueType}</div>
-                    <div>example: ${addressComponentItem.component.example}</div>
+                    <div>${addressComponentItem.component.key}</div>
+                    <div>&nbsp;</div>
+                    <div>valueType:<br> ${addressComponentItem.component.description}</div>
+                    <div>&nbsp;</div>
+                    <div>example:<br> ${addressComponentItem.component.example}</div>
                     <div>
                         <div>min: ${addressComponentItem.minCardinality}</div>
                         <div>max: ${addressComponentItem.maxCardinality}</div>
@@ -376,7 +378,7 @@ const refreshAddressProfile = () => {
                     <span>desc: ${addressComponentProfileItem.description}</span>
                 </div>
                 <div>
-                    <span>desc: ${addressComponentProfileItem.example}</span>
+                    <span>example: ${addressComponentProfileItem.example}</span>
                 </div>
                 <div>
                     <span>attributes:</span>
