@@ -10,6 +10,7 @@
 }
 
 #hover-section {
+  color: #5E5C65;
   margin: 0;
   position: fixed;
   height: 100vh;
@@ -95,6 +96,8 @@ html {
 }
 
 html body {
+  background-color: #1D182E;
+  color: white;
   font-size: 2rem;
   display: -ms-grid;
   display: grid;
@@ -103,9 +106,10 @@ html body {
 }
 
 html body section {
+  background-color: #41A19C;
   width: 50rem;
   margin: 1rem;
-  border: 1px gray solid;
+  border: 0px gray solid;
 }
 
 html body section h2,
@@ -131,7 +135,7 @@ html body section ul {
   min-height: 10rem;
   max-height: 25rem;
   overflow-y: auto;
-  border: 1px gray solid;
+  border: 3px #3E4198 solid;
 }
 
 html body section ul .expend-li {
@@ -144,7 +148,7 @@ html body section ul .expend-span {
 
 html body section ul li {
   padding: 0.5rem;
-  border: 1px gray solid;
+  border-bottom: 3px #5E5C65 solid;
   max-height: 5.7rem;
   -webkit-transition: max-height 1s ease;
   transition: max-height 1s ease;

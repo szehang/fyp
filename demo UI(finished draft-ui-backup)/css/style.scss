@@ -9,6 +9,7 @@
 }
 
 #hover-section {
+    color: #5E5C65;
     margin: 0;
     position: fixed;
     height: 100vh;
@@ -71,14 +72,17 @@ div.add-item-btn-div {
 html {
     font-size: 62.5%;
     body {
+        background-color: #1D182E;
+        color: white;
         font-size: 2rem;
         display: grid;
         place-items: center;
         height: 100vh;
         section {
+            background-color: #41A19C;
             width: 50rem;
             margin: 1rem;
-            border: 1px gray solid;
+            border: 0px gray solid;
             h2,
             h3,
             h4 {
@@ -100,7 +104,7 @@ html {
                 min-height: 10rem;
                 max-height: 25rem;
                 overflow-y: auto;
-                border: 1px gray solid;
+                border: 3px #3E4198 solid;
                 .expend-li {
                     max-height: 60rem;
                 }
@@ -109,7 +113,7 @@ html {
                 }
                 li {
                     padding: 0.5rem;
-                    border: 1px gray solid;
+                    border-bottom: 3px #5E5C65 solid;
                     max-height: 5.7rem;
                     transition: max-height 1s ease;
                     overflow: hidden;
