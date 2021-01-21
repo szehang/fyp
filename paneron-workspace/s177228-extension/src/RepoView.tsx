@@ -10,13 +10,16 @@ function (props) {
   const [busy,setBusy] = useState(false);
 
 
-  const AddressProfileOptions = (props) =>  {
-    const list = iso3166code;
-    const options = list.map((option)=>{
+  function AddressProfileOptions(props) {
+    const list = {
+      {name: "HONG KONG", code: "HKG"},
+      {name: "Taiwan", code: "TW"},
+    };
+    const options = list.map((item)=>{
       <>
-        <option value={option.alpha-3}>
-          <span>{option.name}</span>
-          <span>{option.alpha-3}</span>
+        <option value={item.code}>
+          <span>{item.name}</span>
+          <span>{item.code}</span>
         </option>
       </>
     });
@@ -30,7 +33,7 @@ function (props) {
     );
   }
 
-  const AddressProfileView = () => {
+  function AddressProfileView(props) {
     return(
       <>
         <div>Profile Setting</div>
@@ -42,11 +45,14 @@ function (props) {
   }
 
   return(
-    {busy
-      ? 'Loading…'
-      : <>
-          <AddressProfileView/>
-        </>}
+    <div>
+      {busy
+        ? "Loading"
+        : <>
+            <AddressProfileView/>
+          </>
+      }
+    </div>
   );
 
 };
