@@ -2,39 +2,51 @@ import { remote } from 'electron';
 import React, { useState, useEffect } from 'react';
 import { RepositoryViewProps } from '@riboseinc/paneron-extension-kit/types';
 
+import iso3166code from './data/iso3166code.json';
+
 export const RepositoryView: React.FC<RepositoryViewProps> =
 function (props) {
 
   const [busy,setBusy] = useState(false);
 
-  class AddressProfileView extends React.Component {
-    render() {
-        return(
-            <>
-                <div>Profile Setting</div>
-                <div>
-                    <label htmlFor="addressProfile">Address Profile Country:</label>
-                    <select name="addressProfile" id="addressProfile">
-                        <option value="HKG">HKG</option>
-                        <option value="US">US</option>
-                        <option value="TW">TW</option>
-                    </select>
-                </div>
-            </>
-        );
-    }
-}
+
+  const AddressProfileOptions = (props) =>  {
+    const list = iso3166code;
+    const options = list.map((option)=>{
+      <>
+        <option value={option.alpha-3}>
+          <span>{option.name}</span>
+          <span>{option.alpha-3}</span>
+        </option>
+      </>
+    });
+    return(
+      <>
+        <label htmlFor="addressProfile">Address Profile Country:</label>
+        <select name="addressProfile" id="addressProfile">
+          {options}
+        </select>
+      </>
+    );
+  }
+
+  const AddressProfileView = () => {
+    return(
+      <>
+        <div>Profile Setting</div>
+        <div>
+          <AddressProfileOptions/>
+        </div>
+      </>
+    );
+  }
 
   return(
-    <div>
-      {busy
-      ? "loading"
+    {busy
+      ? 'Loading…'
       : <>
           <AddressProfileView/>
-        </>
-      }
-    </div>
+        </>}
   );
-};
 
-  
+};
