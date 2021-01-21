@@ -1,4 +1,4 @@
-1. change the RepoView.tsx
+1. change the RepoView.tsx code
 2. cd to s177228-extension
 3. "yarn build"
 4. copy everything in "dist" to paneron data folder(/application support/Electron/plugins/@riboseinc/paneron-extension-test)
