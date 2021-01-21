@@ -1,0 +1,62 @@
+= Paneron host application
+
+image:https://img.shields.io/badge/commitizen-friendly-brightgreen.svg[alt="Commitizen friendly",link="http://commitizen.github.io/cz-cli/"] image:https://github.com/paneron/paneron/workflows/Build/release/badge.svg[alt="Build/release"]
+
+== Development
+
+=== Committing
+
+This repository is set up with AngularJS commit message convention.
+Pre-commit hook will invoke interactive prompt, powered by Commitizen,
+that will ask you for information and put together a commit message for you.
+
+To make sure you follow the convention:
+
+* Only use ``git commit`` when making commits
+* Don’t use built-in IDE commit prompts, since they may bypass prepare-commit-msg hook
+
+=== Pulling
+
+- It is recommended to use “rebase” behavior of pull (make sure to use fresh Git)
+  by having this in your global .gitconfig:
++
+[source]
+----
+[pull]
+    rebase = true
+----
+
+- When pulling, Commitizen commit prompt may appear even if there is no merge commit to be made.
+  You can dismiss it with Ctrl+C.
+
+=== Pushing
+
+There is a pre-push Git hook that compiles the app.
+This helps us catch compilation errors before code reaches CI.
+
+=== Releasing
+
+CI builds the application automatically,
+and attaches build artifacts to release tag that matches the version in package.json
+if that release is still a draft.
+
+==== Release sequence
+
+When starting the work on a new version:
+
+. Create a release draft on GitHub (tag name should be in the form of “v1.2.3” and release title can be anything).
+. Update version in package.json (package version should be in the form of “1.2.3”).
+. Push your commits as usual.
+
+After your final push, when you think this version is ready:
+
+. Wait until CI run completes, and artifacts for each platform are attached to release draft.
++
+You may check build logs for each platform, looking for “publishing” in Build/release step,
+to make sure all artifacts were indeed uploaded at the end.
++
+If, for example, version in package.json during push did not match the draft release you want to publish,
+then CI will silently skip attaching updated build artifacts to the draft, and binaries attached to the draft will be outdated.
+. Perform QA/tests against artifacts attached to the draft. (Make sure that the artifacts attached are of correct versions, there are no regressions, and features work as intended.)
+. If QA/tests succeeded, change release status from draft to published.
+. Repeat from the top.
