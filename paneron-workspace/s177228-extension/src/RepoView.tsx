@@ -4,57 +4,59 @@ import { RepositoryViewProps } from '@riboseinc/paneron-extension-kit/types';
 
 import {
     Alignment,
+    Classes,
+    H3,
+    H5,
+    MenuItem,
+    ItemRenderer,
     Navbar,
     NavbarGroup,
     NavbarHeading,
     Tab,
+    TabId,
     Tabs,
 } from "@blueprintjs/core";
-
-export const RepositoryView: React.FC<RepositoryViewProps> =
-function (props) {
-
-  const [busy,setBusy] = useState(false)
-
-  return(
-    <div>
-      {busy
-        ? "Loading"
-        : <>
-            {/* <div>init</div> */}
-            <ProfileDiv />
-            <AddressProfileDiv />
-          </>
-      }
-    </div>
-  );
-
-};
 
 class ProfileDiv extends React.Component {
   render() {
     return (
       <div style={{ width: "30%", height: "100%", float: "left" }}>
         <ProfileNavBar />
+        <H5>Address Profile Country</H5>
+
       </div>
     )
   }
 };
 
 class AddressProfileDiv extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabbarTabId: "addressClass"
+    }
+  }
+
   render() {
     return (
       <div style={{ width: "70%", height: "100%", float: "right" }}>
         <AddressProfileNavBar />
-        <Tabs id="TabsExample" selectedTabId="rx">
-            <Tab title="Address Class Profiles" />
-            <Tab title="Address Component Profiles" />
-            <Tab title="Attribute Profiles" />
+        <Tabs
+          id="TabsExample"
+          animate="true"
+          onChange={this.handleTabChange}
+          selectedTabId={this.state.tabbarTabId}
+        >
+            <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassPanel />} />
+            <Tab id="addressComponent" title="Address Component Profiles" panel={<AddressComponentPanel />} />
+            <Tab id="attribute" title="Attribute Profiles" panel={<AttributePanel />} />
             <Tabs.Expander />
         </Tabs>
       </div>
     )
   }
+
+  private handleTabChange = (tabbarTabId: TabId) => this.setState({ tabbarTabId });
 };
 
 class ProfileNavBar extends React.Component {
@@ -79,4 +81,68 @@ class AddressProfileNavBar extends React.Component {
       </Navbar>
     )
   }
+};
+
+const AddressClassPanel: React.FunctionComponent = () => (
+    <div>
+        <H3>Example panel: Address Class Profiles</H3>
+        <p className={Classes.RUNNING_TEXT}>
+            Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology
+            stack, it's easy to try it out on a small feature in an existing project.
+        </p>
+    </div>
+);
+
+const AddressComponentPanel: React.FunctionComponent = () => (
+    <div>
+        <H3>Example panel: Address Component Profiles</H3>
+        <p className={Classes.RUNNING_TEXT}>
+            HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic
+            views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting
+            environment is extraordinarily expressive, readable, and quick to develop.
+        </p>
+    </div>
+);
+
+const AttributePanel: React.FunctionComponent = () => (
+    <div>
+        <H3>Example panel: Attribute Profiles</H3>
+        <p className={Classes.RUNNING_TEXT}>
+            Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC)
+            pattern. It allows developers to create scalable single-page web applications by incorporating common idioms
+            and best practices into the framework. What is your favorite JS framework?
+        </p>
+    </div>
+);
+
+const renderItem: ItemRenderer<{ name: String }> = (
+  item: { name: String },
+  { handleClick, modifiers }
+) => {
+  return (
+    <MenuItem
+      active={modifiers.active}
+      key={item.name}
+      label={item.name}
+      onClick={handleClick}
+      text={item.name}
+    />
+  );
+};
+
+export const RepositoryView: React.FC<RepositoryViewProps> =
+function (props) {
+  const [busy,setBusy] = useState(false)
+
+  return(
+    <div>
+      {busy
+        ? "Loading"
+        : <>
+            <ProfileDiv />
+            <AddressProfileDiv />
+          </>
+      }
+    </div>
+  );
 };
