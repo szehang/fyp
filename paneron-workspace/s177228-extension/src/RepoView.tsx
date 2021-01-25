@@ -1,14 +1,14 @@
-import { remote } from 'electron';
-import React, { useState, useEffect } from 'react';
-import { RepositoryViewProps } from '@riboseinc/paneron-extension-kit/types';
+//import { remote } from 'electron';
+//import React, { useState, useEffect } from 'react';
+//import { RepositoryViewProps } from '@riboseinc/paneron-extension-kit/types';
+
+import {SelectAddressProfile} from "./AddressProfileSelect";
 
 import {
     Alignment,
     Classes,
     H3,
     H5,
-    MenuItem,
-    ItemRenderer,
     Navbar,
     NavbarGroup,
     NavbarHeading,
@@ -16,6 +16,7 @@ import {
     TabId,
     Tabs,
 } from "@blueprintjs/core";
+import React from "react";
 
 class ProfileDiv extends React.Component {
   render() {
@@ -23,7 +24,7 @@ class ProfileDiv extends React.Component {
       <div style={{ width: "30%", height: "100%", float: "left" }}>
         <ProfileNavBar />
         <H5>Address Profile Country</H5>
-
+        <SelectAddressProfile />
       </div>
     )
   }
@@ -33,7 +34,8 @@ class AddressProfileDiv extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabbarTabId: "addressClass"
+      tabbarTabId: "addressClass",
+      currentAddressProfile: null
     }
   }
 
@@ -56,7 +58,11 @@ class AddressProfileDiv extends React.Component {
     )
   }
 
-  private handleTabChange = (tabbarTabId: TabId) => this.setState({ tabbarTabId });
+  private handleTabChange = (tabId: TabId) => {
+    this.setState({ tabbarTabId: tabId });
+    console.log("tabId: " + tabId);
+  }
+  
 };
 
 class ProfileNavBar extends React.Component {
@@ -132,17 +138,11 @@ const renderItem: ItemRenderer<{ name: String }> = (
 
 export const RepositoryView: React.FC<RepositoryViewProps> =
 function (props) {
-  const [busy,setBusy] = useState(false)
 
   return(
     <div>
-      {busy
-        ? "Loading"
-        : <>
-            <ProfileDiv />
-            <AddressProfileDiv />
-          </>
-      }
+      <ProfileDiv />
+      <AddressProfileDiv />
     </div>
   );
 };
