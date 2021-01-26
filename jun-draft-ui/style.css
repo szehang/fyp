@@ -1,0 +1,85 @@
+*{
+    text-align: center;
+    font-size: 20px;
+    color: rgb(65, 105, 110);
+}
+
+body {
+    background-color: rgb(78, 78, 78);
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.title{
+    background-color: rgb(69, 156, 145);
+    color: white;
+    text-align: left;
+    font-size: 16px;
+    width: 1000px;
+    top: 10px;
+    margin: auto;
+    vertical-align: middle;
+    z-index: 20;
+}
+
+.container {
+    background-color: rgb(110, 148, 153);
+    width: 1000px;
+    height: 600px;
+    top: 10px;
+    margin: auto;
+    vertical-align: middle;
+    z-index: -1;
+}
+
+.left {
+    background-color: rgb(216, 216, 216);
+    float: left;
+    height: 600px;
+    width: 30%;
+}
+
+.right {
+    background-color: rgb(216, 216, 216);
+    float: right;
+    height: 600px;
+    width: 69%;
+}
+
+#intro {
+    position: absolute;
+    top: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    background-color: rgb(5, 5, 5);
+    color: white;
+    width: 1000px;
+    height: 625px;
+    font-size: 60px;
+    margin: auto;
+    line-height: normal;
+    display: flex;
+    justify-content: center;
+    /* align horizontal */
+    align-items: center;
+    /* align vertical */
+    text-align: center;
+    opacity: 0;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 1s;
+    z-index: 999;
+}
+
+@keyframes fadeInOpacity {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

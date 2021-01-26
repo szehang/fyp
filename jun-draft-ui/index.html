@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>extension-address-profiles</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style src="./js/main.js"></style>
+    </head>
+
+    <body>
+        <div class="title"> | 20/01/2021 - Address Profile Paneron Extension UI Design Demo </div>
+        <div class="container">
+            <div class="left">
+                Address Profile:
+                <button></button>
+            </div>
+            <div class="right">
+                <div class="top">
+                    <div class="w3-bar w3-black">
+                        <button class="w3-bar-item w3-button" onclick="openCity('London')">London</button>
+                        <button class="w3-bar-item w3-button" onclick="openCity('Paris')">Paris</button>
+                        <button class="w3-bar-item w3-button" onclick="openCity('Tokyo')">Tokyo</button>
+                    </div>
+                    <div id="London" class="city">
+                        <h2>London</h2>
+                        <p>London is the capital of England.</p>
+                    </div>
+
+                    <div id="Paris" class="city" style="display:none">
+                        <h2>Paris</h2>
+                        <p>Paris is the capital of France.</p>
+                    </div>
+
+                    <div id="Tokyo" class="city" style="display:none">
+                        <h2>Tokyo</h2>
+                        <p>Tokyo is the capital of Japan.</p>
+                    </div>
+                </div>
+                <div class="bottom"></div>
+            </div>
+
+        </div>
+        <div id="intro">extension-address-profiles<br>DEMO</div>
+    </body>
+
+</html>
