@@ -22,11 +22,15 @@ export class ProfileSettingDiv extends React.Component {
           <Title name="Profile Setting" />
           <div style={textStyle}>
             Set Address Profile Country:
-          <br />
+            <br />
             {/* <DropDown data={["HKG", "ABW", "AFG", "GLP", "IDN", "USA"]} /> */}
-            <AddressProfileSelect />
-          </div>
-      <button onClick={ () => this.props.changeAddressProfile("HK") }>{this.props.currentAddressProfile}</button>
+            <AddressProfileSelect 
+                changeAddressProfile={this.props.changeAddressProfile}
+                data={this.props.data}
+            />
+            </div>
+            <div>{this.props.data.currentAddressProfile}</div>
+            {/* <button onClick={ () => this.props.changeAddressProfile("HK") }>{this.props.currentAddressProfile}</button> */}   
         </div>
       );
     }

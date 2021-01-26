@@ -31,7 +31,7 @@ class Container extends React.Component {
 
     return (
       <div style={divStyle}>
-        <ProfileSettingDiv changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
+        <ProfileSettingDiv changeAddressProfile={this.changeAddressProfile} data={this.state}/>
         <AddressProfileDiv />
       </div>
     );

@@ -5,16 +5,22 @@ import * as iso3166code from "./iso3166code"
 export class AddressProfileSelect extends React.Component {
 
     render() {
-        const options = iso3166code.Countries.map((country:iso3166code.Country)=>{
-            <option key={country["alpha-3"]} value={country["alpha-3"]}>
-                <span>{country.name}</span>
-                <span>{country["alpha-3"]}</span>
-            </option>
-        });
+        const selectStyle = {
+            width: "100%",
+          } as React.CSSProperties;
 
         return(
-            <select>
-                {options}
+            <select style={selectStyle} onChange={ (event) => this.props.changeAddressProfile(event.target.value) } value={this.props.data.currentAddressProfile}>
+                <option value={"null"}>{"Select Address Profile"}</option>
+                {
+                    iso3166code.Countries.map((country)=>(
+                        <option key={country["alpha-3"]} value={country["alpha-3"]}>
+                            {country.name}
+                            {" "}
+                            {country["alpha-3"]}
+                        </option>
+                    ))
+                }
             </select>
         );
     }
