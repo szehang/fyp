@@ -1,175 +1,79 @@
-/** @jsx jsx */
-/** @jsxFrag React.Fragment */
+import * as React from "react";
 
-import log from 'electron-log';
-import type React from 'react';
-import { jsx } from '@emotion/core';
+function Title(props: any) {
+  const divStyle = {
+    backgroundColor: "rgb(69, 156, 145)",
+    color: "rgb(255, 255, 255)",
+    height: "17px",
+    fontSize: "16px",
+    width: "100%",
+  }
 
-Object.assign(console, log);
-
-import { RegistryView } from '@riboseinc/paneron-registry-kit/views';
-import { ItemClassConfiguration, RegisterItemDataHook, RegistryItemViewProps, RegistryViewProps } from '@riboseinc/paneron-registry-kit/types/views';
-import { GenericRelatedItemView, PropertyDetailView } from '@riboseinc/paneron-registry-kit/views/util';
-
-
-interface AnimalData {
-  name?: string
-  bestFriendRef?: { classID: string, itemID: string }
-}
-type CatColor = ('blue' | 'sepia' | 'black' | 'white' | 'brown' | 'chocolate' | 'cinnamon')[]
-interface CatData extends AnimalData {
-  coat: 'tabby' | 'spotted tabby' | 'solid' | 'multicolor'
-  primaryColor: CatColor
-  secondaryColor?: CatColor
-  breed?: 'siberian' | 'siamese'
-}
-interface DogData extends AnimalData {
-  breed: 'husky' | 'bearded collie' | 'smooth dachshund' | 'st berdoodle'
-}
-interface SheepData extends AnimalData {
-  woolColor: ('white' | 'orange' | 'magenta' | 'light blue' | 'yellow' | 'lime' | 'pink' | 'gray' | 'light gray' | 'cyan' | 'purple' | 'blue' | 'brown' | 'green' | 'red' | 'black')[]
-  hairOnFace: 'none' | 'short' | 'long' | 'too long, can’t see'
+  return (<div style={divStyle}>{props.name}</div>);
 }
 
+class ProfileSettingDiv extends React.Component {
+  render() {
+    const divStyle = {
+      backgroundColor: "rgb(255, 255, 255)",
+      height: "100%",
+      width: "25.4%",
+      border: "1px solid black",
+      float: "left",
+    }
 
-const animal: Omit<ItemClassConfiguration<AnimalData>, 'meta' | 'defaults' | 'views' | 'sanitizePayload'> = {
-  itemSorter: (p1, p2) => (p1.name || '').localeCompare(p2.name || ''),
-  validatePayload: async () => true,
+    return (
+      <div style={divStyle}>
+        <Title name="Profile Setting" />
+        Profile Setting
+      </div>
+    );
+  }
 }
 
+class AddressProfileDiv extends React.Component {
+  render() {
+    const divStyle = {
+      backgroundColor: "rgb(255, 255, 255)",
+      height: "100%",
+      width: "74.5%",
+      border: "1px solid black",
+      float: "right",
+    }
 
-const BestFriendDetail: React.FC<{
-  ref?: { classID: string, itemID: string }
-  useRegisterItemData: RegisterItemDataHook
-  getRelatedItemClassConfiguration: RegistryItemViewProps<any>["getRelatedItemClassConfiguration"]
-}> = function ({ ref, useRegisterItemData, getRelatedItemClassConfiguration }) {
-  return <PropertyDetailView title="Best friend">
-    {ref
-      ? <GenericRelatedItemView
-          itemRef={ref}
-          useRegisterItemData={useRegisterItemData}
-          getRelatedItemClassConfiguration={getRelatedItemClassConfiguration} />
-      : "None :("}
-  </PropertyDetailView>;
+    return (
+      <div style={divStyle}>
+        <Title name="Address Profile" />
+        Address Profile
+      </div>
+    );
+  }
 }
 
+class Container extends React.Component {
+  render() {
+    const divStyle = {
+      backgroundColor: "rgb(0, 0, 0)",
+      width: "100%",
+      height: "100%",
+      top: "10px",
+      margin: "auto",
+      verticalAlign: "middle",
+    }
 
-const cat: ItemClassConfiguration<CatData> = {
-  ...animal,
-  meta: {
-    title: "Cat",
-    description: "Cat",
-    id: 'cat',
-    alternativeNames: [],
-  },
-  defaults: {},
-  sanitizePayload: async (p) => p,
-  views: {
-    listItemView: ({ itemData, itemID }) => <span>{itemData.name || `unnamed cat ${itemID}`}</span>,
-    detailView: ({ itemData, useRegisterItemData, getRelatedItemClassConfiguration }) => <div>
-      <BestFriendDetail
-        ref={itemData.bestFriendRef}
-        useRegisterItemData={useRegisterItemData}
-        getRelatedItemClassConfiguration={getRelatedItemClassConfiguration} />
-      <PropertyDetailView title="Coat">
-        {itemData.coat}
-      </PropertyDetailView>
-      <PropertyDetailView title="Primary color">
-        {itemData.primaryColor}
-      </PropertyDetailView>
-      {itemData.secondaryColor
-        ? <PropertyDetailView title="Secondary color">
-            {itemData.secondaryColor}
-          </PropertyDetailView>
-        : null}
-      <PropertyDetailView title="Breed">
-        {itemData.breed || 'unknown'}
-      </PropertyDetailView>
-    </div>,
-    editView: () => <p>Edit view sample TBD</p>
-  },
-};
-
-
-const dog: ItemClassConfiguration<DogData> = {
-  ...animal,
-  meta: {
-    title: "Dog",
-    description: "Dog",
-    id: 'dog',
-    alternativeNames: [],
-  },
-  defaults: {},
-  sanitizePayload: async (p) => p,
-  views: {
-    listItemView: ({ itemData, itemID }) => <span>{itemData.name || `unnamed cat ${itemID}`}</span>,
-    detailView: ({ itemData, useRegisterItemData, getRelatedItemClassConfiguration }) => <div>
-      <BestFriendDetail
-        ref={itemData.bestFriendRef}
-        useRegisterItemData={useRegisterItemData}
-        getRelatedItemClassConfiguration={getRelatedItemClassConfiguration} />
-      <PropertyDetailView title="Breed">
-        {itemData.breed}
-      </PropertyDetailView>
-    </div>,
-    editView: () => <p>Edit view sample TBD</p>
-  },
-};
-
-
-const sheep: ItemClassConfiguration<SheepData> = {
-  ...animal,
-  meta: {
-    title: "Sheep",
-    description: "Sheep",
-    id: 'sheep',
-    alternativeNames: [],
-  },
-  defaults: {
-    hairOnFace: 'short',
-  },
-  sanitizePayload: async (p) => p,
-  views: {
-    listItemView: ({ itemData, itemID }) => <span>{itemData.name || `unnamed cat ${itemID}`}</span>,
-    detailView: ({ itemData, useRegisterItemData, getRelatedItemClassConfiguration }) => <div>
-      <BestFriendDetail
-        ref={itemData.bestFriendRef}
-        useRegisterItemData={useRegisterItemData}
-        getRelatedItemClassConfiguration={getRelatedItemClassConfiguration} />
-      <PropertyDetailView title="Wool color">
-        {itemData.woolColor}
-      </PropertyDetailView>
-      <PropertyDetailView title="Facial hair">
-        {itemData.hairOnFace}
-      </PropertyDetailView>
-    </div>,
-    editView: () => <p>Edit view sample TBD</p>
-  },
-};
-
-
-const itemConfig: RegistryViewProps["itemClassConfiguration"] = {
-  'cat': cat,
-  'dog': dog,
-  'sheep': sheep,
-};
-
-
-const subregisters = {
-  homeDwellers: {
-    title: "Home dwellers",
-    itemClasses: ['cat', 'dog'],
-  },
-  farmDwellers: {
-    title: "Farm dwellers",
-    itemClasses: ['sheep', 'dog'],
-  },
+    return (
+      <div style={divStyle}>
+        <ProfileSettingDiv />
+        <AddressProfileDiv />
+      </div>
+    );
+  }
 }
-
 
 export default function () {
-  return <RegistryView
-    itemClassConfiguration={itemConfig}
-    subregisters={subregisters}
-  />
-};
+  return (
+    <>
+      <Container />
+    </>
+  );
+}
