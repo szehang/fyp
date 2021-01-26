@@ -4,6 +4,10 @@
     color: rgb(65, 105, 110);
 }
 
+test{
+    color: rgb(226, 226, 226);
+}
+
 body {
     background-color: rgb(78, 78, 78);
     justify-content: center;
