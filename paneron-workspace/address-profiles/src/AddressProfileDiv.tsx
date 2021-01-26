@@ -1,11 +1,27 @@
-import { Tab, TabId, Tabs } from "@blueprintjs/core";
+import { AnchorButton, Tab, TabId, Tabs } from "@blueprintjs/core";
 import * as React from "react";
 import { Title } from "./Utility";
 
+import {AddressClassProfilesForm} from "./AddressClassProfilesForm";
+
+class AddressClassProfilesPanel extends React.Component {
+  render () {
+    return(
+      <>
+      <AnchorButton intent="success" icon="add" text="Create Profile" />
+      <AddressClassProfilesForm />
+      </>
+    )
+  }
+}
+
 export class AddressProfileDiv extends React.Component {
-    state = {
-      tabBarTabId: "addressClass",
-      currentAddressProfile: null
+    constructor(props) {
+      super(props);
+      this.state = {
+        tabBarTabId: "addressClass",
+        currentAddressProfile: null
+      }
     }
   
     render() {
@@ -21,28 +37,30 @@ export class AddressProfileDiv extends React.Component {
         fontSize: "16px",
         padding: "5px",
       } as React.CSSProperties;
-  
+
       return (
         <div style={divStyle}>
           <Title name="Address Profile" />
+
           <Tabs
-            id="TabsExample"
+            id="AddressProfileTabs"
             animate={true}
             onChange={this.handleTabChange}
             selectedTabId={this.state.tabBarTabId}
+            large={true}
           >
-            <Tab id="addressClass" title="Address Class Profiles" panel={<div style={textStyle}>1</div>} />
+            <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilesPanel />} />
             <Tab id="addressComponent" title="Address Component Profiles" panel={<div style={textStyle}>2</div>} />
             <Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} />
             <Tabs.Expander />
           </Tabs>
+            
         </div>
       );
   
     }
   
     private handleTabChange = (tabId: TabId) => {
-      this.setState({ tabbarTabId: tabId });
-      console.log("tabId: " + tabId);
+      this.setState({ tabBarTabId: tabId });
     }
   }

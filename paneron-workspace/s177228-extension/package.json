@@ -1,9 +1,9 @@
 {
-    "name": "@riboseinc/paneron-extension-test",
+    "name": "@riboseinc/paneron-extension-s177228-extension",
     "version": "1.0.0-alpha1",
     "description": "test",
     "main": "plugin.js",
-    "repository": "https://github.com/riboseinc/paneron-extension-test",
+    "repository": "https://github.com/riboseinc/paneron-extension-s177228-extension",
     "author": "Ribose Inc. <open.source@ribose.com>",
     "scripts": {
         "build": "rm -r compiled dist; mkdir compiled dist; tsc --outDir compiled; babel compiled --out-dir dist; cp package.json compiled/*.d.ts compiled/*.js.map dist/"
