@@ -21,11 +21,13 @@ class AddressClassProfilesPanel extends React.Component {
           ]
         }
       />
+      <ProfileCard />
       </>
     )
   }
 }
 import { format } from "path";
+import { ProfileCard } from "./ProfileCard";
 
 export class AddressProfileDiv extends React.Component {
     constructor(props) {
