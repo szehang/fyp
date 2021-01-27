@@ -3,17 +3,25 @@ import * as React from "react";
 import { Title } from "./Utility";
 
 import {AddressClassProfilesForm} from "./AddressClassProfilesForm";
+import {ProfileCreateForm} from "./ProfileCreateForm"
 
 class AddressClassProfilesPanel extends React.Component {
   render () {
     return(
       <>
-      <AnchorButton intent="success" icon="add" text="Create Profile" />
-      <AddressClassProfilesForm />
+      <ProfileCreateForm 
+        fields={
+          [
+            {name:"profile name", placeholder:"profile 1", valueType: "string"},
+            {name:"desc", placeholder:"desc 1", valueType: "string"},
+          ]
+        }
+      />
       </>
     )
   }
 }
+import { format } from "path";
 
 export class AddressProfileDiv extends React.Component {
     constructor(props) {
@@ -38,22 +46,27 @@ export class AddressProfileDiv extends React.Component {
         padding: "5px",
       } as React.CSSProperties;
 
+      const tabDivStyle = {
+        margin: "0 5px"
+      }as React.CSSProperties;
+
       return (
         <div style={divStyle}>
           <Title name="Address Profile" />
-
-          <Tabs
-            id="AddressProfileTabs"
-            animate={true}
-            onChange={this.handleTabChange}
-            selectedTabId={this.state.tabBarTabId}
-            large={true}
-          >
-            <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilesPanel />} />
-            <Tab id="addressComponent" title="Address Component Profiles" panel={<div style={textStyle}>2</div>} />
-            <Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} />
-            <Tabs.Expander />
-          </Tabs>
+          <div style={tabDivStyle}>
+            <Tabs
+              id="AddressProfileTabs"
+              animate={true}
+              onChange={this.handleTabChange}
+              selectedTabId={this.state.tabBarTabId}
+              large={true}
+            >
+              <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilesPanel />} />
+              <Tab id="addressComponent" title="Address Component Profiles" panel={<div style={textStyle}>2</div>} />
+              <Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} />
+              <Tabs.Expander />
+            </Tabs>
+          </div>
             
         </div>
       );

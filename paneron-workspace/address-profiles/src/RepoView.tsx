@@ -15,10 +15,6 @@ class Container extends React.Component {
     this.setState({currentAddressProfile: addressProfile});
   }
 
-  changeText = (text:string) => {
-    this.setState({text:text});
-  }
-
   render() {
     const divStyle = {
       backgroundColor: "rgb(0, 0, 0)",

@@ -12,25 +12,23 @@ export class ProfileSettingDiv extends React.Component {
         float: "left",
       } as React.CSSProperties;
   
-      const textStyle = {
+      const contentStyle = {
         fontSize: "16px",
-        padding: "5px",
+        margin: "0 5px",
       } as React.CSSProperties;
   
       return (
         <div style={divStyle}>
           <Title name="Profile Setting" />
-          <div style={textStyle}>
+          <div style={contentStyle}>
             Set Address Profile Country:
             <br />
-            {/* <DropDown data={["HKG", "ABW", "AFG", "GLP", "IDN", "USA"]} /> */}
             <AddressProfileSelect 
                 changeAddressProfile={this.props.changeAddressProfile}
                 data={this.props.data}
             />
-            </div>
             <div>{this.props.data.currentAddressProfile}</div>
-            {/* <button onClick={ () => this.props.changeAddressProfile("HK") }>{this.props.currentAddressProfile}</button> */}   
+          </div>
         </div>
       );
     }

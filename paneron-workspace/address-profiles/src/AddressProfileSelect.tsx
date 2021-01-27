@@ -7,6 +7,10 @@ export class AddressProfileSelect extends React.Component {
     render() {
         const selectStyle = {
             width: "100%",
+            borderRadius: "5px",
+            border: "0",
+            background: "#FFFFFF",
+            padding: "10px"
           } as React.CSSProperties;
 
         return(
