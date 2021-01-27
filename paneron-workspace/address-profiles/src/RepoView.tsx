@@ -8,7 +8,7 @@ class Container extends React.Component {
     super(props);
     this.state = {
       currentAddressProfile: null,
-    }
+    };
   }
 
   changeAddressProfile = (addressProfile) => {

@@ -12,8 +12,12 @@ class AddressClassProfilesPanel extends React.Component {
       <ProfileCreateForm 
         fields={
           [
-            {name:"profile name", placeholder:"profile 1", valueType: "string"},
-            {name:"desc", placeholder:"desc 1", valueType: "string"},
+            {id: "profileName", name: "Profile Name", placeholder:"e.g. Stresst Address", valueType: "string"},
+            {id:"desc", name: "Description", placeholder: "e.g. Normal street address", valueType: "string"},
+            {id:"type", name: "Type", placeholder: "e.g. Regular", valueType: "string"},
+            {id:"localization", name: "Localization", placeholder: "e.g. Localization Profile 1", valueType: "string"},
+            {id:"timeToLive", name: "Time To Live", placeholder: "e.g. 10", valueType: "string"},
+            {id:"validity", name: "Validity", placeholder: "e.g. Validity Profile 1", valueType: "string"},
           ]
         }
       />
