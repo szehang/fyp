@@ -1,0 +1,48 @@
+AddressClassProfiles:
+  - streetAddress:
+      Description: "Normal street address"
+      Type: "Regular"
+      Localization: "Localization Profile 1"
+      TimeToLive : 10
+      Validity: "Validity Profile 1"
+      Components:
+        - addressNumber
+        - localityName
+  - poBoxAddress:
+      Description: "Normal street address"
+      Type: "Regular"
+      Localization: "Localization Profile 1"
+      TimeToLive : 10
+      Validity: "Validity Profile 1"
+      Components:
+        - addressNumber
+        - localityName
+        - postOfficeName
+
+AddressComponentProfiles:
+  - addressNumber:
+      Description: "Address number"
+      Example: "23"
+      Attributes:
+        - number
+  - localityName:
+      Description: "Locality name"
+      Example: "Yuen Long"
+      Attributes:
+        - name
+  - postOfficeName:
+      Description: "Post office name"
+      Example: "HK GOV Post Office 32"
+      Attributes:
+        - name
+        - number
+
+AttributeProfiles:
+  - name:
+      valueType: "string"
+      min: 1
+      max: 50
+  - number:
+      valueType: "int"
+      min: 0
+      max: 99
