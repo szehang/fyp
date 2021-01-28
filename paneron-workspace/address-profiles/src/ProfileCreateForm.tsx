@@ -1,5 +1,4 @@
 import { AnchorButton, Card, FormGroup, InputGroup, Label } from "@blueprintjs/core";
-import { intentClass } from "@blueprintjs/core/lib/esm/common/classes";
 import * as React from "react";
 
 export class ProfileCreateForm extends React.Component<ProfileCreateFormProps> {

@@ -1,9 +1,8 @@
 import { AnchorButton, Tab, TabId, Tabs } from "@blueprintjs/core";
 import * as React from "react";
 import { Title } from "./Utility";
-
-import {AddressClassProfilesForm} from "./AddressClassProfilesForm";
 import {ProfileCreateForm} from "./ProfileCreateForm"
+import { ProfileItem } from "./ProfileItem";
 
 class AddressClassProfilesPanel extends React.Component {
   render () {
@@ -21,15 +20,29 @@ class AddressClassProfilesPanel extends React.Component {
           ]
         }
       />
-      <ProfileCard />
+
+      {/* just for testing START */}
+      <ProfileItem 
+        data={
+          {
+            id:"Class Profile 1",
+            type:"Regular",
+            description:"desc here ~~~",
+            localization: "HKG",
+            signature: "sign 1",
+            areaApplicability: "area 1",
+            timeToLive: "10",
+            validity: "v1",
+          }
+        }
+      {/* just for testing END */}
+      />
       </>
     )
   }
 }
-import { format } from "path";
-import { ProfileCard } from "./ProfileCard";
 
-export class AddressProfileDiv extends React.Component {
+export class ProfilesPanel extends React.Component {
     constructor(props) {
       super(props);
       this.state = {

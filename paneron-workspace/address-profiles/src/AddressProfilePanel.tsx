@@ -2,7 +2,7 @@ import React from "react";
 import { AddressProfileSelect } from "./AddressProfileSelect";
 import { DropDown, Title } from "./Utility";
 
-export class ProfileSettingDiv extends React.Component {
+export class AddressProfilePanel extends React.Component {
     render() {
       const divStyle = {
         backgroundColor: "rgb(226, 226, 226)",

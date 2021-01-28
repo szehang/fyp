@@ -1,6 +1,6 @@
 import * as React from "react";
-import { AddressProfileDiv } from "./AddressProfileDiv";
-import { ProfileSettingDiv } from "./ProfileSettingDiv";
+import { ProfilesPanel } from "./ProfilesPanel";
+import { AddressProfilePanel } from "./AddressProfilePanel";
 
 
 class Container extends React.Component {
@@ -27,8 +27,8 @@ class Container extends React.Component {
 
     return (
       <div style={divStyle}>
-        <ProfileSettingDiv changeAddressProfile={this.changeAddressProfile} data={this.state}/>
-        <AddressProfileDiv />
+        <AddressProfilePanel changeAddressProfile={this.changeAddressProfile} data={this.state}/>
+        <ProfilesPanel />
       </div>
     );
   }
