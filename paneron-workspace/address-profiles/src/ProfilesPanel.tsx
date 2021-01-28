@@ -5,6 +5,7 @@ import {ProfileCreateForm} from "./ProfileCreateForm"
 import { ProfileItem } from "./ProfileItem";
 
 class AddressClassProfilesPanel extends React.Component {
+
   render () {
     return(
       <>
