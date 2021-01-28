@@ -5,7 +5,7 @@ export function Title(props: any) {
     const divStyle = {
       backgroundColor: "rgb(69, 156, 145)",
       color: "rgb(255, 255, 255)",
-      height: "19px",
+      height: "21px",
       fontSize: "16px",
       width: "100%",
       paddingLeft: "5px",

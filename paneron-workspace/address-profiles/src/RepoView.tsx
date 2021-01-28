@@ -3,7 +3,7 @@ import { ProfilesPanel } from "./ProfilesPanel";
 import { AddressProfilePanel } from "./AddressProfilePanel";
 
 
-class Container extends React.Component {
+class Container extends React.Component<any, any> {
   constructor(props:any) {
     super(props);
     this.state = {
@@ -11,7 +11,7 @@ class Container extends React.Component {
     };
   }
 
-  changeAddressProfile = (addressProfile) => {
+  changeAddressProfile = (addressProfile:any) => {
     this.setState({currentAddressProfile: addressProfile});
   }
 

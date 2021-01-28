@@ -1,9 +1,9 @@
-import { AnchorButton, Card, FormGroup, InputGroup, Label } from "@blueprintjs/core";
+import { AnchorButton, Card } from "@blueprintjs/core"; //FormGroup, InputGroup, Label
 import * as React from "react";
 
-export class ProfileCreateForm extends React.Component<ProfileCreateFormProps> {
+export class ProfileCreateForm extends React.Component<ProfileCreateFormProps, any> {
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             // Form state
@@ -16,50 +16,50 @@ export class ProfileCreateForm extends React.Component<ProfileCreateFormProps> {
         this.setState({ createProfileBtnClicked: !this.state.createProfileBtnClicked })
     }
 
-    render() {  
+    render() {
         const labelTdStyle = {
             textAlign: "right",
-            whiteSpace:"nowrap",
-        }as React.CSSProperties;
-        
+            whiteSpace: "nowrap",
+        } as React.CSSProperties;
+
         const inputTdStyle = {
             width: "100%",
-        }as React.CSSProperties;
+        } as React.CSSProperties;
 
         const inputStyle = {
             marginLeft: "5%",
             width: "95%",
-        }as React.CSSProperties;
+        } as React.CSSProperties;
 
-        return(
-            <Card>
+        return (
+            <Card style={{ padding: "10px 5px 10px 18px" }}>
 
                 {this.state.createProfileBtnClicked
-                ?
+                    ?
                     <AnchorButton onClick={this.handleCreateProfile} intent="danger" icon="cross" text="Discard Profile" />
-                :
+                    :
                     <AnchorButton onClick={this.handleCreateProfile} intent="success" icon="add" text="Create Profile" />
                 }
 
-                <br/>
+                <br />
 
                 {this.state.createProfileBtnClicked
-                ?
+                    ?
                     <table>
                         {/* The following generates the fields of the form using .map */}
-                        {this.props.fields.map((field)=>(
+                        {this.props.fields.map((field) => (
                             <tr key={field.name}>
                                 <td style={labelTdStyle}>
                                     <label htmlFor={field.name}>{field.name} :</label>
                                 </td>
-                                <td style={inputTdStyle}> 
+                                <td style={inputTdStyle}>
                                     <input id={field.name} type="text" placeholder={field.placeholder} style={inputStyle} />
                                 </td>
                             </tr>
                         ))}
                     </table>
 
-                : 
+                    :
                     <div></div>
 
                 }
@@ -81,5 +81,5 @@ export class ProfileCreateForm extends React.Component<ProfileCreateFormProps> {
 }
 
 export interface ProfileCreateFormProps {
-    fields: {id: string, name: string, valueType: string, placeholder?: string}[]
+    fields: { id: string, name: string, valueType: string, placeholder?: string }[]
 }

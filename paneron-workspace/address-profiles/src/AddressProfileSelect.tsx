@@ -2,7 +2,7 @@ import * as React from "react";
 
 import * as iso3166code from "./iso3166code"
 
-export class AddressProfileSelect extends React.Component {
+export class AddressProfileSelect extends React.Component<any, any> {
 
     render() {
         const selectStyle = {
@@ -10,7 +10,8 @@ export class AddressProfileSelect extends React.Component {
             borderRadius: "5px",
             border: "0",
             background: "#FFFFFF",
-            padding: "10px"
+            padding: "10px",
+            marginTop: "10px",
           } as React.CSSProperties;
 
         return(

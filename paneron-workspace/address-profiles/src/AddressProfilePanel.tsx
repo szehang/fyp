@@ -1,8 +1,8 @@
 import React from "react";
 import { AddressProfileSelect } from "./AddressProfileSelect";
-import { DropDown, Title } from "./Utility";
+import { Title } from "./Utility"; //DropDown
 
-export class AddressProfilePanel extends React.Component {
+export class AddressProfilePanel extends React.Component<any, any> {
     render() {
       const divStyle = {
         backgroundColor: "rgb(226, 226, 226)",
@@ -15,6 +15,7 @@ export class AddressProfilePanel extends React.Component {
       const contentStyle = {
         fontSize: "16px",
         margin: "0 5px",
+        padding: "11px",
       } as React.CSSProperties;
   
       return (
