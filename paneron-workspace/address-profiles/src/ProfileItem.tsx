@@ -1,19 +1,46 @@
 import * as React from 'react';
 import { AnchorButton } from "@blueprintjs/core";
+import { type } from 'os';
 
 export class ProfileItem extends React.Component<ProfileItemProps, any> {
-
     constructor(props: any) {
         super(props);
         this.state = {
             // Form state
             isEditingForm: false,
+            // Profile Data
+            id: this.props.data.id,
+            type: this.props.data.type,
+            description: this.props.data.description,
+            localization: this.props.data.localization,
+            signature: this.props.data.signature,
+            areaApplicability: this.props.data.areaApplicability,
+            timeToLive: this.props.data.timeToLive,
+            validity: this.props.data.validity,
         }
         this.handleEditProfile = this.handleEditProfile.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     };
 
+    // saveDataToDb() {
+    //     throw new Error('Method not implemented.');
+    // }
+
     handleEditProfile = () => {
+        // if(this.state.isEditingForm) {
+        //     this.saveDataToDb()
+        // }
         this.setState({ isEditingForm: !this.state.isEditingForm });
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+          [name]: value
+        });
     }
 
     render() {
@@ -73,7 +100,7 @@ export class ProfileItem extends React.Component<ProfileItemProps, any> {
                     }
                 </div>
                 <div style={itemHeadStyle}>
-                    {this.props.data.id}
+                    {this.state.id}
                 </div>
                 
                 <hr style={hrStyle} />
@@ -84,63 +111,63 @@ export class ProfileItem extends React.Component<ProfileItemProps, any> {
                                 <td style={labelTdStyle}>Type :</td>
                                 {this.state.isEditingForm
                                     ?
-                                    <td> <input type="text" value={this.props.data.type} onChange={() => { }} /> </td>
+                                    <td>  <input name={"type"} type="text" value={this.state.type} onChange={this.handleInputChange} /> </td>
                                     :
-                                    <td>{this.props.data.type}</td>
+                                    <td>{this.state.type}</td>
                                 }
                             </tr>
                             <tr>
                                 <td style={labelTdStyle}>Description:</td>
                                 {this.state.isEditingForm
                                     ?
-                                    <td> <input type="text" value={this.props.data.description} onChange={() => { }} /> </td>
+                                    <td>  <input name={"description"} type="text" value={this.state.description} onChange={this.handleInputChange} /> </td>
                                     :
-                                    <td>{this.props.data.description}</td>
+                                    <td>{this.state.description}</td>
                                 }
                             </tr>
                             <tr>
                                 <td style={labelTdStyle}>Localization :</td>
                                 {this.state.isEditingForm
                                     ?
-                                    <td> <input type="text" value={this.props.data.localization} onChange={() => { }} /> </td>
+                                    <td>  <input name={"localization"} type="text" value={this.state.localization} onChange={this.handleInputChange} /> </td>
                                     :
-                                    <td>{this.props.data.localization}</td>
+                                    <td>{this.state.localization}</td>
                                 }
                             </tr>
                             <tr>
                                 <td style={labelTdStyle}>Signature :</td>
                                 {this.state.isEditingForm
                                     ?
-                                    <td> <input type="text" value={this.props.data.signature} onChange={() => { }} /> </td>
+                                    <td>  <input name={"signature"} type="text" value={this.state.signature} onChange={this.handleInputChange} /> </td>
                                     :
-                                    <td>{this.props.data.signature}</td>
+                                    <td>{this.state.signature}</td>
                                 }
                             </tr>
                             <tr>
                                 <td style={labelTdStyle}>Area Applicability :</td>
                                 {this.state.isEditingForm
                                     ?
-                                    <td> <input type="text" value={this.props.data.areaApplicability} onChange={() => { }} /> </td>
+                                    <td>  <input name={"areaApplicability"} type="text" value={this.state.areaApplicability} onChange={this.handleInputChange} /> </td>
                                     :
-                                    <td>{this.props.data.areaApplicability}</td>
+                                    <td>{this.state.areaApplicability}</td>
                                 }
                             </tr>
                             <tr>
                                 <td style={labelTdStyle}>Time to Live :</td>
                                 {this.state.isEditingForm
                                     ?
-                                    <td> <input type="text" value={this.props.data.timeToLive} onChange={() => { }} /> </td>
+                                    <td>  <input name={"timeToLive"} type="text" value={this.state.timeToLive} onChange={this.handleInputChange} /> </td>
                                     :
-                                    <td>{this.props.data.timeToLive}</td>
+                                    <td>{this.state.timeToLive}</td>
                                 }
                             </tr>
                             <tr>
                                 <td style={labelTdStyle}>Validity :</td>
                                 {this.state.isEditingForm
                                     ?
-                                    <td> <input type="text" value={this.props.data.validity} onChange={() => { }} /> </td>
+                                    <td>  <input name={"validity"} type="text" value={this.state.validity} onChange={this.handleInputChange} /> </td>
                                     :
-                                    <td>{this.props.data.validity}</td>
+                                    <td>{this.state.validity}</td>
                                 }
                             </tr>
                         </table>
