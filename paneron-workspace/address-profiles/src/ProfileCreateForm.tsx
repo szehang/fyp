@@ -16,6 +16,16 @@ export class ProfileCreateForm extends React.Component<ProfileCreateFormProps, a
         this.setState({ createProfileBtnClicked: !this.state.createProfileBtnClicked })
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+          [name]: value
+        });
+    }
+
     render() {
         const labelTdStyle = {
             textAlign: "right",
@@ -48,12 +58,12 @@ export class ProfileCreateForm extends React.Component<ProfileCreateFormProps, a
                     <table>
                         {/* The following generates the fields of the form using .map */}
                         {this.props.fields.map((field) => (
-                            <tr key={field.name}>
+                            <tr key={field.id}>
                                 <td style={labelTdStyle}>
-                                    <label htmlFor={field.name}>{field.name} :</label>
+                                    <label htmlFor={field.id}>{field.name} :</label>
                                 </td>
                                 <td style={inputTdStyle}>
-                                    <input id={field.name} type="text" placeholder={field.placeholder} style={inputStyle} />
+                                    <input id={field.id} name={field.id} type="text" placeholder={field.placeholder} style={inputStyle} onChange={this.handleInputChange} />
                                 </td>
                             </tr>
                         ))}
@@ -81,5 +91,5 @@ export class ProfileCreateForm extends React.Component<ProfileCreateFormProps, a
 }
 
 export interface ProfileCreateFormProps {
-    fields: { id: string, name: string, valueType: string, placeholder?: string }[]
+    fields: { id: string, name: string, fieldType: string, placeholder?: string }[]
 }

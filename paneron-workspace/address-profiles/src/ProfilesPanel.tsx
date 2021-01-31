@@ -1,10 +1,21 @@
-import { Tab, TabId, Tabs } from "@blueprintjs/core"; //AnchorButton
+import { Tab, TabId, Tabs, TagInput } from "@blueprintjs/core"; //AnchorButton
 import * as React from "react";
 import { Title } from "./Utility";
 import { ProfileCreateForm } from "./ProfileCreateForm"
 import { ProfileItem } from "./ProfileItem";
+import { AddressClassProfilePanel } from "./AddressClassProfilePanel";
 
 class AddressClassProfilesPanel extends React.Component {
+
+constructor(props){
+  super(props);
+  this.state={
+    values:[],
+  }
+}
+private handleChange = (a: React.ReactNode[]) => {
+  this.setState({ values: a });
+};
 
   render() {
     return (
@@ -12,18 +23,19 @@ class AddressClassProfilesPanel extends React.Component {
         <ProfileCreateForm
           fields={
             [
-              { id: "profileName", name: "Profile Name", placeholder: "e.g. Stresst Address", valueType: "string" },
-              { id: "desc", name: "Description", placeholder: "e.g. Normal street address", valueType: "string" },
-              { id: "type", name: "Type", placeholder: "e.g. Regular", valueType: "string" },
-              { id: "localization", name: "Localization", placeholder: "e.g. Localization Profile 1", valueType: "string" },
-              { id: "timeToLive", name: "Time To Live", placeholder: "e.g. 10", valueType: "string" },
-              { id: "validity", name: "Validity", placeholder: "e.g. Validity Profile 1", valueType: "string" },
+              { id: "id", name: "Profile Name", placeholder: "e.g. Stresst Address", fieldType: "string" },
+              { id: "type", name: "Type", placeholder: "e.g. Regular", fieldType: "string" },
+              { id: "description", name: "Description", placeholder: "e.g. Normal street address", fieldType: "string" },
+              { id: "localization", name: "Localization", placeholder: "e.g. Localization Profile 1", fieldType: "string" },
+              { id: "areaApplicability", name: "Area Applicability", placeholder: "e.g. Localization Profile 1", fieldType: "tag" },
+              { id: "timeToLive", name: "Time To Live", placeholder: "e.g. 10", fieldType: "number" },
+              { id: "validity", name: "Validity", placeholder: "e.g. Validity Profile 1", fieldType: "string" },
             ]
           }
         />
 
         {/* just for testing START */}
-        <ProfileItem
+        {/* <ProfileItem
           data={
             {
               id: "Class Profile 1",
@@ -35,6 +47,27 @@ class AddressClassProfilesPanel extends React.Component {
               timeToLive: "10",
               validity: "v1",
             }
+          }
+        />
+        <TagInput
+          values={this.state.values}
+          onChange={this.handleChange}
+        /> */}
+        <AddressClassProfilePanel 
+          addressClassProfiles={
+            [
+              {
+                id: "Class Profile 1",
+                type: "Regular",
+                description: "desc here ~~~",
+                localization: "HKG",
+                signature: "sign 1",
+                areaApplicability: ["HK", "NT"],
+                timeToLive: "10",
+                validity: "v1",
+                components: [],
+              },
+            ]
           }
         />
         {/* just for testing END */}
