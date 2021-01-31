@@ -1,4 +1,4 @@
-import { AnchorButton, InputGroup, TagInput } from "@blueprintjs/core";
+import { AnchorButton, InputGroup, NumericInput, TagInput } from "@blueprintjs/core";
 import * as React from "react";
 
 export class AddressClassProfilePanel extends React.Component<AddressClassProfilePanelProps> {
@@ -196,7 +196,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <InputGroup value={this.state.timeToLive} onChange={(event)=>{this.setState({timeToLive: event.target.value})}}/>
+                                    ? <NumericInput allowNumericCharactersOnly={true} value={this.state.timeToLive} onValueChange={(_v: number, value: string)=>{this.setState({timeToLive: value})}}/>
                                     : <>{this.state.timeToLive}</>
                                 }    
                             </td>

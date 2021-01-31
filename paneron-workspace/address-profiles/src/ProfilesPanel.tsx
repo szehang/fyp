@@ -63,7 +63,7 @@ private handleChange = (a: React.ReactNode[]) => {
                 localization: "HKG",
                 signature: "sign 1",
                 areaApplicability: ["HK", "NT"],
-                timeToLive: "10",
+                timeToLive: 10,
                 validity: "v1",
                 components: [],
               },
