@@ -1,0 +1,16 @@
+iso3166Code<iso3166Code.alpha-3>
+
+CharacterString<String>
+
+Localization<>
+
+timeToLive<Integer>
+
+
+
+-------------------
+iso15924: https://www.unicode.org/iso15924/codelists.html
+
+https://github.com/paneron/address-profile-refs
+
+feedback: https://github.com/CalConnect/csd-digital-addresses/issues
