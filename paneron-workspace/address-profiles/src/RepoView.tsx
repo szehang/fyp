@@ -7,12 +7,13 @@ class Container extends React.Component<any, any> {
   constructor(props:any) {
     super(props);
     this.state = {
-      currentAddressProfile: null,
+      currentAddressProfileCode: null,
+      // addressProfiles: ,
     };
   }
 
-  changeAddressProfile = (addressProfile:any) => {
-    this.setState({currentAddressProfile: addressProfile});
+  changeAddressProfile = (addressProfileCode:any) => {
+    this.setState({currentAddressProfileCode: addressProfileCode});
   }
 
   render() {
@@ -28,7 +29,7 @@ class Container extends React.Component<any, any> {
     return (
       <div style={divStyle}>
         <AddressProfilePanel changeAddressProfile={this.changeAddressProfile} data={this.state}/>
-        <ProfilesPanel />
+        <ProfilesPanel data={this.state}/>
       </div>
     );
   }
