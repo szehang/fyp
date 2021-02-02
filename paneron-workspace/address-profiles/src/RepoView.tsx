@@ -2,7 +2,9 @@ import * as React from "react";
 import { ProfilesPanel } from "./ProfilesPanel";
 import { AddressProfilePanel } from "./AddressProfilePanel";
 import { AddressProfile } from "./AddressProfile";
+import log from "electron-log"
 
+Object.assign(console, log);
 
 interface State {
   currentAddressProfileCode: string
@@ -14,7 +16,7 @@ class Container extends React.Component<any, State> {
   constructor(props:any) {
     super(props);
     this.state = {
-      currentAddressProfileCode:null,
+      currentAddressProfileCode: "null",
       currentAddressProfile: null,
       addressProfiles: [
         {
@@ -67,8 +69,8 @@ class Container extends React.Component<any, State> {
 
   changeAddressProfile = (addressProfileCode:string) => {
     this.state.addressProfiles.forEach(profile => {
-      profile.countries.forEach(country => {
-        if(country==addressProfileCode){
+      profile.countries.forEach(countryCode => {
+        if(countryCode==addressProfileCode){
           this.setState({currentAddressProfile: profile});
         }
       });

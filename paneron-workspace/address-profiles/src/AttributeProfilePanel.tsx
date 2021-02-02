@@ -13,9 +13,9 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
     render(){
         return(
             <>
-                <AttributeProfileForm />
+                {/* <AttributeProfileForm /> */}
                 <AttributeProfileList 
-                    items = {this.props.addressClassProfiles}
+                    items = {this.props.currentAddressProfile.attributeProfiles}
                 />
             </>
         );
@@ -142,7 +142,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                                 {
                                     this.state.isEditingForm
                                     ? <NumericInput allowNumericCharactersOnly={true} value={this.state.minCardinality} onValueChange={(_v: number, value: string)=>{this.setState({minCardinality: value})}}/>
-                                    : <>{this.state.maxCardinality}</>
+                                    : <>{this.state.minCardinality}</>
                                 }    
                             </td>
                         </tr>
