@@ -1,18 +1,78 @@
 import * as React from "react";
 import { ProfilesPanel } from "./ProfilesPanel";
 import { AddressProfilePanel } from "./AddressProfilePanel";
+import { AddressProfile } from "./AddressProfile";
 
 
-class Container extends React.Component<any, any> {
+interface State {
+  currentAddressProfileCode: string
+  currentAddressProfile: AddressProfile
+  addressProfiles: AddressProfile[]
+}
+
+class Container extends React.Component<any, State> {
   constructor(props:any) {
     super(props);
     this.state = {
-      currentAddressProfileCode: null,
-      // addressProfiles: ,
+      currentAddressProfileCode:null,
+      currentAddressProfile: null,
+      addressProfiles: [
+        {
+          countries: ["HKG","TWN"],
+          addressProfiles: [
+            {
+              id: "boxAddress",
+              type: "regular",
+              localization: "L01",
+              description: "this is box address",
+              signature: "SIGN 01",
+              areaApplicability: ["NT", "HK"],
+              timeToLive: 10,
+              validity: "V01",
+              componentProfiles: [
+                {
+                  addressComponentProfileKey: "boxNum",
+                  attributeProfile:{
+                    maxCardinality: 1,
+                    minCardinality: 1,
+                  },
+                },
+              ]
+            },
+          ],
+          componentProfiles: [
+            {
+              key: "boxNum",
+              description: "box number",
+              example: "Box 001",
+              attributeProfiles: [
+                {
+                  attributeProfilesName: "number",
+                }
+              ],
+            },
+          ],
+          attributeProfiles: [
+            {
+              name: "number",
+              maxCardinality: 1,
+              minCardinality: 1,
+              valueType: "number"
+            }
+          ],
+        },
+      ],    
     };
   }
 
-  changeAddressProfile = (addressProfileCode:any) => {
+  changeAddressProfile = (addressProfileCode:string) => {
+    this.state.addressProfiles.forEach(profile => {
+      profile.countries.forEach(country => {
+        if(country==addressProfileCode){
+          this.setState({currentAddressProfile: profile});
+        }
+      });
+    });
     this.setState({currentAddressProfileCode: addressProfileCode});
   }
 
@@ -28,8 +88,8 @@ class Container extends React.Component<any, any> {
 
     return (
       <div style={divStyle}>
-        <AddressProfilePanel changeAddressProfile={this.changeAddressProfile} data={this.state}/>
-        <ProfilesPanel data={this.state}/>
+        <AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
+        <ProfilesPanel currentAddressProfile={this.state.currentAddressProfile}/>
       </div>
     );
   }

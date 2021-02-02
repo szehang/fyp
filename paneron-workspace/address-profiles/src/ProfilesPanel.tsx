@@ -4,77 +4,79 @@ import { Title } from "./Utility";
 import { ProfileCreateForm } from "./ProfileCreateForm"
 import { ProfileItem } from "./ProfileItem";
 import { AddressClassProfilePanel } from "./AddressClassProfilePanel";
+import { AddressProfile } from "./AddressProfile";
+import { AttributeProfilePanel } from "./AttributeProfilePanel";
 
-class AddressClassProfilesPanel extends React.Component {
+// class AddressClassProfilesPanel extends React.Component {
 
-constructor(props){
-  super(props);
-  this.state={
-    values:[],
-  }
-}
-private handleChange = (a: React.ReactNode[]) => {
-  this.setState({ values: a });
-};
+// constructor(props){
+//   super(props);
+//   this.state={
+//     values:[],
+//   }
+// }
+// private handleChange = (a: React.ReactNode[]) => {
+//   this.setState({ values: a });
+// };
 
-  render() {
-    return (
-      <>
-        <ProfileCreateForm
-          fields={
-            [
-              { id: "id", name: "Profile Name", placeholder: "e.g. Stresst Address", fieldType: "string" },
-              { id: "type", name: "Type", placeholder: "e.g. Regular", fieldType: "string" },
-              { id: "description", name: "Description", placeholder: "e.g. Normal street address", fieldType: "string" },
-              { id: "localization", name: "Localization", placeholder: "e.g. Localization Profile 1", fieldType: "string" },
-              { id: "areaApplicability", name: "Area Applicability", placeholder: "e.g. Localization Profile 1", fieldType: "tag" },
-              { id: "timeToLive", name: "Time To Live", placeholder: "e.g. 10", fieldType: "number" },
-              { id: "validity", name: "Validity", placeholder: "e.g. Validity Profile 1", fieldType: "string" },
-            ]
-          }
-        />
+//   render() {
+//     return (
+//       <>
+//         <ProfileCreateForm
+//           fields={
+//             [
+//               { id: "id", name: "Profile Name", placeholder: "e.g. Stresst Address", fieldType: "string" },
+//               { id: "type", name: "Type", placeholder: "e.g. Regular", fieldType: "string" },
+//               { id: "description", name: "Description", placeholder: "e.g. Normal street address", fieldType: "string" },
+//               { id: "localization", name: "Localization", placeholder: "e.g. Localization Profile 1", fieldType: "string" },
+//               { id: "areaApplicability", name: "Area Applicability", placeholder: "e.g. Localization Profile 1", fieldType: "tag" },
+//               { id: "timeToLive", name: "Time To Live", placeholder: "e.g. 10", fieldType: "number" },
+//               { id: "validity", name: "Validity", placeholder: "e.g. Validity Profile 1", fieldType: "string" },
+//             ]
+//           }
+//         />
 
-        {/* just for testing START */}
-        {/* <ProfileItem
-          data={
-            {
-              id: "Class Profile 1",
-              type: "Regular",
-              description: "desc here ~~~",
-              localization: "HKG",
-              signature: "sign 1",
-              areaApplicability: "area 1",
-              timeToLive: "10",
-              validity: "v1",
-            }
-          }
-        />
-        <TagInput
-          values={this.state.values}
-          onChange={this.handleChange}
-        /> */}
-        <AddressClassProfilePanel 
-          addressClassProfiles={
-            [
-              {
-                id: "Class Profile 1",
-                type: "Regular",
-                description: "desc here ~~~",
-                localization: "HKG",
-                signature: "sign 1",
-                areaApplicability: ["HK", "NT"],
-                timeToLive: 10,
-                validity: "v1",
-                components: [],
-              },
-            ]
-          }
-        />
-        {/* just for testing END */}
-      </>
-    )
-  }
-}
+//         {/* just for testing START */}
+//         {/* <ProfileItem
+//           data={
+//             {
+//               id: "Class Profile 1",
+//               type: "Regular",
+//               description: "desc here ~~~",
+//               localization: "HKG",
+//               signature: "sign 1",
+//               areaApplicability: "area 1",
+//               timeToLive: "10",
+//               validity: "v1",
+//             }
+//           }
+//         />
+//         <TagInput
+//           values={this.state.values}
+//           onChange={this.handleChange}
+//         /> */}
+//         <AddressClassProfilePanel 
+//           addressClassProfiles={
+//             [
+//               {
+//                 id: "Class Profile 1",
+//                 type: "Regular",
+//                 description: "desc here ~~~",
+//                 localization: "HKG",
+//                 signature: "sign 1",
+//                 areaApplicability: ["HK", "NT"],
+//                 timeToLive: 10,
+//                 validity: "v1",
+//                 components: [],
+//               },
+//             ]
+//           }
+//         />
+//         {/* just for testing END */}
+//       </>
+//     )
+//   }
+// }
 
 export class ProfilesPanel extends React.Component<any, any> {
   constructor(props: any) {
@@ -121,9 +123,16 @@ export class ProfilesPanel extends React.Component<any, any> {
             selectedTabId={this.state.tabBarTabId}
             large={true}
           >
-            <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilesPanel />} style={tabStyle} />
+            {/* <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilesPanel />} style={tabStyle} />
             <Tab id="addressComponent" title="Address Component Profiles" panel={<div style={textStyle}>2</div>} style={tabStyle} />
-            <Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} style={tabStyle} />
+            <Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} style={tabStyle} /> */}
+            
+            {
+              this.props.currentAddressProfile==null
+              ?<Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} style={tabStyle} />
+              :<Tab id="attribute" title="Attribute Profiles" panel={<AttributeProfilePanel currentAddressProfile={this.props.currentAddressProfile} />} style={tabStyle} />
+            }
+
             <Tabs.Expander />
           </Tabs>
         </div>
@@ -136,4 +145,8 @@ export class ProfilesPanel extends React.Component<any, any> {
   private handleTabChange = (tabId: TabId) => {
     this.setState({ tabBarTabId: tabId });
   }
+}
+
+export interface ProfilesPanelProps {
+  currentAddressProfile: AddressProfile
 }

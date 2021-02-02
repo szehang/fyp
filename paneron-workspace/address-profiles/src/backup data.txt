@@ -1,5 +1,4 @@
-this.state = {
-      currentAddressProfile: null,
+currentAddressProfile: null,
       addressProfiles: [
         {
           countries: ["HKG","TWN"],
@@ -45,5 +44,4 @@ this.state = {
             }
           ],
         },
-      ],
-    };
+      ],    

@@ -1,8 +1,8 @@
 export interface AddressProfile {
-    country?: string[], //iso3166 alpha-3 code
+    countries?: string[], //iso3166 alpha-3 code
     addressProfiles: AddressClassProfile[],
-    componentProfiles: AddressProfile[],
-    attributeProfiles: AddressComponentProfile[],
+    componentProfiles: AddressComponentProfile[],
+    attributeProfiles: AttributeProfile[],
 }
 
 export interface AddressClassProfile {
