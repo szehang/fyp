@@ -53,6 +53,10 @@ class AttributeProfileForm extends React.Component {
             padding: "5px",
         } as React.CSSProperties;
 
+        const rightStyle = {
+            float: "right",
+        } as React.CSSProperties;
+
         const itemHrStyle = {
             width: "100%",
             margin: "0 0 7px 0",
@@ -65,8 +69,15 @@ class AttributeProfileForm extends React.Component {
 
 
 
+
         return(
             <div style={itemStyle}>
+                <div style={{...itemHeadButtonStyle, ...rightStyle}}>
+                    {this.state.isOpeningForm
+                        ?<AnchorButton onClick={} intent="success" icon="add" text="Confirm Create" />
+                        :<></>
+                    }
+                </div>
                 <div style={itemHeadButtonStyle}>
                     {this.state.isOpeningForm
                         ?<AnchorButton onClick={this.handleOpenForm} intent="danger" icon="delete" text="Discard Profile" />
