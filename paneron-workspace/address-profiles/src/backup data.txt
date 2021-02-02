@@ -1,0 +1,49 @@
+this.state = {
+      currentAddressProfile: null,
+      addressProfiles: [
+        {
+          countries: ["HKG","TWN"],
+          addressProfiles: [
+            {
+              id: "boxAddress",
+              type: "regular",
+              localization: "L01",
+              description: "this is box address",
+              signature: "SIGN 01",
+              areaApplicability: ["NT", "HK"],
+              timeToLive: 10,
+              validity: "V01",
+              componentProfiles: [
+                {
+                  addressComponentProfileKey: "boxNum",
+                  attributeProfile:{
+                    maxCardinality: 1,
+                    minCardinality: 1,
+                  },
+                },
+              ]
+            },
+          ],
+          componentProfiles: [
+            {
+              key: "boxNum",
+              description: "box number",
+              example: "Box 001",
+              attributeProfiles: [
+                {
+                  attributeProfilesName: "number",
+                }
+              ],
+            },
+          ],
+          attributeProfiles: [
+            {
+              name: "number",
+              maxCardinality: 1,
+              minCardinality: 1,
+              valueType: "number"
+            }
+          ],
+        },
+      ],
+    };
