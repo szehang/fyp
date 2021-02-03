@@ -2,6 +2,7 @@ import * as React from "react";
 import { ProfilesPanel } from "./ProfilesPanel";
 import { AddressProfilePanel } from "./AddressProfilePanel";
 import { AddressProfile } from "./AddressProfile";
+import {get_yaml, output_yaml} from "./Utility";
 import log from "electron-log"
 
 Object.assign(console, log);
@@ -18,53 +19,58 @@ class Container extends React.Component<any, State> {
     this.state = {
       currentAddressProfileCode: "null",
       currentAddressProfile: null,
-      addressProfiles: [
-        {
-          countries: ["HKG","TWN"],
-          addressProfiles: [
-            {
-              id: "boxAddress",
-              type: "regular",
-              localization: "L01",
-              description: "this is box address",
-              signature: "SIGN 01",
-              areaApplicability: ["NT", "HK"],
-              timeToLive: 10,
-              validity: "V01",
-              componentProfiles: [
-                {
-                  addressComponentProfileKey: "boxNum",
-                  attributeProfile:{
-                    maxCardinality: 1,
-                    minCardinality: 1,
-                  },
-                },
-              ]
-            },
-          ],
-          componentProfiles: [
-            {
-              key: "boxNum",
-              description: "box number",
-              example: "Box 001",
-              attributeProfiles: [
-                {
-                  attributeProfilesName: "number",
-                }
-              ],
-            },
-          ],
-          attributeProfiles: [
-            {
-              name: "number",
-              maxCardinality: 1,
-              minCardinality: 1,
-              valueType: "number"
-            }
-          ],
-        },
-      ],    
+      // test input the hkg.yaml
+      addressProfiles: get_yaml("hkg"),
+      // addressProfiles: [
+      //   {
+      //     countries: ["HKG","TWN"],
+      //     addressProfiles: [
+      //       {
+      //         id: "boxAddress",
+      //         type: "regular",
+      //         localization: "L01",
+      //         description: "this is box address",
+      //         signature: "SIGN 01",
+      //         areaApplicability: ["NT", "HK"],
+      //         timeToLive: 10,
+      //         validity: "V01",
+      //         componentProfiles: [
+      //           {
+      //             addressComponentProfileKey: "boxNum",
+      //             attributeProfile:{
+      //               maxCardinality: 1,
+      //               minCardinality: 1,
+      //             },
+      //           },
+      //         ]
+      //       },
+      //     ],
+      //     componentProfiles: [
+      //       {
+      //         key: "boxNum",
+      //         description: "box number",
+      //         example: "Box 001",
+      //         attributeProfiles: [
+      //           {
+      //             attributeProfilesName: "number",
+      //           }
+      //         ],
+      //       },
+      //     ],
+      //     attributeProfiles: [
+      //       {
+      //         name: "number",
+      //         maxCardinality: 1,
+      //         minCardinality: 1,
+      //         valueType: "number"
+      //       }
+      //     ],
+      //   },
+      // ],    
     };
+
+    //test output all data to yaml
+    output_yaml(this.state.addressProfiles, "output");
   }
 
   changeAddressProfile = (addressProfileCode:string) => {

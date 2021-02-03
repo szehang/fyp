@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { AnchorButton } from "@blueprintjs/core";
-import { type } from 'os';
 
 export class ProfileItem extends React.Component<ProfileItemProps, any> {
     constructor(props: any) {
@@ -33,7 +32,7 @@ export class ProfileItem extends React.Component<ProfileItemProps, any> {
         this.setState({ isEditingForm: !this.state.isEditingForm });
     }
 
-    handleInputChange(event) {
+    handleInputChange(event: any) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
@@ -178,11 +177,8 @@ export class ProfileItem extends React.Component<ProfileItemProps, any> {
                         <hr style={hrStyle} />
                         <div style={itemBodyStyle}>
                             <div>
-                                <div>a</div>
-                                <div>a</div>
-                                <div>a</div>
-                                <div>a</div>
-                                <div>a</div>
+                                <div>addressNumber</div>
+                                <div>localityName</div>
                             </div>
                         </div>
                     </div>
