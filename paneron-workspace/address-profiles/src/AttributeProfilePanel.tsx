@@ -147,10 +147,34 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
             maxCardinality: this.props.item.maxCardinality,
             minCardinality: this.props.item.minCardinality,
             valueType: this.props.item.valueType,
+
+            dataBeforeEdit: {
+                oldMaxCardinality: null,
+                oldMinCardinality: null,
+                oldValueType: null,
+            }
         }
     }
 
     handleEditProfile = () => {
+        this.setState({
+            dataBeforeEdit: {
+                oldMaxCardinality: this.state.maxCardinality,
+                oldMinCardinality: this.state.minCardinality,
+                oldValueType: this.state.valueType,
+            }
+        })
+
+        this.setState({ isEditingForm: !this.state.isEditingForm });
+    }
+
+    handleDiscardChange = () => {
+        this.setState({
+            maxCardinality: this.state.dataBeforeEdit.oldMaxCardinality,
+            minCardinality: this.state.dataBeforeEdit.oldMinCardinality,
+            valueType: this.state.dataBeforeEdit.oldValueType,
+        });
+
         this.setState({ isEditingForm: !this.state.isEditingForm });
     }
 
@@ -191,7 +215,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                         ?
                         <>
                             <AnchorButton onClick={this.handleEditProfile} intent="success" icon="floppy-disk" text="Save Change" />
-                            <AnchorButton onClick={this.handleEditProfile} intent="danger" icon="cross" text="Discard Change" style={{marginLeft: "5px"}}/>
+                            <AnchorButton onClick={this.handleDiscardChange} intent="danger" icon="cross" text="Discard Change" style={{marginLeft: "5px"}}/>
                         </>
                         :
                         <AnchorButton onClick={this.handleEditProfile} intent="success" icon="edit" text="Edit Profile" />
