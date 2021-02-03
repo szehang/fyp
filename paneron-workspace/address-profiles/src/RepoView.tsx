@@ -78,6 +78,18 @@ class Container extends React.Component<any, State> {
     this.setState({currentAddressProfileCode: addressProfileCode});
   }
 
+  changeStateHandler(params) {
+    console.log(params);
+
+    {/*
+    this.state.currentAddressProfile.attributeProfiles.forEach(attributeProfile => {
+      if (attributeProfile.name == params.name) {
+        this.setState(params);
+      }
+    })
+    */}
+  }
+
   render() {
     const divStyle = {
       backgroundColor: "rgb(0, 0, 0)",
@@ -91,7 +103,7 @@ class Container extends React.Component<any, State> {
     return (
       <div style={divStyle}>
         <AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
-        <ProfilesPanel currentAddressProfile={this.state.currentAddressProfile}/>
+        <ProfilesPanel currentAddressProfile={this.state.currentAddressProfile} changStateHandler={this.changeStateHandler.bind(this)} />
       </div>
     );
   }

@@ -16,6 +16,7 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
                 <AttributeProfileForm />
                 <AttributeProfileList 
                     items = {this.props.currentAddressProfile.attributeProfiles}
+                    changeStateHandler = {this.props.changeStateHandler}
                 />
             </>
         );
@@ -129,6 +130,7 @@ class AttributeProfileList extends React.Component<AttributeProfileListProps> {
                     <AttributeProfileListItem
                         key={item.name}
                         item={item}
+                        changeStateHandler = {this.props.changeStateHandler}
                     />
                 ))}
             </>
@@ -178,6 +180,19 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
         this.setState({ isEditingForm: !this.state.isEditingForm });
     }
 
+    handleSaveChange = () => {
+        const dataToBeSaved = {
+            name: this.state.name,
+            maxCardinality: this.state.maxCardinality,
+            minCardinality: this.state.minCardinality,
+            valueType: this.state.valueType,
+        }
+
+        this.props.changeStateHandler(dataToBeSaved);
+
+        this.setState({ isEditingForm: !this.state.isEditingForm });
+    }
+
     render(){
 
         const itemStyle = {
@@ -214,7 +229,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                     {this.state.isEditingForm
                         ?
                         <>
-                            <AnchorButton onClick={this.handleEditProfile} intent="success" icon="floppy-disk" text="Save Change" />
+                            <AnchorButton onClick={this.handleSaveChange} intent="success" icon="floppy-disk" text="Save Change" />
                             <AnchorButton onClick={this.handleDiscardChange} intent="danger" icon="cross" text="Discard Change" style={{marginLeft: "5px"}}/>
                         </>
                         :
@@ -268,13 +283,16 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
 }
 
 export interface AttributeProfilePanelProps {
-    currentAddressProfile: AddressProfile
+    currentAddressProfile: AddressProfile,
+    changeStateHandler: any,
 }
 
 interface AttributeProfileListProps {
-    items: AttributeProfile[]
+    items: AttributeProfile[],
+    changeStateHandler: any,
 }
 
 interface AttributeProfileListItemProps {
-    item: AttributeProfile
+    item: AttributeProfile,
+    changeStateHandler: any,
 }
