@@ -89,16 +89,22 @@ class Container extends React.Component<any, State> {
     this.setState({currentAddressProfileCode: addressProfileCode});
   }
 
+  //handle all state change call from all panel
+  //targetType: "class" | "component" | "attribute" (for 3 kinds of profile)
+  //mode: "add: | "edit" | "delete"
+  //object: the profile object to be manipulate(e.g. the modified profile)
+  //  object should be created before pass into this function
+  //  <AddressClassProfile | AddressComponentProfile | AttributeProfile>
   changeStateHandler = (targetType: string, mode:string, object: any) => {
     console.log(mode);
 
     switch(targetType){
       case "class":{
-
+        //TODO
       }
       break;
       case "component":{
-  
+        //TODO
       }
       break;
       case "attribute":{
@@ -106,47 +112,49 @@ class Container extends React.Component<any, State> {
       }
       break;
     }
-
-    // output_yaml(this.state.addressProfiles, "output");
-    // this.setState({addressProfiles: get_yaml("output")});
   }
 
   changeStateAttribute = (mode:string, object: any) => {
     const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
         
-    newAddressProfiles.forEach(profile => {
+    newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
       if(profile.id == this.state.currentAddressProfile.id){
         const attributes = profile.attributeProfiles;
 
         switch(mode){
           case "add": {
-            attributes.splice(attributes.length, 0, object);
+            attributes.splice(attributes.length, 0, object); //push new profile to the attributes array
           }
           break;
           case "edit": {
-            attributes.forEach(attribute => {
+            attributes.forEach(attribute => { //locate the target attributeProfile //attribute = target attrubiteProfile
                   if(attribute.name==object.name) {
-                    attribute.name = object.name;
-                    attribute.maxCardinality = object.maxCardinality;
-                    attribute.minCardinality = object.minCardinality;
-                    attribute.valueType = object.valueType;
+                    //orginial logic (confirm works)
+                    // attribute.name = object.name;
+                    // attribute.maxCardinality = object.maxCardinality;
+                    // attribute.minCardinality = object.minCardinality;
+                    // attribute.valueType = object.valueType;
+
+                    //new logic (testing but seem works now)
+                    const index = attributes.indexOf(attribute);
+                    attributes.splice(index, 1, object) //remove replace the old attrubite with the new data
                   }
                 });
           }
           break;
           case "delete": {
-            attributes.forEach(attribute => {
+            attributes.forEach(attribute => { //locate the target attributeProfile //attribute = target attrubiteProfile
               if(attribute.name==object.name) {
                 const index = attributes.indexOf(attribute);
-                attributes.splice(index, 1)
+                attributes.splice(index, 1) //remove target element
               }
             });
           }
           break;
         }
 
-        this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile});
-        output_yaml(newAddressProfiles, "output");
+        this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
+        output_yaml(newAddressProfiles, "output"); //save state data to yml file
       }
     });   
   }
