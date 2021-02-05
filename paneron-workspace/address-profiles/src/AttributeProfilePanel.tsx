@@ -181,17 +181,31 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
     }
 
     handleSaveChange = () => {
-        const dataToBeSaved = {
+        const dataToBeSaved: AttributeProfile = {
             name: this.state.name,
             maxCardinality: this.state.maxCardinality,
             minCardinality: this.state.minCardinality,
             valueType: this.state.valueType,
         }
 
-        this.props.changeStateHandler(dataToBeSaved);
+        this.props.changeStateHandler( "attribute", "edit", dataToBeSaved);
 
         this.setState({ isEditingForm: !this.state.isEditingForm });
     }
+
+    handleDeleteChange = () => {
+        const dataToBeDeleted: AttributeProfile = {
+            name: this.state.name,
+            maxCardinality: this.state.maxCardinality,
+            minCardinality: this.state.minCardinality,
+            valueType: this.state.valueType,
+        }
+
+        this.props.changeStateHandler( "attribute", "delete", dataToBeDeleted);
+
+        this.setState({ isEditingForm: !this.state.isEditingForm });
+    }
+    
 
     render(){
 
@@ -233,7 +247,10 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                             <AnchorButton onClick={this.handleDiscardChange} intent="danger" icon="cross" text="Discard Change" style={{marginLeft: "5px"}}/>
                         </>
                         :
-                        <AnchorButton onClick={this.handleEditProfile} intent="success" icon="edit" text="Edit Profile" />
+                        <>
+                            <AnchorButton onClick={this.handleEditProfile} intent="success" icon="edit" text="Edit Profile" />
+                            <AnchorButton onClick={this.handleDeleteChange} intent="danger" icon="delete" text="Delete Profile" style={{marginLeft: "5px"}}/>
+                        </>
                     }
                 </div>
                 <div style={itemHeadStyle}>

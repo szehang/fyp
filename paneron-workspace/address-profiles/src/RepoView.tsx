@@ -4,12 +4,13 @@ import { AddressProfilePanel } from "./AddressProfilePanel";
 import { AddressProfile } from "./AddressProfile";
 import {get_yaml, output_yaml} from "./Utility";
 import log from "electron-log"
+import { profile } from "console";
 
 Object.assign(console, log);
 
 interface State {
   currentAddressProfileCode: string
-  currentAddressProfile: AddressProfile
+  currentAddressProfile: AddressProfile | null
   addressProfiles: AddressProfile[]
 }
 
@@ -23,9 +24,9 @@ class Container extends React.Component<any, State> {
 
       addressProfiles: get_yaml("output"),
 
-      
       // addressProfiles: [
       //   {
+      //     id: "0",
       //     countries: ["HKG","TWN"],
       //     addressProfiles: [
       //       {
@@ -77,8 +78,9 @@ class Container extends React.Component<any, State> {
   }
 
   changeAddressProfile = (addressProfileCode:string) => {
-    this.state.addressProfiles.forEach(profile => {
+    this.state.addressProfiles.forEach(profile=> {
       profile.countries.forEach(countryCode => {
+        this.setState({currentAddressProfile: null});
         if(countryCode==addressProfileCode){
           this.setState({currentAddressProfile: profile});
         }
@@ -87,16 +89,66 @@ class Container extends React.Component<any, State> {
     this.setState({currentAddressProfileCode: addressProfileCode});
   }
 
-  changeStateHandler(params) {
-    console.log(params);
+  changeStateHandler = (targetType: string, mode:string, object: any) => {
+    console.log(mode);
 
-    {/*
-    this.state.currentAddressProfile.attributeProfiles.forEach(attributeProfile => {
-      if (attributeProfile.name == params.name) {
-        this.setState(params);
+    switch(targetType){
+      case "class":{
+
       }
-    })
-    */}
+      break;
+      case "component":{
+  
+      }
+      break;
+      case "attribute":{
+        this.changeStateAttribute(mode, object);
+      }
+      break;
+    }
+
+    // output_yaml(this.state.addressProfiles, "output");
+    // this.setState({addressProfiles: get_yaml("output")});
+  }
+
+  changeStateAttribute = (mode:string, object: any) => {
+    const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
+        
+    newAddressProfiles.forEach(profile => {
+      if(profile.id == this.state.currentAddressProfile.id){
+        const attributes = attributes
+        switch(mode){
+          case "add": {
+            // attributes.splice(attributes.length, 0, object);
+          }
+          break;
+          case "edit": {
+            attributes.forEach(attribute => {
+                  if(attribute.name==object.name) {
+                    attribute.name = object.name;
+                    attribute.maxCardinality = object.maxCardinality;
+                    attribute.minCardinality = object.minCardinality;
+                    attribute.valueType = object.valueType;
+                  }
+                });
+          }
+          break;
+          case "delete": {
+            attributes.forEach(attribute => {
+              if(attribute.name==object.name) {
+                const index = attributes.indexOf(attribute);
+                attributes.splice(index, 1)
+                //don't know why the data is deleted from the root state but still in the local state
+              }
+            });
+          }
+          break;
+        }
+
+        this.setState({addressProfiles: newAddressProfiles});
+        output_yaml(newAddressProfiles, "output");
+      }
+    });   
   }
 
   render() {

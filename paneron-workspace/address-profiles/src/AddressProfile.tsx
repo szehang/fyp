@@ -1,4 +1,5 @@
 export interface AddressProfile {
+    id: string, //as index
     countries?: string[], //iso3166 alpha-3 code
     addressProfiles: AddressClassProfile[],
     componentProfiles: AddressComponentProfile[],
