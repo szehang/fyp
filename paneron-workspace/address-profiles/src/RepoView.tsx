@@ -20,7 +20,10 @@ class Container extends React.Component<any, State> {
       currentAddressProfileCode: "null",
       currentAddressProfile: null,
       // test input the hkg.yaml
-      addressProfiles: get_yaml("hkg"),
+
+      addressProfiles: get_yaml("output"),
+
+      
       // addressProfiles: [
       //   {
       //     countries: ["HKG","TWN"],
@@ -70,7 +73,7 @@ class Container extends React.Component<any, State> {
     };
 
     //test output all data to yaml
-    output_yaml(this.state.addressProfiles, "output");
+    // output_yaml(this.state.addressProfiles, "output");
   }
 
   changeAddressProfile = (addressProfileCode:string) => {
