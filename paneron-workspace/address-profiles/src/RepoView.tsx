@@ -116,7 +116,8 @@ class Container extends React.Component<any, State> {
         
     newAddressProfiles.forEach(profile => {
       if(profile.id == this.state.currentAddressProfile.id){
-        const attributes = attributes
+        const attributes = profile.attributeProfiles;
+
         switch(mode){
           case "add": {
             // attributes.splice(attributes.length, 0, object);
@@ -145,7 +146,7 @@ class Container extends React.Component<any, State> {
           break;
         }
 
-        this.setState({addressProfiles: newAddressProfiles});
+        this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile});
         output_yaml(newAddressProfiles, "output");
       }
     });   
