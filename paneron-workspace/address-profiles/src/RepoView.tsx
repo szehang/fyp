@@ -120,7 +120,7 @@ class Container extends React.Component<any, State> {
 
         switch(mode){
           case "add": {
-            // attributes.splice(attributes.length, 0, object);
+            attributes.splice(attributes.length, 0, object);
           }
           break;
           case "edit": {
@@ -139,7 +139,6 @@ class Container extends React.Component<any, State> {
               if(attribute.name==object.name) {
                 const index = attributes.indexOf(attribute);
                 attributes.splice(index, 1)
-                //don't know why the data is deleted from the root state but still in the local state
               }
             });
           }

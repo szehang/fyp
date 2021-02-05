@@ -6,14 +6,16 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
     constructor(props){
         super(props)
         this.state={
-
+    
         }
     }
 
     render(){
         return(
             <>
-                <AttributeProfileForm />
+                <AttributeProfileForm 
+                    changeStateHandler = {this.props.changeStateHandler}
+                />
                 <AttributeProfileList 
                     items = {this.props.currentAddressProfile.attributeProfiles}
                     changeStateHandler = {this.props.changeStateHandler}
@@ -23,16 +25,42 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
     }
 }
 
-class AttributeProfileForm extends React.Component {
+class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
     constructor(props) {
         super(props);
         this.state={
             isOpeningForm: false,
+
+            // Profile Data
+            name: "",
+            maxCardinality: "",
+            minCardinality: "",
+            valueType: "",
         }
     }
 
     handleOpenForm = () => {
         this.setState({ isOpeningForm: !this.state.isOpeningForm });
+    }
+
+
+    handleAddChange = () => {
+        const dataToBeAdded: AttributeProfile = {
+            name: this.state.name,
+            maxCardinality: this.state.maxCardinality,
+            minCardinality: this.state.minCardinality,
+            valueType: this.state.valueType,
+        }
+
+        this.props.changeStateHandler( "attribute", "add", dataToBeAdded);
+
+        this.setState({ 
+            isOpeningForm: !this.state.isOpeningForm,
+            name: "",
+            maxCardinality: "",
+            minCardinality: "",
+            valueType: "",
+        });
     }
 
     render(){
@@ -75,7 +103,7 @@ class AttributeProfileForm extends React.Component {
             <div style={itemStyle}>
                 <div style={{...itemHeadButtonStyle, ...rightStyle}}>
                     {this.state.isOpeningForm
-                        ?<AnchorButton onClick={} intent="success" icon="add" text="Confirm Create" />
+                        ?<AnchorButton onClick={this.handleAddChange} intent="success" icon="add" text="Confirm Create" />
                         :<></>
                     }
                 </div>
@@ -91,6 +119,13 @@ class AttributeProfileForm extends React.Component {
                         <hr style={itemHrStyle}/>
                         <div style={itemBodyStyle}>
                             <table>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>:</td>
+                                    <td>
+                                        <InputGroup value={this.state.name} onChange={(event)=>{this.setState({name: event.target.value})}}/>  
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>Max Cardinality</td>
                                     <td>:</td>
@@ -301,6 +336,10 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
 
 export interface AttributeProfilePanelProps {
     currentAddressProfile: AddressProfile,
+    changeStateHandler: any,
+}
+
+interface AttributeProfileFormProps {
     changeStateHandler: any,
 }
 
