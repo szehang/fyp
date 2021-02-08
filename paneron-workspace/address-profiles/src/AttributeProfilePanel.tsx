@@ -16,10 +16,14 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
                 <AttributeProfileForm 
                     changeStateHandler = {this.props.changeStateHandler}
                 />
-                <AttributeProfileList 
+                {
+                    this.props.currentAddressProfile==null
+                    ?<></>
+                    :<AttributeProfileList 
                     items = {this.props.currentAddressProfile.attributeProfiles}
                     changeStateHandler = {this.props.changeStateHandler}
                 />
+                }
             </>
         );
     }

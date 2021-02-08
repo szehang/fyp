@@ -127,11 +127,13 @@ export class ProfilesPanel extends React.Component<any, any> {
             <Tab id="addressComponent" title="Address Component Profiles" panel={<div style={textStyle}>2</div>} style={tabStyle} />
             <Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} style={tabStyle} /> */}
             
-            {
+            {/* {
               this.props.currentAddressProfile==null
               ?<Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} style={tabStyle} />
               :<Tab id="attribute" title="Attribute Profiles" panel={<AttributeProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} />
-            }
+            } */}
+
+            <Tab id="attribute" title="Attribute Profiles" panel={<AttributeProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} /> 
 
             <Tabs.Expander />
           </Tabs>

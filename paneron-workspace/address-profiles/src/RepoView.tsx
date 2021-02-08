@@ -78,9 +78,9 @@ class Container extends React.Component<any, State> {
   }
 
   changeAddressProfile = (addressProfileCode:string) => {
+    this.setState({currentAddressProfile: null});
     this.state.addressProfiles.forEach(profile=> {
       profile.countries.forEach(countryCode => {
-        this.setState({currentAddressProfile: null});
         if(countryCode==addressProfileCode){
           this.setState({currentAddressProfile: profile});
         }
