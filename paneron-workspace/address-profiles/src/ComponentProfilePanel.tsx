@@ -50,7 +50,7 @@ class ComponentProfileForm extends React.Component {
 
     handleAddChange = () => {
         const dataToBeAddeded: AddressComponentProfile = {
-            name: this.state.name,
+            key: this.state.key,
             description: this.state.description,
             example: this.state.example,
             // #toBeDone: attributeProfiles
@@ -87,6 +87,10 @@ class ComponentProfileForm extends React.Component {
             float: "right",
         } as React.CSSProperties;
 
+        const centerTextStyle = {
+            textAlign: "center",
+        }
+
         const itemHrStyle = {
             width: "100%",
             margin: "0 0 7px 0",
@@ -97,19 +101,24 @@ class ComponentProfileForm extends React.Component {
             width: "100%",
         } as React.CSSProperties;
 
-        const attributeListStyle = {
-            backgroundColor: "green",
-            color: "white",
-            textAlign: "center",
-            padding: "6px",
-            borderBottom: "0.5px solid LightGray",
-            borderRadius: "10px 10px 0px 0px",
-        } as React.CSSProperties;
+        // const attributeListStyle = {
+        //     backgroundColor: "green",
+        //     color: "white",
+        //     textAlign: "center",
+        //     padding: "6px",
+        //     borderBottom: "0.5px solid LightGray",
+        //     borderRadius: "10px 10px 0px 0px",
+        // } as React.CSSProperties;
 
         const expanderStyle = {
             borderRadius: "0px 0px 10px 10px",
             borderTop: "0.5px solid LightGray",
             cursor: "pointer",
+        }
+
+        const attributeListStyle = {
+            backgroundColor: "green",
+            color: "white",
         }
 
         return(
@@ -142,10 +151,10 @@ class ComponentProfileForm extends React.Component {
                         {/* The actually form */}
                         <table>
                             <tr>
-                                <td>Profile Name</td>
+                                <td>Profile Key</td>
                                 <td>:</td>
                                 <td>
-                                    <InputGroup value={this.state.name} onChange={(event)=>{this.setState({name: event.target.value})}} />
+                                    <InputGroup value={this.state.key} onChange={(event)=>{this.setState({name: event.target.value})}} />
                                 </td>
                             </tr>
                             <tr>
@@ -165,18 +174,20 @@ class ComponentProfileForm extends React.Component {
                         </table>
 
                         {/* Attribute List */}
-                        <div style={attributeListStyle}>
-                            Attributes
+                        <div style={{...itemStyle, ...attributeListStyle}}>
+                            <div style={{...itemHeadButtonStyle, ...centerTextStyle}}>Attributes</div>
+                            <hr style={itemHrStyle} />
+                            <div style={itemBodyStyle}>
+                                {
+                                    this.state.attributeProfiles.map(attribute=>(
+                                        <div>
+                                            
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         </div>
-
-                            {/* List to be expanded */}
-                            <Collapse isOpen={this.state.isExpandAttribute}>
-                                YOYO
-                            </Collapse>
-
-                        <div style={{...attributeListStyle, ...expanderStyle}} onClick={this.handleExpand}>
-                            ...
-                        </div>
+                        
                     </div>
                     </>
                     :<></>
