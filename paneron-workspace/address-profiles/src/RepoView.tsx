@@ -23,54 +23,6 @@ class Container extends React.Component<any, State> {
       // test input the hkg.yaml
 
       addressProfiles: get_yaml("output"),
-
-      // addressProfiles: [
-      //   {
-      //     id: "0",
-      //     countries: ["HKG","TWN"],
-      //     addressProfiles: [
-      //       {
-      //         id: "boxAddress",
-      //         type: "regular",
-      //         localization: "L01",
-      //         description: "this is box address",
-      //         signature: "SIGN 01",
-      //         areaApplicability: ["NT", "HK"],
-      //         timeToLive: 10,
-      //         validity: "V01",
-      //         componentProfiles: [
-      //           {
-      //             addressComponentProfileKey: "boxNum",
-      //             attributeProfile:{
-      //               maxCardinality: 1,
-      //               minCardinality: 1,
-      //             },
-      //           },
-      //         ]
-      //       },
-      //     ],
-      //     componentProfiles: [
-      //       {
-      //         key: "boxNum",
-      //         description: "box number",
-      //         example: "Box 001",
-      //         attributeProfiles: [
-      //           {
-      //             attributeProfilesName: "number",
-      //           }
-      //         ],
-      //       },
-      //     ],
-      //     attributeProfiles: [
-      //       {
-      //         name: "number",
-      //         maxCardinality: 1,
-      //         minCardinality: 1,
-      //         valueType: "number"
-      //       }
-      //     ],
-      //   },
-      // ],    
     };
 
     //test output all data to yaml
@@ -129,13 +81,6 @@ class Container extends React.Component<any, State> {
           case "edit": {
             attributes.forEach(attribute => { //locate the target attributeProfile //attribute = target attrubiteProfile
                   if(attribute.name==object.name) {
-                    //orginial logic (confirm works)
-                    // attribute.name = object.name;
-                    // attribute.maxCardinality = object.maxCardinality;
-                    // attribute.minCardinality = object.minCardinality;
-                    // attribute.valueType = object.valueType;
-
-                    //new logic (testing but seem works now)
                     const index = attributes.indexOf(attribute);
                     attributes.splice(index, 1, object) //remove replace the old attrubite with the new data
                   }
