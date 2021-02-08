@@ -114,7 +114,7 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
                 <div style={itemHeadButtonStyle}>
                     {this.state.isOpeningForm
                         ?<AnchorButton onClick={this.handleOpenForm} intent="danger" icon="delete" text="Discard Profile" />
-                        :<AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Profile" />
+                        :<AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Attribute Profile" />
                     }
                 </div>
                 {
@@ -124,7 +124,7 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
                         <div style={itemBodyStyle}>
                             <table>
                                 <tr>
-                                    <td>Name</td>
+                                    <td>Profile Name</td>
                                     <td>:</td>
                                     <td>
                                         <InputGroup value={this.state.name} onChange={(event)=>{this.setState({name: event.target.value})}}/>  

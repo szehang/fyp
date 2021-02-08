@@ -6,6 +6,7 @@ import { ProfileItem } from "./ProfileItem";
 import { AddressClassProfilePanel } from "./AddressClassProfilePanel";
 import { AddressProfile } from "./AddressProfile";
 import { AttributeProfilePanel } from "./AttributeProfilePanel";
+import { ComponentProfilePanel } from "./ComponentProfilePanel";
 
 // class AddressClassProfilesPanel extends React.Component {
 
@@ -127,12 +128,14 @@ export class ProfilesPanel extends React.Component<any, any> {
             <Tab id="addressComponent" title="Address Component Profiles" panel={<div style={textStyle}>2</div>} style={tabStyle} />
             <Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} style={tabStyle} /> */}
             
+            
             {/* {
               this.props.currentAddressProfile==null
               ?<Tab id="attribute" title="Attribute Profiles" panel={<div style={textStyle}>3</div>} style={tabStyle} />
               :<Tab id="attribute" title="Attribute Profiles" panel={<AttributeProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} />
             } */}
 
+            <Tab id="addressComponent" title="Address Component Profiles" panel={<ComponentProfilePanel currentAddressProfile={this.props.currentAddressProfile} />} style={tabStyle} />
             <Tab id="attribute" title="Attribute Profiles" panel={<AttributeProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} /> 
 
             <Tabs.Expander />
