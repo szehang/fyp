@@ -45,7 +45,9 @@ export class ProfilesPanel extends React.Component<any, any> {
     return (
       <div style={divStyle}>
         <Title name="Address Profile" />
-        <div style={tabDivStyle}>
+        {this.props.currentAddressProfile == null
+        ?<>please activit the address profile first</>
+        :<div style={tabDivStyle}>
           <Tabs
             id="AddressProfileTabs"
             animate={true}
@@ -59,7 +61,7 @@ export class ProfilesPanel extends React.Component<any, any> {
             <Tabs.Expander />
           </Tabs>
         </div>
-
+        }
       </div>
     );
 

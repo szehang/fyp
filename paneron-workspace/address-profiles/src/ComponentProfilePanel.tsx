@@ -13,16 +13,15 @@ export class ComponentProfilePanel extends React.Component<ComponentProfilePanel
     render() {
         return(
             <>
-                <ComponentProfileForm 
-
-                />
                 {
                     this.props.currentAddressProfile==null
                     ?<></>
-                    :
-                    <ComponentProfileList
-                        items = {this.props.currentAddressProfile.componentProfiles}
-                    />
+                    :<>
+                        <ComponentProfileForm />
+                        <ComponentProfileList
+                            items = {this.props.currentAddressProfile.componentProfiles}
+                        />
+                    </>
                 }
             </>
         )

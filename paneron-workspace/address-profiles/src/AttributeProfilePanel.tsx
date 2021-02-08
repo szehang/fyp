@@ -13,16 +13,18 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
     render(){
         return(
             <>
-                <AttributeProfileForm 
-                    changeStateHandler = {this.props.changeStateHandler}
-                />
                 {
                     this.props.currentAddressProfile==null
                     ?<></>
-                    :<AttributeProfileList 
-                    items = {this.props.currentAddressProfile.attributeProfiles}
-                    changeStateHandler = {this.props.changeStateHandler}
-                />
+                    :<>
+                        <AttributeProfileForm 
+                        changeStateHandler = {this.props.changeStateHandler}
+                        />
+                        <AttributeProfileList 
+                        items = {this.props.currentAddressProfile.attributeProfiles}
+                        changeStateHandler = {this.props.changeStateHandler}
+                        />
+                    </>
                 }
             </>
         );
