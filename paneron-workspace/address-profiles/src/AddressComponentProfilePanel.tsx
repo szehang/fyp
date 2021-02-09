@@ -193,7 +193,9 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                 description: null,
                 example: null,
                 attributeProfiles: null,
-            }
+            },
+
+            combinedAttributeProfiles: [],
         }
     }
 
@@ -245,6 +247,20 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
         this.setState({ isEditingForm: !this.state.isEditingForm });
     }
     
+    componentDidMount() {
+        const combinedAttributeProfiles = [];
+
+        this.state.attributeProfiles.forEach(profile => { //profile just contain the name
+            const name = profile.attributeProfilesName;
+            this.props.attributeProfiles.forEach(realProfile => { //realProfile contain the data
+                if(realProfile.name == name){
+                    combinedAttributeProfiles.splice(combinedAttributeProfiles.length, 0, realProfile);
+                }
+            });
+        });
+
+        this.setState({combinedAttributeProfiles: combinedAttributeProfiles});
+    }
 
     render(){
 
@@ -275,6 +291,11 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             padding: "5px",
             width: "100%",
         } as React.CSSProperties;
+
+        const subItemSytle = {
+            backgroundColor: "#363",
+            color: "#FFF",
+        }
 
         return(
             <div style={itemStyle}>
@@ -320,8 +341,23 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                                 }    
                             </td>
                         </tr>
-                        {/* todo - add attribute display and selector */}
                     </table>
+                    <div style={{...itemStyle, ...subItemSytle}}>
+                        <div style={itemHeadStyle}>Attribute Profile</div>
+                        <hr style={itemHrStyle} />
+                        <div style={itemBodyStyle}>
+                                {
+                                    this.state.combinedAttributeProfiles.map((combinedAttribute)=>(
+                                        <div key={combinedAttribute.name}>
+                                            <div>{combinedAttribute.name}</div> 
+                                            <div>{combinedAttribute.maxCardinality}</div> 
+                                            <div>{combinedAttribute.minCardinality}</div>  
+                                            <div>{combinedAttribute.valueType}</div>  
+                                        </div>
+                                    ))
+                                }
+                        </div>
+                    </div>
                 </div>
             </div>
         );
