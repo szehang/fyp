@@ -56,7 +56,7 @@ class Container extends React.Component<any, State> {
       }
       break;
       case "component":{
-        //TODO
+        this.changeStateComponent(mode, object);
       }
       break;
       case "attribute":{
@@ -64,6 +64,44 @@ class Container extends React.Component<any, State> {
       }
       break;
     }
+  }
+
+  changeStateComponent = (mode:string, object: any) => {
+    const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
+        
+    newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
+      if(profile.id == this.state.currentAddressProfile.id){
+        const components = profile.componentProfiles;
+
+        switch(mode){
+          case "add": {
+            components.splice(components.length, 0, object); //push new profile to the components array
+          }
+          break;
+          case "edit": {
+            components.forEach(component => { //locate the target componentProfile //component = target componentProfile
+                  if(component.key==object.key) {
+                    const index = components.indexOf(component);
+                    components.splice(index, 1, object) //remove replace the old component with the new data
+                  }
+                });
+          }
+          break;
+          case "delete": {
+            components.forEach(component => { //locate the target componentProfile //component = target componentProfile
+              if(component.key==object.key) {
+                const index = components.indexOf(component);
+                components.splice(index, 1) //remove target element
+              }
+            });
+          }
+          break;
+        }
+
+        this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
+        output_yaml(newAddressProfiles, "output"); //save state data to yml file
+      }
+    });   
   }
 
   changeStateAttribute = (mode:string, object: any) => {
