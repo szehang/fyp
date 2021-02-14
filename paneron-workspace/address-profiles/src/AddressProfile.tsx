@@ -24,7 +24,7 @@ export interface AddressComponentProfile {
     key: string,
     description: string,
     example?: string,
-    attributeProfiles: {attributeProfilesName: string}[],
+    attributeProfiles: {attributeProfileName: string}[],
 }
 
 export interface AttributeProfile {
