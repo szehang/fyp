@@ -254,6 +254,17 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
         this.setState({ isEditingForm: !this.state.isEditingForm });
     }
 
+    removeIncludedAttribute = (attributeName:string) => {
+        const newAttributeProfiles = JSON.parse(JSON.stringify(this.state.attributeProfiles));//deep copy the state.addressProfiles
+        newAttributeProfiles.forEach((newAttribute)=>{
+            if(attributeName == newAttribute.attributeProfileName){
+                const index = newAttributeProfiles.indexOf(newAttribute);
+                newAttributeProfiles.splice(index, 1);
+            }
+        });
+        this.setState({attributeProfiles: newAttributeProfiles});
+    }
+
     render(){
 
         const itemStyle = {
@@ -380,6 +391,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                                             attributeName = {attribute.attributeProfileName}
                                             attributeProfiles = {this.props.attributeProfiles}
                                             isEditingForm = {this.state.isEditingForm}
+                                            removeIncludedAttribute = {this.removeIncludedAttribute}
                                         />
                                     ))
                                 }
@@ -464,7 +476,7 @@ const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemPro
     let output = <></>
 
     props.attributeProfiles.forEach((attribute)=> {        
-        if(attribute.name.toString() == props.attributeName.toString()) {
+        if(attribute.name == props.attributeName) {
             output = 
                 <div style={{...itemStyle, ...subSubItemSytle}} key={props.attributeName}>
                     <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
@@ -475,9 +487,7 @@ const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemPro
                         <div style={rightDivStyle}>
                         {
                             props.isEditingForm
-                            ?<AnchorButton onClick={(event)=>{
-                                //todo
-                            }} intent="danger" icon="delete" text="Remove Inculded Attribute" style={{marginLeft: "5px"}}/>
+                            ?<AnchorButton onClick={()=>{props.removeIncludedAttribute(props.attributeName)}} intent="danger" icon="delete" text="Remove Inculded Attribute" style={{marginLeft: "5px"}}/>
                             :<></>
                         }
                         </div>
@@ -523,4 +533,5 @@ interface ComponentIncludedAttributeItemProps {
     attributeName: string,
     attributeProfiles: AttributeProfile[],
     isEditingForm: boolean,
+    removeIncludedAttribute: any,
 }
