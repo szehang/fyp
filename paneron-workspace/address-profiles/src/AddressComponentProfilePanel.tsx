@@ -3,6 +3,9 @@ import * as React from "react";
 import { AddressComponentProfile, AddressProfile, AttributeProfile } from "./AddressProfile";
 import { AttributeProfilePanel } from "./AttributeProfilePanel";
 
+import log from "electron-log"
+Object.assign(console, log);
+
 export class AddressComponentProfilePanel extends React.Component<AddressComponentProfilePanelProps> {
     constructor(props){
         super(props)
@@ -196,8 +199,6 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                 example: null,
                 attributeProfiles: null,
             },
-
-            combinedAttributeProfiles: [],
         }
     }
 
@@ -251,21 +252,6 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
         this.props.changeStateHandler( "component", "delete", dataToBeDeleted);
 
         this.setState({ isEditingForm: !this.state.isEditingForm });
-    }
-    
-    componentDidMount() {
-        const combinedAttributeProfiles = [];
-
-        this.state.attributeProfiles.forEach(profile => { //profile just contain the name
-            const name = profile.attributeProfilesName;
-            this.props.attributeProfiles.forEach(realProfile => { //realProfile contain the data
-                if(realProfile.name == name){
-                    combinedAttributeProfiles.splice(combinedAttributeProfiles.length, 0, realProfile);
-                }
-            });
-        });
-
-        this.setState({combinedAttributeProfiles: combinedAttributeProfiles});
     }
 
     render(){
@@ -384,41 +370,17 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                         </tr>
                     </table>
                     <div style={{...itemStyle, ...subItemSytle}}>
-                        <div style={{...itemHeadStyle, ...subItemHeadSytle}}>Attribute Profile X{this.state.combinedAttributeProfiles.length}</div>
+                        <div style={{...itemHeadStyle, ...subItemHeadSytle}}>Attribute Profile</div>
                         <hr style={itemHrStyle} />
                         <Collapse isOpen={this.state.isListOpen} style={itemBodyStyle}>
                                 {
-                                    this.state.combinedAttributeProfiles.map((combinedAttribute)=>(
-                                        <div style={{...itemStyle, ...subSubItemSytle}} key={combinedAttribute.name}>
-                                            <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
-                                                {combinedAttribute.name}
-                                                <div style={rightDivStyle}>
-                                                        min: {combinedAttribute.minCardinality} | max: {combinedAttribute.maxCardinality}
-                                                </div>
-                                                <div style={rightDivStyle}>
-                                                {
-                                                            this.state.isEditingForm
-                                                            ?<AnchorButton onClick={(event)=>{
-                                                                //todo
-                                                            }} intent="danger" icon="delete" text="Remove Inculded Attribute" style={{marginLeft: "5px"}}/>
-                                                            :<></>
-                                                        }
-                                                </div>
-                                            </div>
-                                            <hr style={itemHrStyle} />
-                                            <div style={{...itemBodyStyle,...subSubitemBodyStyle}}>
-                                                <table>
-                                                    <tr>
-                                                        <td>Value Type</td><td>:</td><td>{combinedAttribute.valueType}</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            
-                                            {/* <div>{combinedAttribute.name}</div> 
-                                            <div>{combinedAttribute.maxCardinality}</div> 
-                                            <div>{combinedAttribute.minCardinality}</div>  
-                                            <div>{combinedAttribute.valueType}</div>   */}
-                                        </div>
+                                    this.state.attributeProfiles.map((attribute)=>(
+                                        <ComponentIncludedAttributeItem
+                                            key = {attribute.attributeProfileName}
+                                            attributeName = {attribute.attributeProfileName}
+                                            attributeProfiles = {this.props.attributeProfiles}
+                                            isEditingForm = {this.state.isEditingForm}
+                                        />
                                     ))
                                 }
                         </Collapse>
@@ -428,6 +390,111 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             </div>
         );
     }
+}
+
+const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemProps) => {
+    const itemStyle = {
+        marginTop: "10px",
+        borderRadius: "5px",
+        background: "#FFFFFF",
+    } as React.CSSProperties;
+
+    const itemHeadStyle = {
+        padding: "7px 5px 30px 5px",
+        height: "15px",
+        fontSize: "20px",
+        width: "100%",
+    } as React.CSSProperties;
+
+    const itemHeadButtonStyle = {
+        padding: "5px",
+        float: "right",
+    } as React.CSSProperties;
+
+    const itemHrStyle = {
+        width: "100%",
+        margin: "0 0 7px 0",
+    } as React.CSSProperties;
+
+    const itemBodyStyle = {
+        padding: "5px",
+        width: "100%",
+    } as React.CSSProperties;
+
+    const subItemSytle = {
+        backgroundColor: "#99BB99",
+        // color: "#FFF",
+    }
+
+    const subItemHeadSytle ={
+        padding: "0.5em 0 1.5em 0",
+        fontSize: "1.1em",
+        textAlign: "center"
+    }
+
+    const centerStyle = {
+        fontSize: "1.2em",
+        textAlign: "center",
+        cursor: "pointer",
+        paddingBottom: "1em",
+        lineHeight: "0",
+    }
+
+    const rightDivStyle = {
+        float: "right",
+    }
+
+    const subSubItemSytle = {
+        backgroundColor: "#779977",
+        marginLeft: "5px",
+        marginRight: "5px", 
+        // color: "#FFF",
+    }
+
+    const subSubItemHeadStyle = {
+        padding: "7px 5px 5px",
+        fontSize: "15px",
+        height: "unset",
+    }
+
+    const subSubitemBodyStyle = {
+        fontSize: "15px",
+    }
+
+    let output = <></>
+
+    props.attributeProfiles.forEach((attribute)=> {        
+        if(attribute.name.toString() == props.attributeName.toString()) {
+            output = 
+                <div style={{...itemStyle, ...subSubItemSytle}} key={props.attributeName}>
+                    <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
+                        {attribute.name}
+                        <div style={rightDivStyle}>
+                                min: {attribute.minCardinality} | max: {attribute.maxCardinality}
+                        </div>
+                        <div style={rightDivStyle}>
+                        {
+                            props.isEditingForm
+                            ?<AnchorButton onClick={(event)=>{
+                                //todo
+                            }} intent="danger" icon="delete" text="Remove Inculded Attribute" style={{marginLeft: "5px"}}/>
+                            :<></>
+                        }
+                        </div>
+                    </div>
+                    <hr style={itemHrStyle} />
+                    <div style={{...itemBodyStyle,...subSubitemBodyStyle}}>
+                        <table>
+                            <tr>
+                                <td>Value Type</td><td>:</td><td>{attribute.valueType}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            ;
+        }
+    });
+    return output;
 }
 
 export interface AddressComponentProfilePanelProps {
@@ -450,4 +517,10 @@ interface AddressComponentProfileListItemProps {
     componentProfile: AddressComponentProfile,
     attributeProfiles: AttributeProfile[],
     changeStateHandler: any,
+}
+
+interface ComponentIncludedAttributeItemProps {
+    attributeName: string,
+    attributeProfiles: AttributeProfile[],
+    isEditingForm: boolean,
 }
