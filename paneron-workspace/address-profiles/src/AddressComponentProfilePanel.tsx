@@ -199,6 +199,8 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                 example: null,
                 attributeProfiles: null,
             },
+
+            addAttributeName: "select",
         }
     }
 
@@ -265,6 +267,16 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
         this.setState({attributeProfiles: newAttributeProfiles});
     }
 
+    addIncludedAttribute = (attributeName:string) => {
+        log.info(attributeName);
+        if(attributeName != "select") {
+            const newAttributeProfiles = JSON.parse(JSON.stringify(this.state.attributeProfiles));//deep copy the state.addressProfiles
+            const index = newAttributeProfiles.length;
+            newAttributeProfiles.splice(index, 0, {attributeProfileName: attributeName});
+            this.setState({attributeProfiles: newAttributeProfiles, addAttributeName: "select"});
+        }
+    }
+
     render(){
 
         const itemStyle = {
@@ -319,6 +331,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             paddingBottom: "0",
             lineHeight: "normal",
             padding: "5px 0",
+            borderRadius: "5px",
         }
 
         const rightDivStyle = {
@@ -340,6 +353,13 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
 
         const subSubitemBodyStyle = {
             fontSize: "15px",
+        }
+
+        const selectStyle = {
+            width: "100%",
+            marginBottom: "5px",
+            padding: "5px",
+            borderRadius: "5px",
         }
 
         return(
@@ -405,8 +425,17 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                         </Collapse>
                         {this.state.isEditingForm
                             ?<div style={{...itemStyle, ...subSubItemSytle}}>
-                                <input type="text" name="" id=""/>{/*stopped here*/}
-                                <div style={{...centerStyle, ...addButtonStyle}} onClick={this.handleListOpen}>Add Inculded Attribute</div>
+                                <div style={{padding: "5px"}}>
+                                    <select style={selectStyle} value={this.state.addAttributeName} onChange={(event)=>{this.setState({addAttributeName: event.target.value})}}>
+                                        <option value="select">please select attribute</option>
+                                        {
+                                            this.props.attributeProfiles.map((attribute)=>(
+                                                <option key={attribute.name} value={attribute.name}>{attribute.name}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <div style={{...centerStyle, ...addButtonStyle}} onClick={()=>{this.addIncludedAttribute(this.state.addAttributeName)}}>Add Inculded Attribute</div>
+                                </div>
                             </div>
                             :<></>
                         }
