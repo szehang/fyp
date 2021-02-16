@@ -215,7 +215,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             }
         })
 
-        this.setState({ isEditingForm: !this.state.isEditingForm });
+        this.setState({ isEditingForm: !this.state.isEditingForm, isListOpen: true});
     }
 
     handleDiscardChange = () => {
@@ -314,6 +314,13 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             lineHeight: "0",
         }
 
+        const addButtonStyle = {
+            backgroundColor: "#509970",
+            paddingBottom: "0",
+            lineHeight: "normal",
+            padding: "5px 0",
+        }
+
         const rightDivStyle = {
             float: "right",
         }
@@ -396,6 +403,13 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                                     ))
                                 }
                         </Collapse>
+                        {this.state.isEditingForm
+                            ?<div style={{...itemStyle, ...subSubItemSytle}}>
+                                <input type="text" name="" id=""/>{/*stopped here*/}
+                                <div style={{...centerStyle, ...addButtonStyle}} onClick={this.handleListOpen}>Add Inculded Attribute</div>
+                            </div>
+                            :<></>
+                        }
                         <div style={centerStyle} onClick={this.handleListOpen}>...</div>
                     </div>
                 </div>
@@ -426,31 +440,13 @@ const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemPro
     const itemHrStyle = {
         width: "100%",
         margin: "0 0 7px 0",
+        clear: "both",
     } as React.CSSProperties;
 
     const itemBodyStyle = {
         padding: "5px",
         width: "100%",
     } as React.CSSProperties;
-
-    const subItemSytle = {
-        backgroundColor: "#99BB99",
-        // color: "#FFF",
-    }
-
-    const subItemHeadSytle ={
-        padding: "0.5em 0 1.5em 0",
-        fontSize: "1.1em",
-        textAlign: "center"
-    }
-
-    const centerStyle = {
-        fontSize: "1.2em",
-        textAlign: "center",
-        cursor: "pointer",
-        paddingBottom: "1em",
-        lineHeight: "0",
-    }
 
     const rightDivStyle = {
         float: "right",
@@ -464,7 +460,7 @@ const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemPro
     }
 
     const subSubItemHeadStyle = {
-        padding: "7px 5px 5px",
+        padding: "10px 5px 5px",
         fontSize: "15px",
         height: "unset",
     }
@@ -479,17 +475,17 @@ const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemPro
         if(attribute.name == props.attributeName) {
             output = 
                 <div style={{...itemStyle, ...subSubItemSytle}} key={props.attributeName}>
-                    <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
-                        {attribute.name}
-                        <div style={rightDivStyle}>
-                                min: {attribute.minCardinality} | max: {attribute.maxCardinality}
-                        </div>
-                        <div style={rightDivStyle}>
+                    <div style={itemHeadButtonStyle}>
                         {
                             props.isEditingForm
                             ?<AnchorButton onClick={()=>{props.removeIncludedAttribute(props.attributeName)}} intent="danger" icon="delete" text="Remove Inculded Attribute" style={{marginLeft: "5px"}}/>
                             :<></>
                         }
+                    </div>
+                    <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
+                        {attribute.name}
+                        <div style={rightDivStyle}>
+                                min: {attribute.minCardinality} | max: {attribute.maxCardinality}
                         </div>
                     </div>
                     <hr style={itemHrStyle} />
