@@ -57,6 +57,24 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
 
 
     handleAddChange = () => {
+        // If the "Profile key" or "Description" field is empty
+        if (!this.state.key) {
+            alert("\"Profile Key\" cannot not be empty");
+
+            return;
+        } else if(!this.state.description) {
+            alert("\"Description\" cannot not be empty");
+
+            return;
+        }
+
+        // If some optional field is missing
+        if (!this.state.example) {
+            if (!window.confirm("Optional field \"Example\" are missing.\nConfirm to create?")) {
+                return;
+            }
+        }
+
         const dataToBeAdded: AddressComponentProfile = {
             key: this.state.key,
             description: this.state.description,
@@ -66,6 +84,25 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
 
         this.props.changeStateHandler( "component", "add", dataToBeAdded);
 
+        this.setState({ 
+            isOpeningForm: !this.state.isOpeningForm,
+            key: "",
+            description: "",
+            example: "",
+            attributeProfiles: [],
+        });
+    }
+
+    handleDiscardForm = () => {
+        // If one of the field is not empty
+        if ( this.state.key || this.state.description || this.state.example ) {
+            if(!window.confirm("Form data will be clear.\nConfirm to discard?")) {
+                return;
+            }
+
+        }
+
+        // Clear the form data when Discard
         this.setState({ 
             isOpeningForm: !this.state.isOpeningForm,
             key: "",
@@ -109,8 +146,6 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
         } as React.CSSProperties;
 
 
-
-
         return(
             <div style={itemStyle}>
                 <div style={{...itemHeadButtonStyle, ...rightStyle}}>
@@ -121,7 +156,7 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                 </div>
                 <div style={itemHeadButtonStyle}>
                     {this.state.isOpeningForm
-                        ?<AnchorButton onClick={this.handleOpenForm} intent="danger" icon="delete" text="Discard Profile" />
+                        ?<AnchorButton onClick={this.handleDiscardForm} intent="danger" icon="delete" text="Discard Profile" />
                         :<AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Component Profile" />
                     }
                 </div>
@@ -221,6 +256,16 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
     }
 
     handleDiscardChange = () => {
+        // If one of the input field changed but user clicked discard
+        if (
+            this.state.description != this.state.dataBeforeEdit.description ||
+            this.state.example != this.state.dataBeforeEdit.example
+        ) {
+            if (!window.confirm("Some fields are changed.\nConfirm to discard?")) {
+                return;
+            }
+        }
+
         this.setState({
             description: this.state.dataBeforeEdit.description,
             example: this.state.dataBeforeEdit.example,
@@ -244,6 +289,11 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
     }
 
     handleDeleteChange = () => {
+        // Alert before deleting
+        if (!window.confirm("Confirm to delete this Attribute Profile?")) {
+            return;
+        }
+
         const dataToBeDeleted: AddressComponentProfile = {
             key: this.state.key,
             description: this.state.description,
