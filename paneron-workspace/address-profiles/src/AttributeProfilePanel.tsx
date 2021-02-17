@@ -51,6 +51,27 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
 
 
     handleAddChange = () => {
+
+        // If the "Profile Name" field is empty
+        if (!this.state.name) {
+            alert("\"Profile Name\" cannot not be empty");
+
+            return;
+        }
+
+        // If some optional field is missing
+        if ( !this.state.maxCardinality || !this.state.minCardinality || !this.state.valueType ) {
+            if (!window.confirm("Some optional fields are missing.\nConfirm to create?")) {
+                return;
+            }
+        }
+
+        // Check if maxCardinality>=minCardinality
+        if ( parseInt(this.state.maxCardinality) < parseInt(this.state.minCardinality) ) {
+            alert("\"Min Cardinality\" cannot be greater than \"Max Cardinality\"");
+            return;
+        }
+
         const dataToBeAdded: AttributeProfile = {
             name: this.state.name,
             maxCardinality: this.state.maxCardinality,
@@ -67,6 +88,26 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
             minCardinality: "",
             valueType: "",
         });
+    }
+
+    handleDiscardForm = () => {
+        // If one of the field is not empty
+        if ( this.state.name || this.state.maxCardinality || this.state.minCardinality || this.state.valueType ) {
+            if(!window.confirm("Form data will be clear.\nConfirm to discard?")) {
+                return;
+            }
+
+        }
+
+        // Clear the form data when Discard
+        this.setState({ 
+            isOpeningForm: !this.state.isOpeningForm,
+            name: "",
+            maxCardinality: "",
+            minCardinality: "",
+            valueType: "",
+        });
+
     }
 
     render(){
@@ -115,7 +156,7 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
                 </div>
                 <div style={itemHeadButtonStyle}>
                     {this.state.isOpeningForm
-                        ?<AnchorButton onClick={this.handleOpenForm} intent="danger" icon="delete" text="Discard Profile" />
+                        ?<AnchorButton onClick={this.handleDiscardForm} intent="danger" icon="delete" text="Discard Profile" />
                         :<AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Attribute Profile" />
                     }
                 </div>
@@ -212,6 +253,17 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
     }
 
     handleDiscardChange = () => {
+        // If one of the input field changed but user clicked discard
+        if (
+            this.state.maxCardinality != this.state.dataBeforeEdit.oldMaxCardinality ||
+            this.state.minCardinality != this.state.dataBeforeEdit.oldMinCardinality ||
+            this.state.valueType != this.state.dataBeforeEdit.oldValueType
+        ) {
+            if (!window.confirm("Some fields are changed.\nConfirm to discard?")) {
+                return;
+            }
+        }
+
         this.setState({
             maxCardinality: this.state.dataBeforeEdit.oldMaxCardinality,
             minCardinality: this.state.dataBeforeEdit.oldMinCardinality,
@@ -222,6 +274,12 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
     }
 
     handleSaveChange = () => {
+        // Check if maxCardinality>=minCardinality
+        if ( parseInt(this.state.maxCardinality) < parseInt(this.state.minCardinality) ) {
+            alert("\"Min Cardinality\" cannot be greater than \"Max Cardinality\"");
+            return;
+        }
+
         const dataToBeSaved: AttributeProfile = {
             name: this.state.name,
             maxCardinality: this.state.maxCardinality,
@@ -235,6 +293,11 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
     }
 
     handleDeleteChange = () => {
+        // Alert before deleting
+        if (!window.confirm("Confirm to delete this Attribute Profile?")) {
+            return;
+        }
+
         const dataToBeDeleted: AttributeProfile = {
             name: this.state.name,
             maxCardinality: this.state.maxCardinality,
