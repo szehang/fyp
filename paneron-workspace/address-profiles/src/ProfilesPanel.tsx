@@ -1,12 +1,9 @@
-import { Tab, TabId, Tabs, TagInput } from "@blueprintjs/core"; //AnchorButton
+import { AnchorButton, Tab, TabId, Tabs, TagInput } from "@blueprintjs/core"; //AnchorButton
 import * as React from "react";
 import { Title } from "./Utility";
-import { ProfileCreateForm } from "./ProfileCreateForm"
-import { ProfileItem } from "./ProfileItem";
 import { AddressClassProfilePanel } from "./AddressClassProfilePanel";
 import { AddressProfile } from "./AddressProfile";
 import { AttributeProfilePanel } from "./AttributeProfilePanel";
-import { ComponentProfilePanel } from "./ComponentProfilePanel";
 import { AddressComponentProfilePanel } from "./AddressComponentProfilePanel";
 
 export class ProfilesPanel extends React.Component<any, any> {
@@ -36,6 +33,7 @@ export class ProfilesPanel extends React.Component<any, any> {
       margin: "0 5px",
       height: "100%",
       overflowY: "auto",
+      overflowX: "hidden",
     } as React.CSSProperties;
 
     const tabStyle = {
@@ -48,23 +46,35 @@ export class ProfilesPanel extends React.Component<any, any> {
     return (
       <div style={divStyle}>
         <Title name="Address Profile" />
-        {this.props.currentAddressProfile == null
-        ?<>please activit the address profile first</>
-        :<div style={tabDivStyle}>
-          <Tabs
-            id="AddressProfileTabs"
-            animate={true}
-            onChange={this.handleTabChange}
-            selectedTabId={this.state.tabBarTabId}
-            large={true}
-          >
-            <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler}/>} style={tabStyle} />
-            <Tab id="addressComponent" title="Address Component Profiles" panel={<AddressComponentProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler}/>} style={tabStyle} />
-            <Tab id="attribute" title="Attribute Profiles" panel={<AttributeProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} /> 
+        {
+          this.props.currentAddressProfileCode == "null"
+          ?
+            <div style={{marginTop:"50%", display: "flex", alignItems:"center", justifyContent:"center", flexDirection:"column",}}>
+              <div>Please select an activated address profile first</div>
+            </div>
+          :
+            this.props.currentAddressProfileCode != "null" && this.props.currentAddressProfile == null
+            ?
+            <div style={{marginTop:"50%", display: "flex", alignItems:"center", justifyContent:"center", flexDirection:"column",}}>
+              <div style={{marginBottom:"5px"}}>Please activate the address profile first</div>
+              <AnchorButton onClick={()=>{this.props.activateAddressProfile(this.props.currentAddressProfileCode)}} intent="success" icon="tick-circle" text="Activate Profile" />
+            </div>
+            :
+            <div style={tabDivStyle}>
+              <Tabs
+                id="AddressProfileTabs"
+                animate={true}
+                onChange={this.handleTabChange}
+                selectedTabId={this.state.tabBarTabId}
+                large={true}
+              >
+                <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler}/>} style={tabStyle} />
+                <Tab id="addressComponent" title="Address Component Profiles" panel={<AddressComponentProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler}/>} style={tabStyle} />
+                <Tab id="attribute" title="Attribute Profiles" panel={<AttributeProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} /> 
 
-            <Tabs.Expander />
-          </Tabs>
-        </div>
+                <Tabs.Expander />
+              </Tabs>
+            </div>
         }
       </div>
     );
@@ -77,6 +87,8 @@ export class ProfilesPanel extends React.Component<any, any> {
 }
 
 export interface ProfilesPanelProps {
+  currentAddressProfileCode: string,
   currentAddressProfile: AddressProfile,
   changeStateHandler: any,
+  activateAddressProfile: any,
 }

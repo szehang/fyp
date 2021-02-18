@@ -246,7 +246,7 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
                                     <td>Area Applicability</td>
                                     <td>:</td>
                                     <td>
-                                        <TagInput values={this.state.areaApplicability} onChange={(values: React.ReactNode[]) => {this.setState({ areaApplicability: values })}} />
+                                        <TagInput addOnBlur={true} values={this.state.areaApplicability} onChange={(values: React.ReactNode[]) => {this.setState({ areaApplicability: values })}} />
                                         {/* <InputGroup value={this.state.areaApplicability} onChange={(event)=>{this.setState({areaApplicability: event.target.value})}}/> */}
                                     </td>
                                 </tr>
@@ -607,7 +607,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ?<TagInput values={this.state.areaApplicability} onChange={(values: React.ReactNode[]) => {this.setState({ areaApplicability: values })}} /> 
+                                    ?<TagInput addOnBlur={true} values={this.state.areaApplicability} onChange={(values: React.ReactNode[]) => {this.setState({ areaApplicability: values })}} /> 
                                     // <InputGroup value={this.state.areaApplicability} onChange={(event)=>{this.setState({type: event.target.areaApplicability})}}/>
                                     : <>
                                         {

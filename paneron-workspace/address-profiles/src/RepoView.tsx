@@ -20,7 +20,6 @@ class Container extends React.Component<any, State> {
     this.state = {
       currentAddressProfileCode: "null",
       currentAddressProfile: null,
-      // test input the hkg.yaml
 
       addressProfiles: get_yaml("output"),
     };
@@ -39,6 +38,28 @@ class Container extends React.Component<any, State> {
       });
     });
     this.setState({currentAddressProfileCode: addressProfileCode});
+  }
+
+  activateAddressProfile = (addressProfileCode:string) => {
+    const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
+    const id = newAddressProfiles.length;
+    const newAddressProfile = {
+      id: id,
+      countries: [addressProfileCode,],
+      addressProfiles: [],
+      componentProfiles: [],
+      attributeProfiles: [],
+    }
+    newAddressProfiles.splice(newAddressProfiles.length, 0, newAddressProfile);
+
+    this.setState({addressProfiles: newAddressProfiles}, ()=>{
+      this.state.addressProfiles.forEach(profile => {
+        if(profile.id == id){
+          this.setState({currentAddressProfile: profile});
+        }
+      });
+    }); //refresh state by replace by the new one
+    output_yaml(newAddressProfiles, "output"); //save state data to yml file
   }
 
   //handle all state change call from all panel
@@ -193,7 +214,7 @@ class Container extends React.Component<any, State> {
     return (
       <div style={divStyle}>
         <AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
-        <ProfilesPanel currentAddressProfile={this.state.currentAddressProfile} changStateHandler={this.changeStateHandler.bind(this)} />
+        <ProfilesPanel currentAddressProfileCode={this.state.currentAddressProfileCode} currentAddressProfile={this.state.currentAddressProfile} changStateHandler={this.changeStateHandler.bind(this)} activateAddressProfile={this.activateAddressProfile.bind(this)} />
       </div>
     );
   }

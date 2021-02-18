@@ -57,7 +57,7 @@ constructor(props){
 
       return(
           <select style={selectStyle} onChange={ (event) => this.props.changeAddressProfile(event.target.value) } value={this.props.currentAddressProfileCode}>
-              <option value={"select"}>{"Select Address Profile"}</option>
+              <option value={"null"}>{"Select Address Profile"}</option>
               {
                   iso3166code.Countries.map((country)=>(
                       <option key={country["alpha-3"]} value={country["alpha-3"]}>
