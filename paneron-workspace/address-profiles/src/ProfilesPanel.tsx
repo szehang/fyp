@@ -25,6 +25,7 @@ export class ProfilesPanel extends React.Component<any, any> {
       width: "74.5%",
       border: "1px solid black",
       float: "right",
+      overflowY: "auto",
     } as React.CSSProperties;
 
     const textStyle = {
