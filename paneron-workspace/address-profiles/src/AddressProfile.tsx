@@ -17,7 +17,7 @@ export interface AddressClassProfile {
     areaApplicability?: string[], //iso19115MD_SpatialRresentation
     timeToLive: number,
     validity: string, //Validity
-    componentProfiles: {addressComponentProfileKey: string, attributeProfile:AddressComponentSpecification,}[],        
+    componentProfiles: {addressComponentProfileKey: string, addressComponentSpecification: AddressComponentSpecification,}[],        
 }
 
 export interface AddressComponentProfile {

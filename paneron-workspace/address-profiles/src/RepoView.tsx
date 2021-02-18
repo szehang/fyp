@@ -52,7 +52,7 @@ class Container extends React.Component<any, State> {
 
     switch(targetType){
       case "class":{
-        //TODO
+        this.changeStateClass(mode, object);
       }
       break;
       case "component":{
@@ -64,6 +64,44 @@ class Container extends React.Component<any, State> {
       }
       break;
     }
+  }
+
+  changeStateClass = (mode:string, object: any) => {
+    const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
+        
+    newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
+      if(profile.id == this.state.currentAddressProfile.id){
+        const classProfiles = profile.addressProfiles;
+
+        switch(mode){
+          case "add": {
+            classProfiles.splice(classProfiles.length, 0, object); //push new profile to the class array
+          }
+          break;
+          case "edit": {
+            classProfiles.forEach(classProfile => { //locate the target classProfile //
+                  if(classProfile.id==object.id) {
+                    const index = classProfiles.indexOf(classProfile);
+                    classProfiles.splice(index, 1, object) //remove replace the old component with the new data
+                  }
+                });
+          }
+          break;
+          case "delete": {
+            classProfiles.forEach(classProfile => { //locate the target classProfile //
+              if(classProfile.id==object.id) {
+                const index = classProfiles.indexOf(classProfile);
+                classProfiles.splice(index, 1) //remove target element
+              }
+            });
+          }
+          break;
+        }
+
+        this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
+        output_yaml(newAddressProfiles, "output"); //save state data to yml file
+      }
+    });   
   }
 
   changeStateComponent = (mode:string, object: any) => {

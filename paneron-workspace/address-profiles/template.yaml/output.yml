@@ -15,17 +15,33 @@
       validity: V01
       componentProfiles:
         - addressComponentProfileKey: boxNum
-          attributeProfile:
+          addressComponentSpecification:
             maxCardinality: 1
             minCardinality: 1
+    - id: '1'
+      type: '2'
+      localization: '3'
+      description: '4'
+      signature: '5'
+      areaApplicability:
+        - '6'
+        - '10'
+      timeToLive: '7'
+      validity: '8'
+      componentProfiles: []
   componentProfiles:
     - key: boxNum
-      description: box number
-      example: Box 001
+      description: box number 123
+      example: Box 001 123
       attributeProfiles:
-        - attributeProfilesName: number
+        - attributeProfileName: number
+        - attributeProfileName: string
   attributeProfiles:
     - name: number
-      maxCardinality: 1
+      maxCardinality: '10'
       minCardinality: 1
       valueType: number
+    - name: string
+      maxCardinality: '1'
+      minCardinality: '0'
+      valueType: string
