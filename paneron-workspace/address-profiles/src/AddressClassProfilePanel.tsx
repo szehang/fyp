@@ -682,7 +682,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Max</td>
+                                            <td>Min</td>
                                             <td>:</td>
                                             <td>
                                                 <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMinCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMinCardinality: value})}}/>
