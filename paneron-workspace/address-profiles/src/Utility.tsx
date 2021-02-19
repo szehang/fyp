@@ -13,6 +13,10 @@ export function get_yaml(file_name: string) {
     if (!fs.existsSync(`./yaml-data/`)) {
       fs.mkdirSync(`./yaml-data/`);
     }
+    //create name.yml if not exist
+    if (!fs.existsSync(`./yaml-data/${file_name}.yml`)) {
+      output_yaml({}, file_name)
+    }
     //log
     log.info("reading file:", path.resolve(`./`) + `/yaml-data/${file_name}.yml`);
     //return json format
