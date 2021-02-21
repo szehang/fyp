@@ -27,9 +27,8 @@ export class ProfilesPanel extends React.Component<any, any> {
     const divStyle = {
       backgroundColor: "rgb(226, 226, 226)",
       height: "100%",
-      width: "74.5%",
+      width: "100%",
       border: "1px solid black",
-      float: "right",
     } as React.CSSProperties;
 
     const textStyle = {

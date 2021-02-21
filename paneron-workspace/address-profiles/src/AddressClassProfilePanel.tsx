@@ -198,7 +198,7 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
                 <div style={itemHeadButtonStyle}>
                     {this.state.isOpeningForm
                         ?<AnchorButton onClick={this.handleDiscardForm} intent="danger" icon="delete" text="Discard Profile" />
-                        :<AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Component Profile" />
+                        :<AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Class Profile" />
                     }
                 </div>
                 {

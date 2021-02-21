@@ -5,6 +5,7 @@ import { AddressProfile } from "./AddressProfile";
 import {get_yaml, output_yaml} from "./Utility";
 import log from "electron-log"
 import { profile } from "console";
+import { Icon } from "@blueprintjs/core";
 
 Object.assign(console, log);
 
@@ -12,6 +13,7 @@ interface State {
   currentAddressProfileCode: string
   currentAddressProfile: AddressProfile | null
   addressProfiles: AddressProfile[]
+  isLeftPanelOpen: boolean
 }
 
 class Container extends React.Component<any, State> {
@@ -22,6 +24,8 @@ class Container extends React.Component<any, State> {
       currentAddressProfile: null,
 
       addressProfiles: get_yaml("output"),
+
+      isLeftPanelOpen: false,
     };
 
     //test output all data to yaml
@@ -201,6 +205,10 @@ class Container extends React.Component<any, State> {
     });   
   }
 
+  handleTogglePanel = () => {
+    this.setState({ isLeftPanelOpen: !this.state.isLeftPanelOpen });
+  }
+
   render() {
     const divStyle = {
       backgroundColor: "rgb(0, 0, 0)",
@@ -211,9 +219,25 @@ class Container extends React.Component<any, State> {
       verticalAlign: "middle",
     } as React.CSSProperties;
 
+    const panelToggleStyle = {
+      float: "left",
+      lineHeight: "50",
+      backgroundColor: "lightgray",
+      color: "white",
+    } as React.CSSProperties;
+
     return (
       <div style={divStyle}>
-        <AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
+        {this.state.isLeftPanelOpen
+          ?<AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
+          :<></>
+        }
+        <div style={panelToggleStyle} onClick={this.handleTogglePanel}>
+          {this.state.isLeftPanelOpen
+          ?<Icon icon="double-chevron-left" />
+          :<Icon icon="double-chevron-right" />
+          }
+        </div>
         <ProfilesPanel currentAddressProfileCode={this.state.currentAddressProfileCode} currentAddressProfile={this.state.currentAddressProfile} changStateHandler={this.changeStateHandler.bind(this)} activateAddressProfile={this.activateAddressProfile.bind(this)} />
       </div>
     );

@@ -9,8 +9,7 @@ export class AddressProfilePanel extends React.Component<any, any> {
     const divStyle = {
       backgroundColor: "rgb(226, 226, 226)",
       height: "100%",
-      width: "25.4%",
-      border: "1px solid black",
+      width: "25.5%",
       float: "left",
     } as React.CSSProperties;
 
