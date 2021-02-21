@@ -290,7 +290,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
 
     handleDeleteChange = () => {
         // Alert before deleting
-        if (!window.confirm("Confirm to delete this Attribute Profile?")) {
+        if (!window.confirm("Confirm to delete this Component Profile?")) {
             return;
         }
 
@@ -299,6 +299,18 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             description: this.state.description,
             example: this.state.example,
             attributeProfiles: this.state.attributeProfiles,
+        }
+
+        const includedClasses = this.props.changeStateHandler("component", "checkIncludedInClass", dataToBeDeleted);
+        if (includedClasses!=null){
+            let message = "";
+            includedClasses.forEach((addressClass)=>{
+                message += "\n   " + addressClass.id.toString();
+            });
+
+            if(!window.confirm("This Component is included in Class Profile:" + message + "\n confirm to remove the component from the above Class Profile?")){
+                return;
+            }
         }
 
         this.props.changeStateHandler( "component", "delete", dataToBeDeleted);

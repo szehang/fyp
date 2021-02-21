@@ -73,15 +73,14 @@ class Container extends React.Component<any, State> {
   //  object should be created before pass into this function
   //  <AddressClassProfile | AddressComponentProfile | AttributeProfile>
   changeStateHandler = (targetType: string, mode:string, object: any) => {
-    console.log(mode);
 
     switch(targetType){
       case "class":{
-        this.changeStateClass(mode, object);
+        return this.changeStateClass(mode, object);
       }
       break;
       case "component":{
-        this.changeStateComponent(mode, object);
+        return this.changeStateComponent(mode, object);
       }
       break;
       case "attribute":{
@@ -131,7 +130,8 @@ class Container extends React.Component<any, State> {
 
   changeStateComponent = (mode:string, object: any) => {
     const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
-        
+    let result;    
+
     newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
       if(profile.id == this.state.currentAddressProfile.id){
         const components = profile.componentProfiles;
@@ -139,6 +139,9 @@ class Container extends React.Component<any, State> {
         switch(mode){
           case "add": {
             components.splice(components.length, 0, object); //push new profile to the components array
+            
+            this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
+            output_yaml(newAddressProfiles, "output"); //save state data to yml file
           }
           break;
           case "edit": {
@@ -148,6 +151,9 @@ class Container extends React.Component<any, State> {
                     components.splice(index, 1, object) //remove replace the old component with the new data
                   }
                 });
+
+            this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
+            output_yaml(newAddressProfiles, "output"); //save state data to yml file
           }
           break;
           case "delete": {
@@ -157,14 +163,46 @@ class Container extends React.Component<any, State> {
                 components.splice(index, 1) //remove target element
               }
             });
+
+
+            //remove the component from the included class profile
+
+            //have bugggggg
+            
+            // profile.addreessProfiles.forEach((addressProfile)=>{
+            //   addressProfile.componentProfiles.forEach((componentProfile)=>{
+            //     if(componentProfile.addressComponentProfileKey == object.key) {
+            //       log.info(addressProfile);
+            //       const index = addressProfile.componentProfiles.indexOf(componentProfile);
+            //       // addressProfile.componentProfiles.splice(index, 1);
+            //     }
+            //   });
+            // });
+
+            this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
+            output_yaml(newAddressProfiles, "output"); //save state data to yml file
+          }
+          break;
+          case "checkIncludedInClass": {
+            let includedClasses = [];
+            this.state.currentAddressProfile.addressProfiles.forEach((classProfile)=>{
+              classProfile.componentProfiles.forEach((componentProfile)=>{
+                if(componentProfile.addressComponentProfileKey == object.key){
+                  includedClasses.splice(includedClasses.length, 0, classProfile);
+                  log.info("classes: "+classProfile.id);
+                }
+              });
+            });
+            if(includedClasses.length==0){
+              includedClasses = null;
+            }
+            result = includedClasses;
           }
           break;
         }
-
-        this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
-        output_yaml(newAddressProfiles, "output"); //save state data to yml file
       }
     });   
+    return result;
   }
 
   changeStateAttribute = (mode:string, object: any) => {
