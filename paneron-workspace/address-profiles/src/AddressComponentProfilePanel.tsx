@@ -345,6 +345,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             marginTop: "10px",
             borderRadius: "5px",
             background: "#FFFFFF",
+            color: "white"
         } as React.CSSProperties;
 
         const itemHeadStyle = {
@@ -489,7 +490,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                             ?<div style={{...itemStyle, ...subSubItemSytle}}>
                                 <div style={{padding: "5px"}}>
                                     <select style={selectStyle} value={this.state.addAttributeName} onChange={(event)=>{this.setState({addAttributeName: event.target.value})}}>
-                                        <option value="select">please select attribute</option>
+                                        <option value="select">Please select attribute</option>
                                         {
                                             this.props.attributeProfiles.map((attribute)=>(
                                                 <option key={attribute.name} value={attribute.name}>{attribute.name}</option>
@@ -569,12 +570,12 @@ const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemPro
                     <div style={itemHeadButtonStyle}>
                         {
                             props.isEditingForm
-                            ?<AnchorButton onClick={()=>{props.removeIncludedAttribute(props.attributeName)}} intent="danger" icon="delete" text="Remove Inculded Attribute" style={{marginLeft: "5px"}}/>
+                            ?<AnchorButton onClick={()=>{props.removeIncludedAttribute(props.attributeName)}} intent="danger" icon="delete" style={{marginLeft: "5px"}}/>
                             :<></>
                         }
                     </div>
                     <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
-                        {attribute.name}
+                        <span style={{fontWeight: "bold"}}>{attribute.name}</span>
                         <div style={rightDivStyle}>
                                 min: {attribute.minCardinality} | max: {attribute.maxCardinality}
                         </div>
