@@ -1,4 +1,4 @@
-import { AnchorButton, Collapse, Tab, TabId, Tabs, TagInput } from "@blueprintjs/core"; //AnchorButton
+import { AnchorButton, Callout, Collapse, Tab, TabId, Tabs, TagInput } from "@blueprintjs/core"; //AnchorButton
 import * as React from "react";
 import { Title } from "./Utility";
 import { AddressClassProfilePanel } from "./AddressClassProfilePanel";
@@ -28,7 +28,6 @@ export class ProfilesPanel extends React.Component<any, any> {
       backgroundColor: "rgb(226, 226, 226)",
       height: "100%",
       width: "100%",
-      border: "1px solid black",
     } as React.CSSProperties;
 
     const textStyle = {
@@ -75,9 +74,12 @@ export class ProfilesPanel extends React.Component<any, any> {
           {
             this.props.currentAddressProfileCode == "null"
               ?
-              <div style={{ marginTop: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", }}>
-                <div>Please select an activated address profile first</div>
-              </div>
+              // <div style={{ marginTop: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", }}>
+              //   <div>Please select an activated address profile first</div>
+              // </div>
+                <Callout title="Warning" intent="warning">
+                  Please select an activated address profile first
+                </Callout>
               :
               this.props.currentAddressProfileCode != "null" && this.props.currentAddressProfile == null
                 ?

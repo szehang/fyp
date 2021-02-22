@@ -258,6 +258,7 @@ class Container extends React.Component<any, State> {
     } as React.CSSProperties;
 
     const panelToggleStyle = {
+      height: "100%",
       float: "left",
       lineHeight: "50",
       backgroundColor: "lightgray",
