@@ -169,15 +169,15 @@ class Container extends React.Component<any, State> {
 
             //have bugggggg
             
-            // profile.addreessProfiles.forEach((addressProfile)=>{
-            //   addressProfile.componentProfiles.forEach((componentProfile)=>{
-            //     if(componentProfile.addressComponentProfileKey == object.key) {
-            //       log.info(addressProfile);
-            //       const index = addressProfile.componentProfiles.indexOf(componentProfile);
-            //       // addressProfile.componentProfiles.splice(index, 1);
-            //     }
-            //   });
-            // });
+            profile.addressProfiles.forEach((addressProfile)=>{
+              addressProfile.componentProfiles.forEach((componentProfile)=>{
+                if(componentProfile.addressComponentProfileKey == object.key) {
+                  log.info(addressProfile);
+                  const index = addressProfile.componentProfiles.indexOf(componentProfile);
+                  // addressProfile.componentProfiles.splice(index, 1);
+                }
+              });
+            });
 
             this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
             output_yaml(newAddressProfiles, "output"); //save state data to yml file
