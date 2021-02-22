@@ -101,6 +101,7 @@ export class ProfilesPanel extends React.Component<any, any> {
                     onChange={this.handleTabChange}
                     selectedTabId={this.state.tabBarTabId}
                     large={true}
+                    renderActiveTabPanelOnly={true}
                   >
                     <Tab id="addressClass" title="Address Class Profiles" panel={<AddressClassProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} />
                     <Tab id="addressComponent" title="Address Component Profiles" panel={<AddressComponentProfilePanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler} />} style={tabStyle} />
