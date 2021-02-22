@@ -25,7 +25,7 @@ class Container extends React.Component<any, State> {
 
       addressProfiles: get_yaml("output"),
 
-      isLeftPanelOpen: false,
+      isLeftPanelOpen: true,
     };
 
     //test output all data to yaml
@@ -267,9 +267,12 @@ class Container extends React.Component<any, State> {
     return (
       <div style={divStyle}>
         {this.state.isLeftPanelOpen
-          ?<AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
+          ?<AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile} handleTogglePanel={this.handleTogglePanel} />
           :<></>
         }
+        {/* <Collapse isOpen={this.state.isLeftPanelOpen}>
+          <AddressProfilePanel currentAddressProfileCode={this.state.currentAddressProfileCode} changeAddressProfile={this.changeAddressProfile} currentAddressProfile={this.state.currentAddressProfile}/>
+        </Collapse> */}
         <div style={panelToggleStyle} onClick={this.handleTogglePanel}>
           {this.state.isLeftPanelOpen
           ?<Icon icon="double-chevron-left" />

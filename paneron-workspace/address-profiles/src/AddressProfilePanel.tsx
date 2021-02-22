@@ -29,6 +29,7 @@ export class AddressProfilePanel extends React.Component<any, any> {
               currentAddressProfileCode={this.props.currentAddressProfileCode}
               changeAddressProfile={this.props.changeAddressProfile}
               currentAddressProfile={this.props.currentAddressProfile}
+              handleTogglePanel = {this.props.handleTogglePanel}
           />
           <div>{this.props.currentAddressProfileCode}</div>
         </div>
@@ -38,12 +39,18 @@ export class AddressProfilePanel extends React.Component<any, any> {
 }
 
 class AddressProfileSelect extends React.Component<AddressProfileSelectProps> {
-constructor(props){
-  super(props)
-  this.state={
-    
+  constructor(props){
+    super(props)
+    this.state={
+      
+    }
   }
-}
+
+  handleSelectOnChange = (event) => {
+    this.props.changeAddressProfile(event.target.value);
+    this.props.handleTogglePanel();
+  }
+
   render() {
       const selectStyle = {
           width: "100%",
@@ -55,7 +62,7 @@ constructor(props){
         } as React.CSSProperties;
 
       return(
-          <select style={selectStyle} onChange={ (event) => this.props.changeAddressProfile(event.target.value) } value={this.props.currentAddressProfileCode}>
+          <select style={selectStyle} onChange={ (event) => this.handleSelectOnChange(event) } value={this.props.currentAddressProfileCode}>
               <option value={"null"}>{"Select Address Profile"}</option>
               {
                   iso3166code.Countries.map((country)=>(
@@ -75,4 +82,5 @@ export interface AddressProfileSelectProps {
   currentAddressProfileCode: string
   changeAddressProfile: any
   currentAddressProfile: AddressProfile
+  handleTogglePanel: any
 }
