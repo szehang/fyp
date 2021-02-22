@@ -174,7 +174,7 @@ class Container extends React.Component<any, State> {
                 if(componentProfile.addressComponentProfileKey == object.key) {
                   log.info(addressProfile);
                   const index = addressProfile.componentProfiles.indexOf(componentProfile);
-                  // addressProfile.componentProfiles.splice(index, 1);
+                  addressProfile.componentProfiles.splice(index, 1);
                 }
               });
             });
