@@ -345,7 +345,6 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             marginTop: "10px",
             borderRadius: "5px",
             background: "#FFFFFF",
-            color: "white"
         } as React.CSSProperties;
 
         const itemHeadStyle = {
