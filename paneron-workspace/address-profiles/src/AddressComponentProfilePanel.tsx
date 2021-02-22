@@ -492,7 +492,8 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                                         <option value="select">Please select attribute</option>
                                         {
                                             this.props.attributeProfiles.map((attribute)=>(
-                                                <option key={attribute.name} value={attribute.name}>{attribute.name}</option>
+                                                // <option key={attribute.name} value={attribute.name}>{attribute.name}</option>
+                                                <AttributeOption key={attribute.name} attributeName={attribute.name} attributeIncluded={this.state.attributeProfiles} />
                                             ))
                                         }
                                     </select>
@@ -507,6 +508,19 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             </div>
         );
     }
+}
+
+const AttributeOption = (props) => {
+    var isIncluded = false;
+
+    props.attributeIncluded.forEach(element => {
+        if(element.attributeProfileName == props.attributeName){
+            isIncluded = true;
+        }
+    });
+    
+return <option disabled={isIncluded} value={props.attributeName}>{props.attributeName}{isIncluded?" (already included)":""}</option>
+    
 }
 
 const ComponentIncludedAttributeItem = (props: ComponentIncludedAttributeItemProps) => {

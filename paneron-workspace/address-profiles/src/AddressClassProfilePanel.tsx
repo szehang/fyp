@@ -669,7 +669,8 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                                         <option value="select">please select component</option>
                                         {
                                             this.props.componentProfiles.map((component)=>(
-                                                <option key={component.key} value={component.key}>{component.key}</option>
+                                                // <option key={component.key} value={component.key}>{component.key}</option>
+                                                <ComponentOption key={component.key} componentKey={component.key} componentIncluded={this.state.componentProfiles} />
                                             ))
                                         }
                                     </select>
@@ -700,6 +701,20 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
             </div>
         );
     }
+}
+
+const ComponentOption = (props) => {
+    var isIncluded = false;
+
+    props.componentIncluded.forEach(element => {
+        if(element.addressComponentProfileKey == props.componentKey){
+            isIncluded = true;
+        }
+    });
+    log.info("isIncluded: "+ isIncluded);
+    
+return <option disabled={isIncluded} value={props.componentKey}>{props.componentKey}{isIncluded?" (already included)":""}</option>
+    
 }
 
 const ClassIncludedComponentItem = (props: ClassIncludedComponentItemProps) => {
