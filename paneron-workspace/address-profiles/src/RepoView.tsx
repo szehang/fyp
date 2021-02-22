@@ -84,7 +84,7 @@ class Container extends React.Component<any, State> {
       }
       break;
       case "attribute":{
-        this.changeStateAttribute(mode, object);
+        return this.changeStateAttribute(mode, object);
       }
       break;
     }
@@ -165,10 +165,7 @@ class Container extends React.Component<any, State> {
             });
 
 
-            //remove the component from the included class profile
-
-            //have bugggggg
-            
+            //remove the component from the included class profile            
             profile.addressProfiles.forEach((addressProfile)=>{
               addressProfile.componentProfiles.forEach((componentProfile)=>{
                 if(componentProfile.addressComponentProfileKey == object.key) {
@@ -207,7 +204,8 @@ class Container extends React.Component<any, State> {
 
   changeStateAttribute = (mode:string, object: any) => {
     const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
-        
+    let result;    
+
     newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
       if(profile.id == this.state.currentAddressProfile.id){
         const attributes = profile.attributeProfiles;
@@ -233,6 +231,31 @@ class Container extends React.Component<any, State> {
                 attributes.splice(index, 1) //remove target element
               }
             });
+
+            //remove the attribute from the included component profile            
+            profile.componentProfiles.forEach((componentProfile)=>{
+              componentProfile.attributeProfiles.forEach((attributeProfile)=>{
+                if(attributeProfile.attributeProfileName == object.name) {
+                  const index = componentProfile.attributeProfiles.indexOf(attributeProfile);
+                  componentProfile.attributeProfiles.splice(index, 1);
+                }
+              });
+            });
+          }
+          break;
+          case "checkIncludedInComponent": {
+            let includedComponents = [];
+            this.state.currentAddressProfile.componentProfiles.forEach((componentProfile)=>{
+              componentProfile.attributeProfiles.forEach((attributeProfile)=>{
+                if(attributeProfile.attributeProfileName == object.name){
+                  includedComponents.splice(includedComponents.length, 0, componentProfile);
+                }
+              });
+            });
+            if(includedComponents.length==0){
+              includedComponents = null;
+            }
+            result = includedComponents;
           }
           break;
         }
@@ -240,7 +263,8 @@ class Container extends React.Component<any, State> {
         this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
         output_yaml(newAddressProfiles, "output"); //save state data to yml file
       }
-    });   
+    });  
+    return result; 
   }
 
   handleTogglePanel = () => {

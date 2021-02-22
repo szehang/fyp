@@ -305,6 +305,18 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
             valueType: this.state.valueType,
         }
 
+        const includedComponents = this.props.changeStateHandler("attribute", "checkIncludedInComponent", dataToBeDeleted);
+        if (includedComponents!=null){
+            let message = "";
+            includedComponents.forEach((component)=>{
+                message += "\n   " + component.key.toString();
+            });
+
+            if(!window.confirm("This Attribute is included in Component Profile:" + message + "\n confirm to remove the attribute from the above Component Profile?")){
+                return;
+            }
+        }
+
         this.props.changeStateHandler( "attribute", "delete", dataToBeDeleted);
 
         this.setState({ isEditingForm: !this.state.isEditingForm });
