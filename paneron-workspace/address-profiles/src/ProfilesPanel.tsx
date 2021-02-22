@@ -1,4 +1,4 @@
-import { AnchorButton, Callout, Collapse, Tab, TabId, Tabs, TagInput } from "@blueprintjs/core"; //AnchorButton
+import { AnchorButton, Callout, Code, Collapse, Tab, TabId, Tabs, TagInput } from "@blueprintjs/core"; //AnchorButton
 import * as React from "react";
 import { Title } from "./Utility";
 import { AddressClassProfilePanel } from "./AddressClassProfilePanel";
@@ -78,15 +78,21 @@ export class ProfilesPanel extends React.Component<any, any> {
               //   <div>Please select an activated address profile first</div>
               // </div>
                 <Callout title="Warning" intent="warning">
-                  Please select an activated address profile first
+                  Please select an activated <Code>Address Profile</Code> first
                 </Callout>
               :
               this.props.currentAddressProfileCode != "null" && this.props.currentAddressProfile == null
                 ?
-                <div style={{ marginTop: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", }}>
-                  <div style={{ marginBottom: "5px" }}>Please activate the address profile first</div>
+                // <div style={{ marginTop: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", }}>
+                //   <div style={{ marginBottom: "5px" }}>Please activate the address profile first</div>
+                //   <AnchorButton onClick={() => { this.props.activateAddressProfile(this.props.currentAddressProfileCode) }} intent="success" icon="tick-circle" text="Activate Profile" />
+                // </div>
+
+                <Callout title="Warning" intent="warning">
+                  <p>Your selected <Code>Address Profile Country</Code> is not yet activated</p>
+                  <p>Please activate it first before manipulating it</p>
                   <AnchorButton onClick={() => { this.props.activateAddressProfile(this.props.currentAddressProfileCode) }} intent="success" icon="tick-circle" text="Activate Profile" />
-                </div>
+                </Callout>
                 :
                 <div>
                   <Tabs
