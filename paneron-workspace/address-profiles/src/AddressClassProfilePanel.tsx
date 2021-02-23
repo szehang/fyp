@@ -24,7 +24,8 @@ export class AddressClassProfilePanel extends React.Component<AddressClassProfil
                     :<>
                         <AddressClassProfileForm 
                         changeStateHandler = {this.props.changeStateHandler}
-                        componentProfiles = {this.props.currentAddressProfile.componentProfiles} 
+                        componentProfiles = {this.props.currentAddressProfile.componentProfiles}
+                        currentAddressProfile = {this.props.currentAddressProfile}
                         />
                         <AddressClassProfileList 
                         classProfiles = {this.props.currentAddressProfile.addressProfiles}
@@ -99,6 +100,27 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
             if (!window.confirm("Optional field \"Area Applicability\" are missing.\nConfirm to create?")) {
                 return;
             }
+        }
+
+        this.props.currentAddressProfile.addressProfiles.forEach((ele) => {
+            console.log(ele);
+        })
+
+        // All form checking is Done
+        // Check if the Unique ID (i.e. Profile key) is being 
+        let isIdUsed = false;
+
+        this.props.currentAddressProfile.addressProfiles.forEach((addressProfiles) => {
+            if ( (addressProfiles.id.toLowerCase()) === (this.state.id.toLowerCase())) {
+                isIdUsed = true;
+                return;
+            }
+        });
+
+        if (isIdUsed) {
+            alert("\"" + this.state.id + "\"" + " is being used.\nTry another one");
+
+            return;
         }
 
         const dataToBeAdded: AddressClassProfile = {
@@ -381,6 +403,29 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
     }
 
     handleSaveChange = () => {
+        // If the required field is empty
+        if(!this.state.type) {
+            alert("\"Type\" cannot not be empty");
+
+            return;
+        } else if(!this.state.localization) {
+            alert("\"Localization\" cannot not be empty");
+
+            return;
+        } else if(!this.state.description) {
+            alert("\"Description\" cannot not be empty");
+
+            return;
+        } else if(!this.state.timeToLive) {
+            alert("\"Time To Live\" cannot not be empty");
+
+            return;
+        } else if(!this.state.validity) {
+            alert("\"Validity\" cannot not be empty");
+
+            return;
+        }
+
         const dataToBeSaved: AddressClassProfile = {
             id: this.state.id,
             type: this.state.type,
@@ -666,7 +711,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             ?<div style={{...itemStyle, ...subSubItemSytle}}>
                                 <div style={{padding: "5px"}}>
                                     <select style={selectStyle} value={this.state.addComponentKey} onChange={(event)=>{this.setState({addComponentKey: event.target.value})}}>
-                                        <option value="select">please select component</option>
+                                        <option value="select">Please select component</option>
                                         {
                                             this.props.componentProfiles.map((component)=>(
                                                 // <option key={component.key} value={component.key}>{component.key}</option>
@@ -823,6 +868,7 @@ export interface AddressClassProfilePanelProps {
 interface AddressClassProfileFormProps {
     changeStateHandler: any,
     componentProfiles: AddressComponentProfile[],
+    currentAddressProfile: AddressProfile,
 }
 
 interface AddressClassProfileListProps {

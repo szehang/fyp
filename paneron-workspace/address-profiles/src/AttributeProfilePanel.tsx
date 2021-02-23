@@ -1,6 +1,9 @@
 import { AnchorButton, InputGroup, NumericInput, TagInput } from "@blueprintjs/core";
 import * as React from "react";
 import { AddressProfile, AttributeProfile } from "./AddressProfile";
+import log from "electron-log"
+
+Object.assign(console, log);
 
 export class AttributeProfilePanel extends React.Component<AttributeProfilePanelProps> {
     constructor(props){
@@ -9,8 +12,8 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
     
         }
     }
-
     render(){
+
         return(
             <>
                 {
@@ -19,6 +22,7 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
                     :<>
                         <AttributeProfileForm 
                         changeStateHandler = {this.props.changeStateHandler}
+                        currentAddressProfile = {this.props.currentAddressProfile}
                         />
                         <AttributeProfileList 
                         items = {this.props.currentAddressProfile.attributeProfiles}
@@ -72,6 +76,23 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
             return;
         }
 
+        // All form checking is Done
+        // Check if the Unique ID (i.e. Profile Name) is being used
+        let isIdUsed = false;
+        
+        this.props.currentAddressProfile.attributeProfiles.forEach((attributeProfile) => {
+            if ( (attributeProfile.name.toLowerCase()) === (this.state.name.toLowerCase())) {
+                isIdUsed = true;
+                return;
+            }
+        });
+
+        if (isIdUsed) {
+            alert("\"" + this.state.name + "\"" + " is being used.\nTry another one");
+
+            return;
+        }
+
         const dataToBeAdded: AttributeProfile = {
             name: this.state.name,
             maxCardinality: this.state.maxCardinality,
@@ -88,6 +109,7 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
             minCardinality: "",
             valueType: "",
         });
+
     }
 
     handleDiscardForm = () => {
@@ -421,6 +443,7 @@ export interface AttributeProfilePanelProps {
 }
 
 interface AttributeProfileFormProps {
+    currentAddressProfile: AddressProfile,
     changeStateHandler: any,
 }
 

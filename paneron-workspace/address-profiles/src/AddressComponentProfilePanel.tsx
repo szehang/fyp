@@ -23,7 +23,8 @@ export class AddressComponentProfilePanel extends React.Component<AddressCompone
                     :<>
                         <AddressComponentProfileForm 
                         changeStateHandler = {this.props.changeStateHandler}
-                        attributeProfiles = {this.props.currentAddressProfile.attributeProfiles} 
+                        attributeProfiles = {this.props.currentAddressProfile.attributeProfiles}
+                        currentAddressProfile = {this.props.currentAddressProfile}
                         />
                         <AddressComponentProfileList 
                         componentProfiles = {this.props.currentAddressProfile.componentProfiles}
@@ -73,6 +74,23 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             if (!window.confirm("Optional field \"Example\" are missing.\nConfirm to create?")) {
                 return;
             }
+        }
+
+        // All form checking is Done
+        // Check if the Unique ID (i.e. Profile key) is being 
+        let isIdUsed = false;
+
+        this.props.currentAddressProfile.componentProfiles.forEach((componentProfile) => {
+            if ( (componentProfile.key.toLowerCase()) === (this.state.key.toLowerCase())) {
+                isIdUsed = true;
+                return;
+            }
+        });
+
+        if (isIdUsed) {
+            alert("\"" + this.state.key + "\"" + " is being used.\nTry another one");
+
+            return;
         }
 
         const dataToBeAdded: AddressComponentProfile = {
@@ -276,6 +294,14 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
     }
 
     handleSaveChange = () => {
+
+        // If the "Description" field is empty
+        if(!this.state.description) {
+            alert("\"Description\" cannot not be empty");
+
+            return;
+        }
+
         const dataToBeSaved: AddressComponentProfile = {
             key: this.state.key,
             description: this.state.description,
@@ -616,6 +642,7 @@ export interface AddressComponentProfilePanelProps {
 interface AddressComponentProfileFormProps {
     changeStateHandler: any,
     attributeProfiles: AttributeProfile[],
+    currentAddressProfile: AddressProfile,
 }
 
 interface AddressComponentProfileListProps {
