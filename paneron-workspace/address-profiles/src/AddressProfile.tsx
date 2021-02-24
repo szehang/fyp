@@ -1,4 +1,5 @@
 import { Data } from "electron/renderer";
+import { AttributeProfilePanel } from "./AttributeProfilePanel";
 
 export interface AddressProfile {
     id: string, //as index
@@ -40,6 +41,12 @@ export interface AddressComponentSpecification {
 }
 
 // InterchangeAddressClassProfile Interface
+export interface InterchangeAddressClassProfile extends AddressClassProfile {
+    formTemplates: FormTemplate[],
+    displayTemplates: DisplayTemplate[],
+    // attributeProfiles: AttributeProfile[],
+}
+
 export interface LayoutTemplate { // Docs 14.1
     id: string, 
     name: string,
@@ -85,7 +92,7 @@ export interface TextElement extends DisplayLineElement{ // Docs 16.5
     text: string,
 }
 
-export interface DisplayDataElement extends DisplayLineElement { // Docs 16.4
+export interface DisplayDataElement extends DisplayLineElement { // Docs 16.4 dataElement name space is conflict with the one from formElememt
     value: string,
 }
 // END: Interface about Display Template
