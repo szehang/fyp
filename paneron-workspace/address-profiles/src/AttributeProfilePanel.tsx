@@ -199,14 +199,14 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
                                     <td>Max Cardinality</td>
                                     <td>:</td>
                                     <td>
-                                        <NumericInput allowNumericCharactersOnly={true} value={this.state.maxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({maxCardinality: value})}}/>
+                                        <NumericInput allowNumericCharactersOnly={true} value={this.state.maxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({maxCardinality: _v})}}/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Min Cardinality</td>
                                     <td>:</td>
                                     <td>
-                                        <NumericInput allowNumericCharactersOnly={true} value={this.state.minCardinality} onValueChange={(_v: number, value: string)=>{this.setState({minCardinality: value})}}/>   
+                                        <NumericInput allowNumericCharactersOnly={true} value={this.state.minCardinality} onValueChange={(_v: number, value: string)=>{this.setState({minCardinality: _v})}}/>   
                                     </td>
                                 </tr>
                                 <tr>
@@ -403,7 +403,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <NumericInput allowNumericCharactersOnly={true} value={this.state.maxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({maxCardinality: value})}}/>
+                                    ? <NumericInput allowNumericCharactersOnly={true} value={this.state.maxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({maxCardinality: _v})}}/>
                                     : <>{this.state.maxCardinality}</>
                                 }    
                             </td>
@@ -414,7 +414,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <NumericInput allowNumericCharactersOnly={true} value={this.state.minCardinality} onValueChange={(_v: number, value: string)=>{this.setState({minCardinality: value})}}/>
+                                    ? <NumericInput allowNumericCharactersOnly={true} value={this.state.minCardinality} onValueChange={(_v: number, value: string)=>{this.setState({minCardinality: _v})}}/>
                                     : <>{this.state.minCardinality}</>
                                 }    
                             </td>

@@ -276,7 +276,7 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
                                     <td>Time To Live</td>
                                     <td>:</td>
                                     <td>
-                                        <NumericInput allowNumericCharactersOnly={true} value={this.state.timeToLive} onValueChange={(_v: number, value: string)=>{this.setState({timeToLive: value})}}/>
+                                        <NumericInput allowNumericCharactersOnly={true} value={this.state.timeToLive} onValueChange={(_v: number, value: string)=>{this.setState({timeToLive: _v})}}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -671,7 +671,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <NumericInput allowNumericCharactersOnly={true} value={this.state.timeToLive} onValueChange={(_v: number, value: string)=>{this.setState({timeToLive: value})}}/>
+                                    ? <NumericInput allowNumericCharactersOnly={true} value={this.state.timeToLive} onValueChange={(_v: number, value: string)=>{this.setState({timeToLive: _v})}}/>
                                     : <>{this.state.timeToLive}</>
                                 }    
                             </td>
@@ -724,14 +724,14 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                                             <td>Max</td>
                                             <td>:</td>
                                             <td>
-                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMaxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMaxCardinality: value})}}/>
+                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMaxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMaxCardinality: _v})}}/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Min</td>
                                             <td>:</td>
                                             <td>
-                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMinCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMinCardinality: value})}}/>
+                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMinCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMinCardinality: _v})}}/>
                                             </td>
                                         </tr>
                                     </table>
