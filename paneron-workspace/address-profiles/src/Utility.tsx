@@ -60,7 +60,7 @@ export function Title(props: any) {
   return (<div style={divStyle}>{props.name}</div>);
 }
 
-export function DropDown(props: any) {
+export function DropDown(props: DropDownProps) {
   const divStyle = {
     height: "24px",
     fontSize: "18px",
@@ -72,4 +72,10 @@ export function DropDown(props: any) {
   }
 
   return <select style={divStyle}>{props.data.map(makeItem)}</select>
+}
+
+export interface DropDownProps {
+  content: any,
+  onChange: any,
+  items: any[]
 }

@@ -6,6 +6,7 @@ import { AddressProfile } from "./AddressProfile";
 import { AttributeProfilePanel } from "./AttributeProfilePanel";
 import { AddressComponentProfilePanel } from "./AddressComponentProfilePanel";
 import { Global, css } from '@emotion/core';
+import { LayoutPanel } from "./LayoutPanel";
 
 export class ProfilesPanel extends React.Component<any, any> {
   constructor(props: any) {
@@ -120,9 +121,15 @@ export class ProfilesPanel extends React.Component<any, any> {
         <Collapse isOpen={this.state.isMainPanelOpen}>
           <div style={centerStyle} onClick={this.handleSecondPanelOpen}>...</div>
         </Collapse>
-        <Collapse isOpen={!this.state.isMainPanelOpen} className={!this.state.isMainPanelOpen?'div-style':''}>
-          <div>many things to display !~</div>
-        </Collapse>
+        {this.props.currentAddressProfileCode == "null"
+          ?
+          <h1>Please select an activated <Code>Address Profile</Code> first</h1>
+          :
+          <Collapse isOpen={!this.state.isMainPanelOpen} className={!this.state.isMainPanelOpen?'div-style':''}>
+            {/* <div>many things to display !~</div> */}
+            <LayoutPanel currentAddressProfile={this.props.currentAddressProfile} changeStateHandler={this.props.changStateHandler}/>
+          </Collapse>
+        }
       </div>
     );
 
