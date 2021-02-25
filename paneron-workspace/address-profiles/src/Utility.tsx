@@ -20,7 +20,8 @@ export function get_yaml(file_name: string) {
     //log
     log.info("reading file:", path.resolve(`./`) + `/yaml-data/${file_name}.yml`);
     //return json format
-    return yaml.load(fs.readFileSync(`./yaml-data/${file_name}.yml`, 'utf8'));
+    const result = yaml.load(fs.readFileSync(`./yaml-data/${file_name}.yml`, 'utf8'));
+    return Object.keys(result).length == 0 ?[] :result;
   } catch (e) {
     //error
     log.warn(e);

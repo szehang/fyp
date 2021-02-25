@@ -80,7 +80,7 @@ export interface LayoutLine { // Docs 15.1
 
 // START: Interface about Display Template
 export interface DisplayTemplate extends LayoutTemplate {
-    formLines: FormLine[], // Not Sure, see docs Part.16
+    // displayLines: DisplayLine[], // Not Sure, see docs Part.16
 }
 
 export interface DisplayLine extends LayoutLine { // Docs 15.1 and 16
@@ -103,7 +103,7 @@ export interface DisplayDataElement extends DisplayLineElement { // Docs 16.4 da
 
 // START: Interface about Form Template
 export interface FormTemplate extends LayoutTemplate {
-    formLines: FormLine[], // Note Sure, see docs Part.17
+    // formLines: FormLine[], // Note Sure, see docs Part.17
 }
 
 export interface FormLine extends LayoutLine { // Docs 15.1 and 16
