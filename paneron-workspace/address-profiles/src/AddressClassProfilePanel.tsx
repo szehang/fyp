@@ -55,6 +55,9 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
             timeToLive: "",
             validity: "",
             componentProfiles: [],
+
+            formTemplates: [],
+            displayTemplates: [],
         }
     }
 
@@ -133,6 +136,9 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
             timeToLive: this.state.timeToLive,
             validity: this.state.validity,
             componentProfiles: this.state.componentProfiles,
+
+            formTemplates: this.state.formTemplates,
+            displayTemplates: this.state.displayTemplates,
         }
 
         this.props.changeStateHandler("class", "add", dataToBeAdded);
@@ -148,6 +154,9 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
             timeToLive: "",
             validity: "",
             componentProfiles: [],
+
+            formTemplates: [],
+            displayTemplates: [],
         });
     }
 
@@ -172,6 +181,9 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
             timeToLive: "",
             validity: "",
             componentProfiles: [],
+
+            formTemplates: [],
+            displayTemplates: [],
         });
     }
 
@@ -332,6 +344,9 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
             timeToLive: this.props.classProfile.timeToLive,
             validity: this.props.classProfile.validity,
             componentProfiles: this.props.classProfile.componentProfiles,
+            
+            formTemplates: this.props.classProfile.formTemplates,
+            displayTemplates: this.props.classProfile.displayTemplates,
 
             dataBeforeEdit: {
                 type: null,
@@ -342,6 +357,9 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                 timeToLive: null,
                 validity: null,
                 componentProfiles: null,
+                
+                formTemplates: null,
+                displayTemplates: null,
             },
 
             addComponentKey: "select",
@@ -365,6 +383,9 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                 timeToLive: this.props.classProfile.timeToLive,
                 validity: this.props.classProfile.validity,
                 componentProfiles: this.props.classProfile.componentProfiles,
+
+                formTemplates: this.props.classProfile.formTemplates,
+                displayTemplates: this.props.classProfile.formTemplates,
             }
         })
 
@@ -397,6 +418,9 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
             timeToLive: this.state.dataBeforeEdit.timeToLive,
             validity: this.state.dataBeforeEdit.validity,
             componentProfiles: this.state.dataBeforeEdit.componentProfiles,
+            
+            formTemplates: this.state.dataBeforeEdit.formTemplates,
+            displayTemplates: this.state.dataBeforeEdit.displayTemplates,
         });
 
         this.setState({ isEditingForm: !this.state.isEditingForm });
@@ -436,6 +460,9 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
             timeToLive: this.state.timeToLive,
             validity: this.state.validity,
             componentProfiles: this.state.componentProfiles,
+            
+            formTemplates: this.state.formTemplates,
+            displayTemplates: this.state.displayTemplates,
         }
 
         this.props.changeStateHandler( "class", "edit", dataToBeSaved);
@@ -459,6 +486,9 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
             timeToLive: this.state.timeToLive,
             validity: this.state.validity,
             componentProfiles: this.state.componentProfiles,
+            
+            formTemplates: this.state.formTemplates,
+            displayTemplates: this.state.displayTemplates,
         }
 
         this.props.changeStateHandler( "class", "delete", dataToBeDeleted);
