@@ -2,7 +2,7 @@ import { AnchorButton, Code, Collapse, Divider, InputGroup, Tab, TabId, Tabs } f
 
 import { stat } from "fs";
 import React from "react";
-import { AddressProfile, FormTemplate } from "./AddressProfile";
+import { AddressClassProfile, AddressProfile, FormTemplate } from "./AddressProfile";
 
 
 import log from "electron-log"
@@ -36,7 +36,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                     </div>
                     <Collapse isOpen={this.state.currentClassProfile!=null}>
                         <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId)=>{this.setState({selectedTabId: tabId})}}>
-                            <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel />}></Tab>
+                            <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel currentClassProfile={this.state.currentClassProfile} />}></Tab>
                             <Tab id={"displayTemplate"} title={"Display Template"} panel={<DisplayTemplatePanel />}></Tab>
                         </Tabs>
                     </Collapse>
@@ -60,6 +60,8 @@ class FormTemplatePanel extends React.Component<FormTemplateProps, any>{
     constructor(props){
         super(props);
         this.state={
+            currentClassProfile: this.props.currentClassProfile,
+
             isFormOpen: false,
 
             //form input
@@ -97,17 +99,33 @@ class FormTemplatePanel extends React.Component<FormTemplateProps, any>{
         this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}}, ()=>{log.info(this.state.localization.textDirection)});
     }
 
+    createTemplate() {
+        //todo
+    }
+
     render(){
         return(
             <div style={{borderRadius: "5px", backgroundColor: "#15B371",}}>
                 <Collapse isOpen={!this.state.isFormOpen}>
-                    <div style={{padding:"5px", display:"flex", justifyContent:"space-between"}}>
-                        <div>Template 1</div>
-                        <div>
-                            <AnchorButton text={"edit"}/>
-                            <AnchorButton text={"delete"}/>
-                        </div>
-                    </div>
+                    {
+                        this.state.currentClassProfile.formTemplates.length == 0
+                        ? <>there is no existing form template</>
+                        : <></>
+                    }
+                    {
+                        this.state.currentClassProfile.formTemplates.map((form)=>(
+                            <div key={form.id} style={{padding:"5px", display:"flex", justifyContent:"space-between"}}>
+                                <div>{form.id}: {form.name}</div>
+                                <div style={{textOverflow:"ellipsis"}}>{form.description}</div>
+                                <div>
+                                    <AnchorButton text={"edit"}/>
+                                    <AnchorButton text={"delete"}/>
+                                </div>
+                            </div>
+                        ))
+                    }
+                    
+
                 </Collapse>
                 {this.state.isFormOpen
                     ?<div style={{borderRadius: "5px", padding:"5px", textAlign:"center" ,backgroundColor:"#FF7373", cursor:"pointer"}} onClick={()=>{this.handleFormOpen()}}>Discard New Template</div>
@@ -202,6 +220,7 @@ class FormTemplatePanel extends React.Component<FormTemplateProps, any>{
                             </tr>
                         </table>
                     </div>
+                    <div style={{borderRadius: "0 0 5px 5px", padding:"5px", textAlign:"center", backgroundColor:"#999", cursor:"pointer"}} onClick={this.createTemplate}>Create Template</div>
                 </Collapse>     
             </div>
         )
@@ -228,7 +247,7 @@ export interface LayoutPanelProps{
 }
 
 interface FormTemplateProps {
-
+    currentClassProfile: AddressClassProfile,
 }
 
 interface DisplayTemplateProps {
