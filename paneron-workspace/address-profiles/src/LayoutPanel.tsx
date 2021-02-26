@@ -1,7 +1,12 @@
 import { AnchorButton, Code, Collapse, Divider, InputGroup, Tab, TabId, Tabs } from "@blueprintjs/core";
+
 import { stat } from "fs";
 import React from "react";
 import { AddressProfile, FormTemplate } from "./AddressProfile";
+
+
+import log from "electron-log"
+Object.assign(console, log);
 
 export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
     constructor(props){
@@ -61,12 +66,35 @@ class FormTemplatePanel extends React.Component<FormTemplateProps, any>{
             id: "",
             name: "",
             description: "",
-            localization: {locale: "", script: "", writingSystem: "", textDriection: ""},
+            localization: {locale: "", script: "", writingSystem: "", textDirection: "leftToRightTopToBottom"},
         }
     }
 
     handleFormOpen() {
         this.setState({isFormOpen: !this.state.isFormOpen});
+    }
+
+    handelTextDirectionChange(verticalValue:string|null, horizontalValue:string|null, callBack: any) {
+        let oldVerticalValue = "";
+        let oldHorizontalValue = "";
+
+        let textDirection = this.state.localization.textDirection;
+
+        textDirection.includes("TopToBottom")
+        ? oldVerticalValue = "TopToBottom"
+        : oldVerticalValue = "BottomToTop"
+
+        textDirection.includes("leftToRight")
+        ? oldHorizontalValue = "leftToRight"
+        : oldHorizontalValue = "rightToLeft"
+
+        if(verticalValue){
+            oldVerticalValue = verticalValue;
+        }else if(horizontalValue){
+            oldHorizontalValue = horizontalValue;
+        }
+
+        this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}}, ()=>{log.info(this.state.localization.textDirection)});
     }
 
     render(){
@@ -112,37 +140,64 @@ class FormTemplatePanel extends React.Component<FormTemplateProps, any>{
                             <tr>
                                 <td>Localization</td>
                                 <td>:</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Locale</td>
-                                <td>:</td>
-                                <td>
-                                    <InputGroup value={this.state.localization.locale}
-                                        onChange={(event)=>{
-                                            this.setState({
-                                                localization: {
-                                                    ...this.state.localization,
-                                                    locale: event.target.value,
-                                                }
-                                            })
-                                        }}/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Script</td>
-                                <td>:</td>
-                                <td>
-                                    <InputGroup value={this.state.localization.script}
-                                        onChange={(event)=>{
-                                            this.setState({
-                                                localization: {
-                                                    ...this.state.localization,
-                                                    script: event.target.value,
-                                                }
-                                            })
-                                        }}/>
+                                <td style={{padding:"0"}}>
+                                    <table>
+                                        <tr>
+                                            <td>Locale</td>
+                                            <td>:</td>
+                                            <td style={{padding:"0"}}>
+                                                <InputGroup value={this.state.localization.locale}
+                                                    onChange={(event)=>{
+                                                        this.setState({localization: {...this.state.localization, locale: event.target.value,}})}
+                                                    }
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Script</td>
+                                            <td>:</td>
+                                            <td style={{padding:"0"}}>
+                                                <InputGroup value={this.state.localization.script}
+                                                        onChange={(event)=>{
+                                                            this.setState({localization: {...this.state.localization, script: event.target.value,}})}
+                                                        }
+                                                    />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Writing System</td>
+                                            <td>:</td>
+                                            <td style={{padding:"0"}}>
+                                                <InputGroup value={this.state.localization.writingSystem}
+                                                        onChange={(event)=>{
+                                                            this.setState({localization: {...this.state.localization, writingSystem: event.target.value,}})}
+                                                        }
+                                                    />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Text Direction</td>
+                                            <td>:</td>
+                                            <td style={{padding:"0"}}>
+                                                <select
+                                                    style={{width:"130px"}}
+                                                    value={this.state.localization.textDirection.includes("TopToBottom")?"TopToBottom":"BottomToTop"}
+                                                    onChange={(event)=>{this.handelTextDirectionChange(event.target.value, null, this.forceUpdate.bind(this))}}
+                                                >
+                                                    <option value="TopToBottom">Top to Bottom</option>
+                                                    <option value="BottomToTop">Bottom to Top</option>
+                                                </select>
+                                                <select
+                                                    style={{width:"130px", marginLeft:"5px"}}
+                                                    value={this.state.localization.textDirection.includes("leftToRight")?"leftToRight":"rightToLeft"} 
+                                                    onChange={(event)=>{this.handelTextDirectionChange(null,event.target.value, this.forceUpdate.bind(this))}} 
+                                                >
+                                                    <option value="leftToRight">Left to Right</option>
+                                                    <option value="rightToLeft">Right to Left</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                         </table>

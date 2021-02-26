@@ -18,17 +18,10 @@
           addressComponentSpecification:
             maxCardinality: 1
             minCardinality: 1
-    - id: '1'
-      type: '2'
-      localization: '3'
-      description: '4'
-      signature: '5'
-      areaApplicability:
-        - '6'
-        - '10'
-      timeToLive: '7'
-      validity: '8'
-      componentProfiles: []
+        - addressComponentProfileKey: jhbjkl;
+          addressComponentSpecification:
+            maxCardinality: 10
+            minCardinality: 0
   componentProfiles:
     - key: boxNum
       description: box number 123
@@ -36,12 +29,16 @@
       attributeProfiles:
         - attributeProfileName: number
         - attributeProfileName: string
+    - key: jhbjkl;
+      description: hbjknj
+      example: jbhbkj
+      attributeProfiles: []
   attributeProfiles:
     - name: number
-      maxCardinality: '10'
+      maxCardinality: 10
       minCardinality: 1
       valueType: number
     - name: string
-      maxCardinality: '1'
-      minCardinality: '0'
+      maxCardinality: 10
+      minCardinality: 1
       valueType: string
