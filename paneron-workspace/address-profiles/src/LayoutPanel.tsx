@@ -37,7 +37,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                     </div>
                     <Collapse isOpen={this.state.currentClassProfile!=null}>
                         <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId)=>{this.setState({selectedTabId: tabId})}}>
-                            <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel currentClassProfile={this.state.currentClassProfile} changeStateHandler={this.props.changeStateHandler} />}></Tab>
+                            <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel currentAddressProfile={this.state.currentAddressProfile} currentClassProfile={this.state.currentClassProfile} changeStateHandler={this.props.changeStateHandler} />}></Tab>
                             <Tab id={"displayTemplate"} title={"Display Template"} panel={<DisplayTemplatePanel />}></Tab>
                         </Tabs>
                     </Collapse>
@@ -61,7 +61,9 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
     constructor(props){
         super(props);
         this.state={
+            currentAddressProfile : this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
+            currentFormTemplate: null,
 
             isFormOpen: false,
 
@@ -100,6 +102,14 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}}, ()=>{log.info(this.state.localization.textDirection)});
     }
 
+    handelEditFormTemplate(formId:string){
+        this.state.currentClassProfile.formTemplates.forEach(formTemplate => {
+            if(formTemplate.id == formId) {
+                this.setState({currentFormTemplate: formTemplate});
+            }
+        });
+    }
+
     createTemplate() {
 
         const newCurrentClassProfile = JSON.parse(JSON.stringify(this.state.currentClassProfile));
@@ -133,6 +143,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 
         this.setState({
             isFormOpen: false,
+            currentClassProfile: newCurrentClassProfile,
 
             //form input
             id: "",
@@ -144,6 +155,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 
     render(){
         return(
+            <>
             <div style={{borderRadius: "5px", backgroundColor: "#15B371",}}>
                 <Collapse isOpen={!this.state.isFormOpen}>
                     {
@@ -154,10 +166,10 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                     {
                         this.state.currentClassProfile.formTemplates.map((form)=>(
                             <div key={form.id} style={{padding:"5px", display:"flex", justifyContent:"space-between"}}>
-                                <div>{form.id}: {form.name}</div>
-                                <div style={{textOverflow:"ellipsis"}}>{form.description}</div>
+                                <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.id}: {form.name}</div>
+                                <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.description}</div>
                                 <div>
-                                    <AnchorButton text={"edit"}/>
+                                    <AnchorButton text={"edit"} onClick={()=>{this.handelEditFormTemplate(form.id)}}/>
                                     <AnchorButton text={"delete"}/>
                                 </div>
                             </div>
@@ -262,8 +274,39 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                     <div style={{borderRadius: "0 0 5px 5px", padding:"5px", textAlign:"center", backgroundColor:"#999", cursor:"pointer"}} onClick={()=>{this.createTemplate()}}>Create Template</div>
                 </Collapse>     
             </div>
+            {
+                this.state.currentFormTemplate != null && this.state.currentClassProfile != null
+                ?
+                    <div style={{borderRadius: "5px", backgroundColor: "#15B371",marginTop:"5px",}}>
+                        <Collapse isOpen={true}>{/*debug mode*/}
+                                <FormTemplateEditPanel currentAddressProfile={this.state.currentAddressProfile} currentClassProfile={this.state.currentClassProfile} currentFormTemplate={this.state.currentFormTemplate} />
+                        </Collapse>
+                    </div>
+                :<></>
+            }
+            </>
         )
     }
+}
+
+class FormTemplateEditPanel extends React.Component<any, any>{
+    render() {
+        return (
+            <div style={{display:"flex"}}>
+                <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
+                    {/* component display */}
+                </div>
+                <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
+                <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
+                    {/* demo display */}
+                </div>
+            </div>
+        )
+    }
+}
+
+class FieldItem extends React.Component<any, any>{
+    
 }
 
 class DisplayTemplatePanel extends React.Component<DisplayTemplateProps, any>{
@@ -286,6 +329,7 @@ export interface LayoutPanelProps{
 }
 
 interface FormTemplatePanelProps {
+    currentAddressProfile: AddressProfile,
     currentClassProfile: AddressClassProfile,
     changeStateHandler: any,
 }
