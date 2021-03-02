@@ -165,8 +165,9 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
             width: "100%",
         } as React.CSSProperties;
 
-
-
+        const tdStyle = {
+            fontWeight: "bold",
+        }
 
         return(
             <div style={itemStyle}>
@@ -189,28 +190,28 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
                         <div style={itemBodyStyle}>
                             <table>
                                 <tr>
-                                    <td>Profile Name</td>
+                                    <td style={tdStyle}>Profile Name<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
                                         <InputGroup value={this.state.name} onChange={(event)=>{this.setState({name: event.target.value})}}/>  
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Max Cardinality</td>
+                                    <td style={tdStyle}>Max Cardinality</td>
                                     <td>:</td>
                                     <td>
                                         <NumericInput allowNumericCharactersOnly={true} value={this.state.maxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({maxCardinality: _v})}}/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Min Cardinality</td>
+                                    <td style={tdStyle}>Min Cardinality</td>
                                     <td>:</td>
                                     <td>
                                         <NumericInput allowNumericCharactersOnly={true} value={this.state.minCardinality} onValueChange={(_v: number, value: string)=>{this.setState({minCardinality: _v})}}/>   
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Value Type</td>
+                                    <td style={tdStyle}>Value Type</td>
                                     <td>:</td>
                                     <td>
                                         <InputGroup value={this.state.valueType} onChange={(event)=>{this.setState({valueType: event.target.value})}}/>  
@@ -375,6 +376,10 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
             width: "100%",
         } as React.CSSProperties;
 
+        const tdStyle = {
+            fontWeight: "bold",
+        }
+
         return(
             <div style={itemStyle}>
                 <div style={itemHeadButtonStyle}>
@@ -398,7 +403,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                 <div style={itemBodyStyle}>
                     <table>
                         <tr>
-                            <td>Max Cardinality</td>
+                            <td style={tdStyle}>Max Cardinality</td>
                             <td>:</td>
                             <td>
                                 {
@@ -409,7 +414,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                             </td>
                         </tr>
                         <tr>
-                            <td>Min Cardinality</td>
+                            <td style={tdStyle}>Min Cardinality</td>
                             <td>:</td>
                             <td>
                                 {
@@ -420,7 +425,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                             </td>
                         </tr>
                         <tr>
-                            <td>Value Type</td>
+                            <td style={tdStyle}>Value Type</td>
                             <td>:</td>
                             <td>
                                 {

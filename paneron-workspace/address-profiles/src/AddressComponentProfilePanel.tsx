@@ -163,6 +163,9 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             width: "100%",
         } as React.CSSProperties;
 
+        const tdStyle = {
+            fontWeight: "bold",
+        }
 
         return(
             <div style={itemStyle}>
@@ -185,21 +188,21 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                         <div style={itemBodyStyle}>
                             <table>
                                 <tr>
-                                    <td>Profile Key</td>
+                                    <td style={tdStyle}>Profile Key<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
                                         <InputGroup value={this.state.key} onChange={(event)=>{this.setState({key: event.target.value})}}/>  
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Description</td>
+                                    <td style={tdStyle}>Description<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
                                     <InputGroup value={this.state.description} onChange={(event)=>{this.setState({description: event.target.value})}}/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Example</td>
+                                    <td style={tdStyle}>Example</td>
                                     <td>:</td>
                                     <td>
                                     <InputGroup value={this.state.example} onChange={(event)=>{this.setState({example: event.target.value})}}/>
@@ -450,6 +453,14 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             borderRadius: "5px",
         }
 
+        const tdStyle = {
+            fontWeight: "bold",
+        }
+
+        const insideFormStyle = {
+            color: "white",
+        }
+
         return(
             <div style={itemStyle}>
                 <div style={itemHeadButtonStyle}>
@@ -473,7 +484,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                 <div style={itemBodyStyle}>
                     <table>
                         <tr>
-                            <td>Description</td>
+                            <td style={tdStyle}>Description</td>
                             <td>:</td>
                             <td>
                                 {
@@ -484,7 +495,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                             </td>
                         </tr>
                         <tr>
-                            <td>Example</td>
+                            <td style={tdStyle}>Example</td>
                             <td>:</td>
                             <td>
                                 {
@@ -495,8 +506,8 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                             </td>
                         </tr>
                     </table>
-                    <div style={{...itemStyle, ...subItemSytle}}>
-                        <div style={{...itemHeadStyle, ...subItemHeadSytle}}>Attribute Profile</div>
+                    <div style={{...itemStyle, ...subItemSytle, ...insideFormStyle}}>
+                        <div style={{...itemHeadStyle, ...subItemHeadSytle, fontWeight: "bold"}}>Attribute Profile</div>
                         <hr style={itemHrStyle} />
                         <Collapse isOpen={this.state.isListOpen} style={itemBodyStyle}>
                                 {
@@ -523,7 +534,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                                             ))
                                         }
                                     </select>
-                                    <div style={{...centerStyle, ...addButtonStyle}} onClick={()=>{this.addIncludedAttribute(this.state.addAttributeName)}}>Add Inculded Attribute</div>
+                                    <div style={{...centerStyle, ...addButtonStyle, fontWeight: "bold"}} onClick={()=>{this.addIncludedAttribute(this.state.addAttributeName)}}>Add Included Attribute</div>
                                 </div>
                             </div>
                             :<></>
