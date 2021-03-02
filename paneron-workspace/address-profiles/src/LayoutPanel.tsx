@@ -291,14 +291,140 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 
 class FormTemplateEditPanel extends React.Component<any, any>{
     render() {
+        const itemStyle = {
+            marginTop: "10px",
+            borderRadius: "5px",
+            background: "#FFFFFF",
+        } as React.CSSProperties;
+    
+        const itemHeadStyle = {
+            padding: "7px 5px 30px 5px",
+            height: "15px",
+            fontSize: "20px",
+            width: "100%",
+        } as React.CSSProperties;
+    
+        const itemHeadButtonStyle = {
+            padding: "5px",
+            float: "right",
+        } as React.CSSProperties;
+    
+        const itemHrStyle = {
+            width: "100%",
+            margin: "0 0 7px 0",
+            clear: "both",
+        } as React.CSSProperties;
+    
+        const itemBodyStyle = {
+            padding: "5px",
+            width: "100%",
+        } as React.CSSProperties;
+    
+        const rightDivStyle = {
+            float: "right",
+        }
+    
+        const subSubItemSytle = {
+            backgroundColor: "#3DCC91",
+            marginLeft: "5px",
+            marginRight: "5px", 
+            // color: "#FFF",
+        }
+    
+        const subSubItemHeadStyle = {
+            padding: "10px 5px 5px",
+            fontSize: "15px",
+            height: "unset",
+        }
+    
+        const subSubitemBodyStyle = {
+            fontSize: "15px",
+        }
+
+        // Style for right-hand side Display
+        const displayDivStyle = {
+            borderRadius: "5px",
+            backgroundColor: "white",
+            padding: "5px",
+            margin: "10px 5px"
+        }
+
+        const classTitleComponent = {
+            fontWeight: "bold",
+            textAlign: "center",
+
+        }
+
         return (
             <div style={{display:"flex"}}>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                     {/* component display */}
+                    
+                    {/* Generate the component list */}
+                    <div style={{...itemStyle, ...subSubItemSytle}}>
+                        <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
+                            {/* Hardcode Data */}
+                            Component 1
+                            <div style={rightDivStyle}>
+                                    {/* Hardcode Data */}
+                                    min: 1 | max: 2
+                            </div>
+                        </div>
+                        <hr style={itemHrStyle} />
+                        <div style={{...itemBodyStyle,...subSubitemBodyStyle}}>
+                            <table>
+                                <tr>
+                                    {/* Hardcode Data */}
+                                    <td style={{fontWeight: "bold",}}>Name</td><td>:</td><td>Temp Name</td>
+                                </tr>
+                                <tr>
+                                    {/* Hardcode Data */}
+                                    <td style={{fontWeight: "bold",}}>Example</td><td>:</td><td>Temp Example</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr style={itemHrStyle} />
+                        <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
+                            Row: 
+                            {/* Hardcode Data */}
+                            <select>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                            Order: 
+                            {/* Hardcode Data */}
+                            <select>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+
+                            <div style={rightDivStyle}>
+                                <AnchorButton intent="success" text={"Duplicate"}/>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                     {/* demo display */}
+                    <div style={displayDivStyle}>
+                        <div style={classTitleComponent}>
+                            {/* Hardcode Data */}
+                            Street Address
+                        </div>
+                        <hr style={itemHrStyle} />
+                        <table>
+                                <tr>
+                                    {/* Hardcode Data */}
+                                    <td style={{fontWeight: "bold",}}>Address Number</td><td>:</td><td>23</td>
+                                </tr>
+                                <tr>
+                                    {/* Hardcode Data */}
+                                    <td style={{fontWeight: "bold",}}>Locality name</td><td>:</td><td>Yuen Long</td>
+                                </tr>
+                            </table>
+                    </div>
                 </div>
             </div>
         )
