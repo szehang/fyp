@@ -123,7 +123,9 @@ export class ProfilesPanel extends React.Component<any, any> {
         </Collapse>
         {this.props.currentAddressProfileCode == "null"
           ?
-          <h1>Please select an activated <Code>Address Profile</Code> first</h1>
+          <Callout title="Warning" intent="warning">
+            Please select an activated <Code>Address Profile</Code> first
+          </Callout>
           :
           <Collapse isOpen={!this.state.isMainPanelOpen} className={!this.state.isMainPanelOpen?'div-style':''}>
             {/* <div>many things to display !~</div> */}
