@@ -361,7 +361,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     {/* component display */}
                     
                     {/* Generate the component list */}
-                    <div style={{...itemStyle, ...subSubItemSytle}}>
+                    <div style={{...itemStyle, ...subSubItemSytle, marginBottom: "5px"}}>
                         <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
                             {/* Hardcode Data */}
                             Component 1
@@ -384,7 +384,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                             </table>
                         </div>
                         <hr style={itemHrStyle} />
-                        <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
+                        <div style={{...itemHeadStyle, ...subSubItemHeadStyle, padding: "2px 5px 14px"}}>
                             Row: 
                             {/* Hardcode Data */}
                             <select>
