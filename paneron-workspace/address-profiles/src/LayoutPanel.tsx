@@ -14,6 +14,8 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
         super(props);
         this.state={
             currentClassProfile: null,
+            currentAddressProfile: this.props.currentAddressProfile,
+            changeStateHandler: this.props.changeStateHandler,
 
             selectedTabId: "formTemplate",
         }
@@ -28,8 +30,8 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                         <select style={{display:"inline",}} value={this.state.currentClassProfile? this.state.currentClassProfile.id: this.state.currentClassProfile} onChange={(event)=>{this.changeCurrentClassProfile(event.target.value)}}>
                             <option value={null} disabled selected>Select Class Profile</option>
                             {
-                                this.props.currentAddressProfile.addressProfiles.map((addressProfile)=>(
-                                    <option key={addressProfile.id} value={addressProfile.id}>{addressProfile.id}</option>
+                                this.props.currentAddressProfile.addressProfiles.map((addressClassProfile)=>(
+                                    <option key={addressClassProfile.id} value={addressClassProfile.id}>{addressClassProfile.id}</option>
                                 ))
                             }
                         </select>
@@ -37,7 +39,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                     </div>
                     <Collapse isOpen={this.state.currentClassProfile!=null}>
                         <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId)=>{this.setState({selectedTabId: tabId})}}>
-                            <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel currentAddressProfile={this.state.currentAddressProfile} currentClassProfile={this.state.currentClassProfile} changeStateHandler={this.props.changeStateHandler} />}></Tab>
+                            <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel currentAddressProfile={this.state.currentAddressProfile} currentClassProfile={this.state.currentClassProfile} changeStateHandler={this.state.changeStateHandler} />}></Tab>
                             <Tab id={"displayTemplate"} title={"Display Template"} panel={<DisplayTemplatePanel />}></Tab>
                         </Tabs>
                     </Collapse>
@@ -48,9 +50,9 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
 
     changeCurrentClassProfile(profileId: string | null) {
         if(profileId != null){
-            this.props.currentAddressProfile.addressProfiles.forEach((addressProfile)=>{
-                if(addressProfile.id == profileId){
-                    this.setState({currentClassProfile: addressProfile});
+            this.props.currentAddressProfile.addressProfiles.forEach((addressClassProfile)=>{
+                if(addressClassProfile.id == profileId){
+                    this.setState({currentClassProfile: addressClassProfile});
                 }
             });
         }
@@ -63,6 +65,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         this.state={
             currentAddressProfile : this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
+            changeStateHandler: this.props.changeStateHandler,
             currentFormTemplate: null,
 
             isFormOpen: false,
@@ -73,6 +76,10 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             description: "",
             localization: {locale: "", script: "", writingSystem: "", textDirection: "leftToRightTopToBottom"},
         }
+    }
+
+        componentDidMount(){
+        log.info(this.props.currentAddressProfile);
     }
 
     handleFormOpen() {
@@ -139,7 +146,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 
         newCurrentClassProfile.formTemplates.splice(newCurrentClassProfile.length, 0 , formTemplate)
 
-        this.props.changeStateHandler("class", "edit", newCurrentClassProfile);
+        this.state.changeStateHandler("class", "edit", newCurrentClassProfile);
 
         this.setState({
             isFormOpen: false,
@@ -156,6 +163,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
     render(){
         return(
             <>
+            <Collapse isOpen={this.state.currentClassProfile != null && this.state.currentFormTemplate==null}>
             <div style={{borderRadius: "5px", backgroundColor: "#15B371",}}>
                 <Collapse isOpen={!this.state.isFormOpen}>
                     {
@@ -274,6 +282,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                     <div style={{borderRadius: "0 0 5px 5px", padding:"5px", textAlign:"center", backgroundColor:"#999", cursor:"pointer"}} onClick={()=>{this.createTemplate()}}>Create Template</div>
                 </Collapse>     
             </div>
+            </Collapse>
             {
                 this.state.currentFormTemplate != null && this.state.currentClassProfile != null
                 ?
@@ -290,6 +299,22 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 }
 
 class FormTemplateEditPanel extends React.Component<any, any>{
+    constructor(props){
+        super(props);
+        this.state={
+            currentAddressProfile: this.props.currentAddressProfile,
+            currentClassProfile: this.props.currentClassProfile,
+            currentFormTemplate: this.props.currentFormTemplate,
+
+            //this component data
+
+        }
+    }
+
+    componentDidMount() {
+        
+    }
+
     render() {
         const itemStyle = {
             marginTop: "10px",
@@ -359,51 +384,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             <div style={{display:"flex"}}>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                     {/* component display */}
-                    
-                    {/* Generate the component list */}
-                    <div style={{...itemStyle, ...subSubItemSytle, marginBottom: "5px"}}>
-                        <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
-                            {/* Hardcode Data */}
-                            Component 1
-                            <div style={rightDivStyle}>
-                                    {/* Hardcode Data */}
-                                    min: 1 | max: 2
-                            </div>
-                        </div>
-                        <hr style={itemHrStyle} />
-                        <div style={{...itemBodyStyle,...subSubitemBodyStyle}}>
-                            <table>
-                                <tr>
-                                    {/* Hardcode Data */}
-                                    <td style={{fontWeight: "bold",}}>Name</td><td>:</td><td>Temp Name</td>
-                                </tr>
-                                <tr>
-                                    {/* Hardcode Data */}
-                                    <td style={{fontWeight: "bold",}}>Example</td><td>:</td><td>Temp Example</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <hr style={itemHrStyle} />
-                        <div style={{...itemHeadStyle, ...subSubItemHeadStyle, padding: "2px 5px 14px"}}>
-                            Row: 
-                            {/* Hardcode Data */}
-                            <select>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                            Order: 
-                            {/* Hardcode Data */}
-                            <select>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-
-                            <div style={rightDivStyle}>
-                                <AnchorButton intent="success" text={"Duplicate"}/>
-                            </div>
-                        </div>
-                    </div>
-
+                    {
+                        this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
+                            <EditableFieldItem componentPointer={componentPointer} currentAddressProfile={this.state.currentAddressProfile} currentFormTemplate={this.state.currentFormTemplate} />
+                        ))
+                    }                    
                 </div>
                 <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
@@ -431,8 +416,153 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     }
 }
 
-class FieldItem extends React.Component<any, any>{
+class EditableFieldItem extends React.Component<any, any>{
+    constructor(props) {
+        super(props);
+        this.state={
+            componentPointer: this.props.componentPointer,
+            currentAddressProfile: this.props.currentAddressProfile,
+            currentFormTemplate: this.props.currentFormTemplate,
+
+            //field data
+            fieldName: this.props.componentPointer.addressComponentProfileKey,
+            example: "Example",
+        };
+    }
+
+    componentDidMount() {
+        // log.info(this.state.componentPointer);
+        // log.info(this.state.currentAddressProfile);
+        // log.info(this.state.currentFormTemplate);
+        this.props.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+            if(componentProfile.key == this.props.componentPointer.addressComponentProfileKey) {
+                this.setState({example: componentProfile.example});
+            }
+        });
+    }
+
+    updateFieldName() {
+
+    }
+
+    updateExample() {
+
+    }
+
+    render(){
+        const itemStyle = {
+            marginTop: "10px",
+            borderRadius: "5px",
+            background: "#FFFFFF",
+        } as React.CSSProperties;
     
+        const itemHeadStyle = {
+            padding: "7px 5px 30px 5px",
+            height: "15px",
+            fontSize: "20px",
+            width: "100%",
+        } as React.CSSProperties;
+    
+        const itemHeadButtonStyle = {
+            padding: "5px",
+            float: "right",
+        } as React.CSSProperties;
+    
+        const itemHrStyle = {
+            width: "100%",
+            margin: "0 0 7px 0",
+            clear: "both",
+        } as React.CSSProperties;
+    
+        const itemBodyStyle = {
+            padding: "5px",
+            width: "100%",
+        } as React.CSSProperties;
+    
+        const rightDivStyle = {
+            float: "right",
+        }
+    
+        const subSubItemSytle = {
+            backgroundColor: "#3DCC91",
+            marginLeft: "5px",
+            marginRight: "5px", 
+            // color: "#FFF",
+        }
+    
+        const subSubItemHeadStyle = {
+            padding: "10px 5px 5px",
+            fontSize: "15px",
+            height: "unset",
+        }
+    
+        const subSubitemBodyStyle = {
+            fontSize: "15px",
+        }
+        return(
+            <div style={{...itemStyle, ...subSubItemSytle, marginBottom: "5px"}}>
+                <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
+                    {this.state.componentPointer.addressComponentProfileKey}
+                    <div style={rightDivStyle}>
+                            min: {this.state.componentPointer.addressComponentSpecification.minCardinality} | max: {this.state.componentPointer.addressComponentSpecification.maxCardinality}
+                    </div>
+                </div>
+                <hr style={itemHrStyle} />
+                <div style={{...itemBodyStyle,...subSubitemBodyStyle}}>
+                    <table>
+                        <tr>
+                            <td style={{fontWeight: "bold",}}>Field Name</td>
+                            <td>:</td>
+                            <td>
+                                <InputGroup value={this.state.fieldName} onChange={(event)=>{this.updateFieldName(event.target.value)}} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style={{fontWeight: "bold",}}>Example</td>
+                            <td>:</td>
+                            <td>
+                                <InputGroup value={this.state.example} onChange={(event)=>{this.updateExample(event.target.value)} />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <hr style={itemHrStyle} />
+                <div style={{...itemHeadStyle, ...subSubItemHeadStyle, padding: "2px 5px 14px"}}>
+                    Row: 
+                    {/* Hardcode Data */}
+                    <select>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                    Order: 
+                    {/* Hardcode Data */}
+                    <select>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+
+                    <div style={rightDivStyle}>
+                        <AnchorButton intent="success" text={"Duplicate"}/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class DisplayableFieldItem extends React.Component<any, any>{
+    constructor(props) {
+        super(props);
+        this.state={
+
+        };
+    }
+
+    render(){
+        return(
+            <></>
+        );
+    }
 }
 
 class DisplayTemplatePanel extends React.Component<DisplayTemplateProps, any>{
@@ -442,7 +572,7 @@ class DisplayTemplatePanel extends React.Component<DisplayTemplateProps, any>{
             
         }
     }
-    ender(){
+    render(){
         return(
             <></>
         )
