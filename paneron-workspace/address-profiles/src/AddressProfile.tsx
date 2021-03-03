@@ -107,13 +107,11 @@ export interface FormTemplate extends LayoutTemplate {
 }
 
 export interface FormLine extends LayoutLine { // Docs 15.1 and 16
-    elements: FormLineElement[],
-}
+    elements: {componentKeyBelongTo: string, type: string, element: FormLineElement}[],
+} // one more level is added(type&element) to differentiate the type of FormLineElement
 
 export interface FormLineElement {
-    selectionElements: SelectionElement[],
-    staticTextElement: StaticTextElement,
-    dataElement: FormDataElement, // Namespace: "Form", Original: "DataElement"
+    
 }
 export interface SelectionPair { // Docs 17.4
     key: string,

@@ -2,7 +2,7 @@ import { AnchorButton, Code, Collapse, Divider, InputGroup, Tab, TabId, Tabs } f
 
 import { stat } from "fs";
 import React from "react";
-import { AddressClassProfile, AddressProfile, FormTemplate } from "./AddressProfile";
+import { AddressClassProfile, AddressComponentProfile, AddressProfile, FormTemplate } from "./AddressProfile";
 
 
 import log from "electron-log"
@@ -86,7 +86,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         this.setState({isFormOpen: !this.state.isFormOpen});
     }
 
-    handelTextDirectionChange(verticalValue:string|null, horizontalValue:string|null, callBack: any) {
+    handleTextDirectionChange(verticalValue:string|null, horizontalValue:string|null, callBack: any) {
         let oldVerticalValue = "";
         let oldHorizontalValue = "";
 
@@ -109,7 +109,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}}, ()=>{log.info(this.state.localization.textDirection)});
     }
 
-    handelEditFormTemplate(formId:string){
+    handleEditFormTemplate(formId:string){
         this.state.currentClassProfile.formTemplates.forEach(formTemplate => {
             if(formTemplate.id == formId) {
                 this.setState({currentFormTemplate: formTemplate});
@@ -177,7 +177,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.id}: {form.name}</div>
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.description}</div>
                                 <div>
-                                    <AnchorButton text={"edit"} onClick={()=>{this.handelEditFormTemplate(form.id)}}/>
+                                    <AnchorButton text={"edit"} onClick={()=>{this.handleEditFormTemplate(form.id)}}/>
                                     <AnchorButton text={"delete"}/>
                                 </div>
                             </div>
@@ -259,7 +259,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                                 <select
                                                     style={{width:"130px"}}
                                                     value={this.state.localization.textDirection.includes("TopToBottom")?"TopToBottom":"BottomToTop"}
-                                                    onChange={(event)=>{this.handelTextDirectionChange(event.target.value, null, this.forceUpdate.bind(this))}}
+                                                    onChange={(event)=>{this.handleTextDirectionChange(event.target.value, null, this.forceUpdate.bind(this))}}
                                                 >
                                                     <option value="TopToBottom">Top to Bottom</option>
                                                     <option value="BottomToTop">Bottom to Top</option>
@@ -267,7 +267,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                                 <select
                                                     style={{width:"130px", marginLeft:"5px"}}
                                                     value={this.state.localization.textDirection.includes("leftToRight")?"leftToRight":"rightToLeft"} 
-                                                    onChange={(event)=>{this.handelTextDirectionChange(null,event.target.value, this.forceUpdate.bind(this))}} 
+                                                    onChange={(event)=>{this.handleTextDirectionChange(null,event.target.value, this.forceUpdate.bind(this))}} 
                                                 >
                                                     <option value="leftToRight">Left to Right</option>
                                                     <option value="rightToLeft">Right to Left</option>
@@ -307,12 +307,36 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             currentFormTemplate: this.props.currentFormTemplate,
 
             //this component data
-
+            // formLayout: [], //should be a 2d array
         }
     }
 
-    componentDidMount() {
-        
+    // componentDidMount() {
+    //     var formLayout;
+    //     if(this.state.currentFormTemplate.lines.length === 0) {
+    //         //auto fill all component to the array
+    //         this.state.currentClassProfile.componentProfiles.forEach((componentPointer)=>{
+    //             this.state.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+    //                 if(componentProfile.key == componentPointer.addressComponentProfileKey) {
+    //                     const newStaticText = componentProfile.key;
+    //                     const newData = componentProfile.example;
+
+    //                     const newLine = {element: [
+    //                         {type: "staticText", element: {value: newStaticText},},
+    //                         {type: "data", element: {value: newData},},
+    //                     ]};
+
+    //                     formLayout.splice(formLayout.length, 0, newLine);
+    //                 }
+    //             });
+    //         });
+    //     } else {
+    //         //read the current formTemplate data
+    //     }
+    // }
+
+    handleUpdate(targetComponentKey: string, type: string, data: string) {
+
     }
 
     render() {
@@ -386,7 +410,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     {/* component display */}
                     {
                         this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
-                            <EditableFieldItem componentPointer={componentPointer} currentAddressProfile={this.state.currentAddressProfile} currentFormTemplate={this.state.currentFormTemplate} />
+                            <EditableFieldItem componentPointer={componentPointer} currentAddressProfile={this.state.currentAddressProfile} currentFormTemplate={this.state.currentFormTemplate} handleUpdate={this.state.handleUpdate.bind(this)} />
                         ))
                     }                    
                 </div>
@@ -423,6 +447,7 @@ class EditableFieldItem extends React.Component<any, any>{
             componentPointer: this.props.componentPointer,
             currentAddressProfile: this.props.currentAddressProfile,
             currentFormTemplate: this.props.currentFormTemplate,
+            handleUpdate: this.props.handleUpdate,
 
             //field data
             fieldName: this.props.componentPointer.addressComponentProfileKey,
@@ -441,11 +466,11 @@ class EditableFieldItem extends React.Component<any, any>{
         });
     }
 
-    updateFieldName() {
-
+    updateFieldName(data) {
+        this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "fieldName", data);
     }
 
-    updateExample() {
+    updateExample(data) {
 
     }
 
@@ -521,7 +546,7 @@ class EditableFieldItem extends React.Component<any, any>{
                             <td style={{fontWeight: "bold",}}>Example</td>
                             <td>:</td>
                             <td>
-                                <InputGroup value={this.state.example} onChange={(event)=>{this.updateExample(event.target.value)} />
+                                <InputGroup value={this.state.example} onChange={(event)=>{this.updateExample(event.target.value)}} />
                             </td>
                         </tr>
                     </table>
