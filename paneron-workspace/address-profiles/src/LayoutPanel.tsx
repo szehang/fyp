@@ -78,10 +78,6 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         }
     }
 
-        componentDidMount(){
-        log.info(this.props.currentAddressProfile);
-    }
-
     handleFormOpen() {
         this.setState({isFormOpen: !this.state.isFormOpen});
     }
@@ -106,7 +102,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             oldHorizontalValue = horizontalValue;
         }
 
-        this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}}, ()=>{log.info(this.state.localization.textDirection)});
+        this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}});
     }
 
     handleEditFormTemplate(formId:string){
@@ -288,7 +284,11 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                 ?
                     <div style={{borderRadius: "5px", backgroundColor: "#15B371",marginTop:"5px",}}>
                         <Collapse isOpen={true}>{/*debug mode*/}
-                                <FormTemplateEditPanel currentAddressProfile={this.state.currentAddressProfile} currentClassProfile={this.state.currentClassProfile} currentFormTemplate={this.state.currentFormTemplate} />
+                                <FormTemplateEditPanel 
+                                    currentAddressProfile={this.state.currentAddressProfile} 
+                                    currentClassProfile={this.state.currentClassProfile} 
+                                    currentFormTemplate={this.state.currentFormTemplate} 
+                                />
                         </Collapse>
                     </div>
                 :<></>
@@ -307,7 +307,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             currentFormTemplate: this.props.currentFormTemplate,
 
             //this component data
-            // formLayout: [], //should be a 2d array
+            lines2DArray: [], //should be a 2d array
         }
     }
 
@@ -335,8 +335,54 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     //     }
     // }
 
-    handleUpdate(targetComponentKey: string, type: string, data: string) {
+    componentDidMount() {
+        log.info(this.state.currentFormTemplate.lines.length);
+        log.info(this.state.currentFormTemplate);
+        log.info(this.state.currentClassProfile);
+        log.info(this.state.currentAddressProfile);
+        log.info(this.state.currentFormTemplate);
 
+        var lines=[];
+        if(this.state.currentFormTemplate.lines.length === 0) {
+            //auto fill all component to the array
+            this.state.currentClassProfile.componentProfiles.forEach((componentPointer)=>{
+                this.state.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+                    if(componentProfile.key == componentPointer.addressComponentProfileKey) {
+                        const newStaticText = componentProfile.key;
+                        const newData = componentProfile.example;
+
+                        const newLine = {elements: [
+                            {componentKeyBelongTo: componentProfile.key, type: "staticText", element: {value: newStaticText},},
+                            {componentKeyBelongTo: componentProfile.key, type: "data", element: {value: newData},},
+                        ]};
+
+                        lines.splice(lines.length, 0, newLine);
+                    }
+                });
+            });
+        } else {
+            lines = this.state.currentFormTemplate.lines;
+        }
+        
+        //copy the data into a 2d array
+        var lines2DArray = [];
+        var rowCount = 0;
+        var columnCount = 0;
+        lines.forEach(line => {
+            var row = [];
+            line.elements.forEach(lineElement => {
+                row.splice(row.length, 0, lineElement);
+                // columnCount++;
+            });
+            lines2DArray.splice(lines2DArray.length, 0, row);
+            // rowCount++;
+        });
+        this.setState({lines2DArray: lines2DArray}, ()=>{log.info(this.state.lines2DArray);log.info(this.state.lines2DArray[0][0])});
+    }
+
+
+    handleUpdate(targetComponentKey: string, type: string, data: string) {
+        
     }
 
     render() {
@@ -410,30 +456,23 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     {/* component display */}
                     {
                         this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
-                            <EditableFieldItem componentPointer={componentPointer} currentAddressProfile={this.state.currentAddressProfile} currentFormTemplate={this.state.currentFormTemplate} handleUpdate={this.state.handleUpdate.bind(this)} />
+                            <EditableFieldItem 
+                                componentPointer={componentPointer} 
+                                currentAddressProfile={this.state.currentAddressProfile} 
+                                currentFormTemplate={this.state.currentFormTemplate}
+                                handleUpdate={this.state.handleUpdate} 
+                            />
                         ))
                     }                    
                 </div>
                 <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                     {/* demo display */}
-                    <div style={displayDivStyle}>
-                        <div style={classTitleComponent}>
-                            {/* Hardcode Data */}
-                            Street Address
-                        </div>
-                        <hr style={itemHrStyle} />
-                        <table>
-                                <tr>
-                                    {/* Hardcode Data */}
-                                    <td style={{fontWeight: "bold",}}>Address Number</td><td>:</td><td>23</td>
-                                </tr>
-                                <tr>
-                                    {/* Hardcode Data */}
-                                    <td style={{fontWeight: "bold",}}>Locality name</td><td>:</td><td>Yuen Long</td>
-                                </tr>
-                            </table>
-                    </div>
+                    {/* {
+                        this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
+                            <DisplayableFieldItem lines2DArray={this.state.lines2DArray} />
+                        ))
+                    }   */}
                 </div>
             </div>
         )
@@ -456,9 +495,6 @@ class EditableFieldItem extends React.Component<any, any>{
     }
 
     componentDidMount() {
-        // log.info(this.state.componentPointer);
-        // log.info(this.state.currentAddressProfile);
-        // log.info(this.state.currentFormTemplate);
         this.props.currentAddressProfile.componentProfiles.forEach(componentProfile => {
             if(componentProfile.key == this.props.componentPointer.addressComponentProfileKey) {
                 this.setState({example: componentProfile.example});
@@ -524,6 +560,7 @@ class EditableFieldItem extends React.Component<any, any>{
         const subSubitemBodyStyle = {
             fontSize: "15px",
         }
+        
         return(
             <div style={{...itemStyle, ...subSubItemSytle, marginBottom: "5px"}}>
                 <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
@@ -584,8 +621,88 @@ class DisplayableFieldItem extends React.Component<any, any>{
     }
 
     render(){
+        const itemStyle = {
+            marginTop: "10px",
+            borderRadius: "5px",
+            background: "#FFFFFF",
+        } as React.CSSProperties;
+    
+        const itemHeadStyle = {
+            padding: "7px 5px 30px 5px",
+            height: "15px",
+            fontSize: "20px",
+            width: "100%",
+        } as React.CSSProperties;
+    
+        const itemHeadButtonStyle = {
+            padding: "5px",
+            float: "right",
+        } as React.CSSProperties;
+    
+        const itemHrStyle = {
+            width: "100%",
+            margin: "0 0 7px 0",
+            clear: "both",
+        } as React.CSSProperties;
+    
+        const itemBodyStyle = {
+            padding: "5px",
+            width: "100%",
+        } as React.CSSProperties;
+    
+        const rightDivStyle = {
+            float: "right",
+        }
+    
+        const subSubItemSytle = {
+            backgroundColor: "#3DCC91",
+            marginLeft: "5px",
+            marginRight: "5px", 
+            // color: "#FFF",
+        }
+    
+        const subSubItemHeadStyle = {
+            padding: "10px 5px 5px",
+            fontSize: "15px",
+            height: "unset",
+        }
+    
+        const subSubitemBodyStyle = {
+            fontSize: "15px",
+        }
+
+        const displayDivStyle = {
+            borderRadius: "5px",
+            backgroundColor: "white",
+            padding: "5px",
+            margin: "10px 5px"
+        }
+
+        const classTitleComponent = {
+            fontWeight: "bold",
+            textAlign: "center",
+
+        }
+
+
         return(
-            <></>
+            <div style={displayDivStyle}>
+                        <div style={classTitleComponent}>
+                            {/* Hardcode Data */}
+                            Street Address
+                        </div>
+                        <hr style={itemHrStyle} />
+                        <table>
+                                <tr>
+                                    {/* Hardcode Data */}
+                                    <td style={{fontWeight: "bold",}}>Address Number</td><td>:</td><td>23</td>
+                                </tr>
+                                <tr>
+                                    {/* Hardcode Data */}
+                                    <td style={{fontWeight: "bold",}}>Locality name</td><td>:</td><td>Yuen Long</td>
+                                </tr>
+                            </table>
+                    </div>
         );
     }
 }
