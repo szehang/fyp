@@ -301,28 +301,18 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 class FormTemplateEditPanel extends React.Component<any, any>{
     constructor(props){
         super(props);
-        this.state={
-            currentAddressProfile: this.props.currentAddressProfile,
-            currentClassProfile: this.props.currentClassProfile,
-            currentFormTemplate: this.props.currentFormTemplate,
 
-            //this component data
-            lines2DArray: [], //should be a 2d array
-        }
-    }
-
-    componentDidMount() {
-        // log.info(this.state.currentFormTemplate.lines.length);
-        // log.info(this.state.currentFormTemplate);
-        // log.info(this.state.currentClassProfile);
-        // log.info(this.state.currentAddressProfile);
-        // log.info(this.state.currentFormTemplate);
+        // this.state={
+        //     currentAddressProfile: this.props.currentAddressProfile,
+        //     currentClassProfile: this.props.currentClassProfile,
+        //     currentFormTemplate: this.props.currentFormTemplate,
+        // }
 
         var lines=[];
-        if(this.state.currentFormTemplate.lines.length === 0) {
+        if(this.props.currentFormTemplate.lines.length === 0) {
             //auto fill all component to the array
-            this.state.currentClassProfile.componentProfiles.forEach((componentPointer)=>{
-                this.state.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+            this.props.currentClassProfile.componentProfiles.forEach((componentPointer)=>{
+                this.props.currentAddressProfile.componentProfiles.forEach(componentProfile => {
                     if(componentProfile.key == componentPointer.addressComponentProfileKey) {
                         const newStaticText = componentProfile.key;
                         const newData = componentProfile.example;
@@ -337,14 +327,33 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 });
             });
         } else {
-            lines = this.state.currentFormTemplate.lines;
+            lines = this.props.currentFormTemplate.lines;
         }
-        this.setState({currentFormTemplate: {...this.state.currentFormTemplate, lines: lines}}, ()=>{log.info(this.state.currentFormTemplate.lines)});
+
+        this.state={
+            currentAddressProfile: this.props.currentAddressProfile,
+            currentClassProfile: this.props.currentClassProfile,
+            currentFormTemplate: {...this.props.currentFormTemplate, lines: lines},
+        }
+
+    }
+
+    componentDidMount() {
     }
 
 
     handleUpdate(targetComponentKey: string, type: string, data: string) {
-        
+        var newFormTemplate = JSON.parse(JSON.stringify(this.state.currentFormTemplate));
+
+        newFormTemplate.lines.forEach(line => {
+            line.elements.forEach((lineElement)=>{
+                if(lineElement.componentKeyBelongTo == targetComponentKey && lineElement.type == type) {
+                    lineElement.value = data;
+                }
+            });
+        });
+        log.info(newFormTemplate);
+        this.setState({currentFormTemplate: newFormTemplate});
     }
 
     getComponentType(componentKey: string) {
@@ -440,10 +449,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     {
                         this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
                             <EditableFieldItem 
+                                key={componentPointer.addressComponentProfileKey}
                                 componentPointer={componentPointer} 
                                 currentAddressProfile={this.state.currentAddressProfile} 
                                 currentFormTemplate={this.state.currentFormTemplate}
-                                handleUpdate={this.state.handleUpdate} 
+                                handleUpdate={this.handleUpdate.bind(this)} 
                             />
                         ))
                     }                    
@@ -460,8 +470,8 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                                         ? <span>{lineElement.element.value}</span>
                                         : lineElement.type == "data"
                                             ?this.getComponentType(lineElement.componentKeyBelongTo) == "number"
-                                                ? <input type="number" />
-                                                : <input type="text" />
+                                                ? <input placeholder={lineElement.element.value} type="number" />
+                                                : <input placeholder={lineElement.element.value} type="text" />
                                             :<></>
                                     ))
                                 }
@@ -477,6 +487,25 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 class EditableFieldItem extends React.Component<any, any>{
     constructor(props) {
         super(props);
+
+
+        var fieldName= "";
+        var example=""
+        this.props.currentFormTemplate.lines.forEach(line => {
+            line.elements.forEach((lineElement)=>{
+                // log.info(lineElement.componentKeyBelongTo + "|" + this.props.componentPointer.addressComponentProfileKey);
+                if(lineElement.componentKeyBelongTo == this.props.componentPointer.addressComponentProfileKey){
+                    if(lineElement.type == "staticText"){
+                        fieldName = lineElement.element.value;
+                    }
+                    if(lineElement.type == "data"){
+                        example = lineElement.element.value;
+                    }
+                }
+            });
+        });
+
+
         this.state={
             componentPointer: this.props.componentPointer,
             currentAddressProfile: this.props.currentAddressProfile,
@@ -484,25 +513,39 @@ class EditableFieldItem extends React.Component<any, any>{
             handleUpdate: this.props.handleUpdate,
 
             //field data
-            fieldName: this.props.componentPointer.addressComponentProfileKey,
-            example: "Example",
+            // fieldName: "FeildName(should not show)",
+            // example: "Example(should not show)",
+            fieldName: fieldName,
+            example: example,
+
         };
     }
 
     componentDidMount() {
-        this.props.currentAddressProfile.componentProfiles.forEach(componentProfile => {
-            if(componentProfile.key == this.props.componentPointer.addressComponentProfileKey) {
-                this.setState({example: componentProfile.example});
-            }
-        });
+        // log.info(this.props.currentFormTemplate.lines);
+        // this.props.currentFormTemplate.lines.forEach(line => {
+        //     line.elements.forEach((lineElement)=>{
+        //         // log.info(lineElement.componentKeyBelongTo + "|" + this.props.componentPointer.addressComponentProfileKey);
+        //         if(lineElement.componentKeyBelongTo == this.props.componentPointer.addressComponentProfileKey){
+        //             if(lineElement.type == "staticText"){
+        //                 this.setState({fieldName: lineElement.element.value});
+        //             }
+        //             if(lineElement.type == "data"){
+        //                 this.setState({example: lineElement.element.value});
+        //             }
+        //         }
+        //     });
+        // });
     }
 
     updateFieldName(data) {
-        this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "fieldName", data);
+        this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "staticText", data);
+        this.setState({fieldName: data})
     }
 
     updateExample(data) {
-
+        this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "data", data);
+        this.setState({example: data})
     }
 
     render(){
@@ -583,16 +626,14 @@ class EditableFieldItem extends React.Component<any, any>{
                         </tr>
                     </table>
                 </div>
-                <hr style={itemHrStyle} />
+                {/* <hr style={itemHrStyle} />
                 <div style={{...itemHeadStyle, ...subSubItemHeadStyle, padding: "2px 5px 14px"}}>
                     Row: 
-                    {/* Hardcode Data */}
                     <select>
                         <option value="1">1</option>
                         <option value="2">2</option>
                     </select>
                     Order: 
-                    {/* Hardcode Data */}
                     <select>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -601,7 +642,7 @@ class EditableFieldItem extends React.Component<any, any>{
                     <div style={rightDivStyle}>
                         <AnchorButton intent="success" text={"Duplicate"}/>
                     </div>
-                </div>
+                </div> */}
             </div>
         );
     }
