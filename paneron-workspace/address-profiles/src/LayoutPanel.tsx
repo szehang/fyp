@@ -311,36 +311,12 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         }
     }
 
-    // componentDidMount() {
-    //     var formLayout;
-    //     if(this.state.currentFormTemplate.lines.length === 0) {
-    //         //auto fill all component to the array
-    //         this.state.currentClassProfile.componentProfiles.forEach((componentPointer)=>{
-    //             this.state.currentAddressProfile.componentProfiles.forEach(componentProfile => {
-    //                 if(componentProfile.key == componentPointer.addressComponentProfileKey) {
-    //                     const newStaticText = componentProfile.key;
-    //                     const newData = componentProfile.example;
-
-    //                     const newLine = {element: [
-    //                         {type: "staticText", element: {value: newStaticText},},
-    //                         {type: "data", element: {value: newData},},
-    //                     ]};
-
-    //                     formLayout.splice(formLayout.length, 0, newLine);
-    //                 }
-    //             });
-    //         });
-    //     } else {
-    //         //read the current formTemplate data
-    //     }
-    // }
-
     componentDidMount() {
-        log.info(this.state.currentFormTemplate.lines.length);
-        log.info(this.state.currentFormTemplate);
-        log.info(this.state.currentClassProfile);
-        log.info(this.state.currentAddressProfile);
-        log.info(this.state.currentFormTemplate);
+        // log.info(this.state.currentFormTemplate.lines.length);
+        // log.info(this.state.currentFormTemplate);
+        // log.info(this.state.currentClassProfile);
+        // log.info(this.state.currentAddressProfile);
+        // log.info(this.state.currentFormTemplate);
 
         var lines=[];
         if(this.state.currentFormTemplate.lines.length === 0) {
@@ -366,8 +342,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         
         //copy the data into a 2d array
         var lines2DArray = [];
-        var rowCount = 0;
-        var columnCount = 0;
         lines.forEach(line => {
             var row = [];
             line.elements.forEach(lineElement => {
@@ -377,12 +351,33 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             lines2DArray.splice(lines2DArray.length, 0, row);
             // rowCount++;
         });
-        this.setState({lines2DArray: lines2DArray}, ()=>{log.info(this.state.lines2DArray);log.info(this.state.lines2DArray[0][0])});
+        this.setState({lines2DArray: lines2DArray});
     }
 
 
     handleUpdate(targetComponentKey: string, type: string, data: string) {
         
+    }
+
+    getComponentType(componentKey: string) {
+        var result = "string"
+
+        this.state.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+            if(componentProfile.key == componentKey) {
+                var type = "number";
+                componentProfile.attributeProfiles.forEach((attributeProfilePointer)=>{
+                    this.state.currentAddressProfile.attributeProfiles.forEach(attributeProfile => {
+                        if(attributeProfile.name == attributeProfilePointer.attributeProfileName){
+                            if(attributeProfile.valueType != "number"){
+                                type = "string";
+                            }
+                        }
+                    });
+                });
+                result = type;
+            }
+        });
+        return result;
     }
 
     render() {
@@ -473,6 +468,24 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                             <DisplayableFieldItem lines2DArray={this.state.lines2DArray} />
                         ))
                     }   */}
+                    {/* {this.state.lines2DArray.length} */}
+                    {
+                        this.state.lines2DArray.map((line)=>(
+                            <div>
+                                {
+                                    line.map((lineElement)=>(
+                                        lineElement.type == "staticText"
+                                        ? <span>{lineElement.element.value}</span>
+                                        : lineElement.type == "data"
+                                            ?this.getComponentType(lineElement.componentKeyBelongTo) == "number"
+                                                ? <input type="number" />
+                                                : <input type="text" />
+                                            :<></>
+                                    ))
+                                }
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         )
@@ -687,22 +700,22 @@ class DisplayableFieldItem extends React.Component<any, any>{
 
         return(
             <div style={displayDivStyle}>
-                        <div style={classTitleComponent}>
+                <div style={classTitleComponent}>
+                    {/* Hardcode Data */}
+                    Street Address
+                </div>
+                <hr style={itemHrStyle} />
+                <table>
+                        <tr>
                             {/* Hardcode Data */}
-                            Street Address
-                        </div>
-                        <hr style={itemHrStyle} />
-                        <table>
-                                <tr>
-                                    {/* Hardcode Data */}
-                                    <td style={{fontWeight: "bold",}}>Address Number</td><td>:</td><td>23</td>
-                                </tr>
-                                <tr>
-                                    {/* Hardcode Data */}
-                                    <td style={{fontWeight: "bold",}}>Locality name</td><td>:</td><td>Yuen Long</td>
-                                </tr>
-                            </table>
-                    </div>
+                            <td style={{fontWeight: "bold",}}>Address Number</td><td>:</td><td>23</td>
+                        </tr>
+                        <tr>
+                            {/* Hardcode Data */}
+                            <td style={{fontWeight: "bold",}}>Locality name</td><td>:</td><td>Yuen Long</td>
+                        </tr>
+                    </table>
+            </div>
         );
     }
 }

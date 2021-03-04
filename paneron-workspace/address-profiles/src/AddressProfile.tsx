@@ -107,7 +107,11 @@ export interface FormTemplate extends LayoutTemplate {
 }
 
 export interface FormLine extends LayoutLine { // Docs 15.1 and 16
-    elements: {componentKeyBelongTo: string, type: string, element: FormLineElement}[],
+    elements: {
+        componentKeyBelongTo: string,
+        type: string,
+        element: FormLineElement
+    }[],
 } // one more level is added(type&element) to differentiate the type of FormLineElement
 
 export interface FormLineElement {
