@@ -6,8 +6,9 @@ import { AddressClassProfile, AddressComponentProfile, AddressProfile, FormTempl
 
 
 import log from "electron-log"
-import { info } from "console";
+import { info, table } from "console";
 import { execPath, listeners } from "process";
+import { parse } from "path";
 Object.assign(console, log);
 
 export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
@@ -444,6 +445,80 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         }
 
+        const dragItemStyle = {
+            padding: "5px 10px",
+            backgroundColor: "white",
+            width: "fit-content",
+            borderRadius: "10px",
+            margin: "6px 5px",
+            cursor: "grab"
+        }
+
+        const dragAreaStyle = {
+            border: "1px solid black", 
+            display: "inline-block", 
+            width: "fit-content",
+            padding: "10px",
+            margin: "8px",
+        }
+
+        function drag(ev: React.DragEvent<HTMLDivElement>): void {
+            console.log("On drag start");
+            console.log("   Drag target ID => " + (ev.target as HTMLDivElement).id);
+
+            ev.dataTransfer.setData("src", (ev.target as HTMLDivElement).id);
+        }
+
+        function allowDrop(ev: React.DragEvent<HTMLDivElement>): void {
+            ev.preventDefault();
+        }
+
+        function drop(ev: React.DragEvent<HTMLDivElement>): void {
+            console.log("Drop");
+
+            ev.preventDefault();
+
+            const targetAreaChildLength = document.getElementById((ev.target as HTMLDivElement).id)?.childNodes.length;
+
+            if ( (targetAreaChildLength - 1) == 0 ) {
+                console.log("   Dropping on an NO CHILD Area");
+
+                let src = ev.dataTransfer.getData("src");
+
+                console.log("   Origin: " + src + "; Target: " + (ev.target as HTMLDivElement).id);
+            } else {
+                console.log("Have child")
+            }
+        }
+
+
+        const generateTable = (number) => {
+            let returnDivArr = [];
+
+            for (let i = 1; i <= number; i++) {
+                for (let j = 1; j <= number; j++){
+                    const id = i.toString() + "," + j.toString();
+
+                    returnDivArr.push(
+                        <div 
+                            id={id} 
+                            style={dragAreaStyle}
+                            onDrop={drop}
+                            onDragOver={allowDrop}
+                        >
+                            EMPTY
+                        </div>
+                    )
+
+                    if (j == number) {
+                        returnDivArr.push(<br />);
+                    }
+                }
+            }
+
+            return returnDivArr;
+        }
+
         return (
             <div style={{display:"flex"}}>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
@@ -495,8 +570,22 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                         ))
                     } */}
 
-                    {this.state.currentFormTemplate.lines[0].elements[0].element.value}{this.state.currentFormTemplate.lines[0].elements[1].element.value}
-                    
+                    {
+                        this.state.currentFormTemplate.lines.map((line, index) => (
+                            // console.log("Line: " + JSON.stringify(line, null, 2));
+
+                            <div id={"component" + (index+1).toString()} style={dragItemStyle} draggable={true} onDragStart={drag}>
+                                {/* Field Name */}
+                                <span style={{fontWeight: "bold"}}>{line.elements[0].element.value}</span>
+                                {/* Example */}
+                                : {line.elements[1].element.value}
+                            </div>
+                        ))
+                    }
+
+                    {generateTable(this.state.currentFormTemplate.lines.length).map((element) => (
+                        element
+                    ))}
                 </div>
             </div>
         )
@@ -646,7 +735,7 @@ class EditableFieldItem extends React.Component<any, any>{
         return(
             <div style={{...itemStyle, ...subSubItemSytle, marginBottom: "5px"}}>
                 <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
-                    {this.state.componentPointer.addressComponentProfileKey}
+                    <span style={{fontWeight: "bold",}}>{this.state.componentPointer.addressComponentProfileKey}</span>
                     <div style={rightDivStyle}>
                             min: {this.state.componentPointer.addressComponentSpecification.minCardinality} | max: {this.state.componentPointer.addressComponentSpecification.maxCardinality}
                     </div>
