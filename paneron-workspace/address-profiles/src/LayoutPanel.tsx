@@ -339,19 +339,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         } else {
             lines = this.state.currentFormTemplate.lines;
         }
-        
-        //copy the data into a 2d array
-        var lines2DArray = [];
-        lines.forEach(line => {
-            var row = [];
-            line.elements.forEach(lineElement => {
-                row.splice(row.length, 0, lineElement);
-                // columnCount++;
-            });
-            lines2DArray.splice(lines2DArray.length, 0, row);
-            // rowCount++;
-        });
-        this.setState({lines2DArray: lines2DArray});
+        this.setState({currentFormTemplate: {...this.state.currentFormTemplate, lines: lines}}, ()=>{log.info(this.state.currentFormTemplate.lines)});
     }
 
 
@@ -463,17 +451,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                     {/* demo display */}
-                    {/* {
-                        this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
-                            <DisplayableFieldItem lines2DArray={this.state.lines2DArray} />
-                        ))
-                    }   */}
-                    {/* {this.state.lines2DArray.length} */}
                     {
-                        this.state.lines2DArray.map((line)=>(
+                        this.state.currentFormTemplate.lines.map((line)=>(
                             <div>
                                 {
-                                    line.map((lineElement)=>(
+                                    line.elements.map((lineElement)=>(
                                         lineElement.type == "staticText"
                                         ? <span>{lineElement.element.value}</span>
                                         : lineElement.type == "data"
