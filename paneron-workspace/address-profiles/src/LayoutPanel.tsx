@@ -7,6 +7,7 @@ import { AddressClassProfile, AddressComponentProfile, AddressProfile, FormTempl
 
 import log from "electron-log"
 import { info } from "console";
+import { execPath, listeners } from "process";
 Object.assign(console, log);
 
 export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
@@ -348,12 +349,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         newFormTemplate.lines.forEach(line => {
             line.elements.forEach((lineElement)=>{
                 if(lineElement.componentKeyBelongTo == targetComponentKey && lineElement.type == type) {
-                    lineElement.value = data;
+                    lineElement.element.value = data;
                 }
             });
         });
-        log.info(newFormTemplate);
-        this.setState({currentFormTemplate: newFormTemplate});
+        // log.info(newFormTemplate.lines);
+        // this.setState({currentFormTemplate: newFormTemplate});
+        this.setState({currentFormTemplate: {...this.state.currentFormTemplate, lines: newFormTemplate.lines}}, ()=>{log.info(this.state.currentFormTemplate.lines)});
     }
 
     getComponentType(componentKey: string) {
@@ -461,7 +463,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                     {/* demo display */}
-                    {
+                    {/* {
                         this.state.currentFormTemplate.lines.map((line)=>(
                             <div>
                                 {
@@ -477,9 +479,51 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                                 }
                             </div>
                         ))
-                    }
+                    } */}
+
+                    {/* {
+                        this.state.currentFormTemplate.lines.map((line)=>(
+                            <div key={this.state.currentFormTemplate.lines.indexOf(line)}>
+                                {line.elements.map((lineElement)=>(
+                                    <DragDropItem
+                                        key={line.elements.indexOf(lineElement)}
+                                        lineElement={lineElement}
+                                        getComponentType={this.getComponentType.bind(this)}
+                                    />
+                                ))}
+                            </div>
+                        ))
+                    } */}
+
+                    {this.state.currentFormTemplate.lines[0].elements[0].element.value}{this.state.currentFormTemplate.lines[0].elements[1].element.value}
+                    
                 </div>
             </div>
+        )
+    }
+}
+
+class DragDropItem extends React.Component<any,any> {
+    constructor(props) {
+        super(props);
+        this.state={
+            type: this.props.lineElement.type,
+            value: this.props.lineElement.element.value,
+            componentKey: this.props.lineElement.componentKeyBelongTo,
+        }
+    }
+    componentWillReceiveProps() {
+    
+    }
+    render() {
+        return(
+           this.state.type == "staticText"
+            ? <span>{this.state.value}</span>
+            : this.state.type == "data"
+                ?this.props.getComponentType(this.state.componentKey) == "number"
+                    ? <input placeholder={this.state.value} type="number" />
+                    : <input placeholder={this.state.value} type="text" />
+                :<></>
         )
     }
 }
