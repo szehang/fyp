@@ -542,6 +542,15 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 }
 
 class DropTarget extends React.Component<any,any> {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            haveItemInside: false,
+            itemInside: <></>,
+        }
+    }
+
     
     render() {
         const props:any = this.props;
@@ -558,19 +567,24 @@ class DropTarget extends React.Component<any,any> {
             ev.preventDefault();
         }
 
-        function drop(ev: React.DragEvent<HTMLDivElement>): void {
+        const drop = (ev: React.DragEvent<HTMLDivElement>): void => {
             console.log("Drop");
 
             ev.preventDefault();
 
             const targetAreaChildLength = document.getElementById((ev.target as HTMLDivElement).id)?.childNodes.length;
-            let src = ev.dataTransfer.getData("src");
+            let src = ev.dataTransfer.getData("srcId");
+            let srcText = ev.dataTransfer.getData("srcText");
 
             if ( (targetAreaChildLength - 1) == 0 ) {
                 console.log("   Dropping on an NO CHILD Area");
                 console.log("   Origin: " + src + "; Target: " + (ev.target as HTMLDivElement).id);
 
                 if (src) {
+                    this.setState({
+                        haveItemInside: true,
+                        itemInside: srcText,
+                    })
                 }
             } else {
                 console.log("Have child")
@@ -584,7 +598,10 @@ class DropTarget extends React.Component<any,any> {
                 onDrop={drop}
                 onDragOver={allowDrop}
             >
-                EMPTY
+                {!this.state.haveItemInside
+                    ? "EMPTY"
+                    : this.state.itemInside
+                }
             </div>
         )
     }
@@ -608,7 +625,8 @@ class Drag extends React.Component<any,any> {
             console.log("On drag start");
             console.log("   Drag target ID => " + (ev.target as HTMLDivElement).id);
 
-            ev.dataTransfer.setData("src", (ev.target as HTMLDivElement).id);
+            ev.dataTransfer.setData("srcId", (ev.target as HTMLDivElement).id);
+            ev.dataTransfer.setData("srcText", (ev.target as HTMLDivElement).innerText);
         }
 
         return(
