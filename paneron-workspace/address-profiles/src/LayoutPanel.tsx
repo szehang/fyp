@@ -336,6 +336,8 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             currentAddressProfile: this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
             currentFormTemplate: {...this.props.currentFormTemplate, lines: lines},
+        
+            dropList: [],
         }
 
     }
@@ -445,78 +447,27 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         }
 
-        const dragItemStyle = {
-            padding: "5px 10px",
-            backgroundColor: "white",
-            width: "fit-content",
-            borderRadius: "10px",
-            margin: "6px 5px",
-            cursor: "grab"
-        }
 
-        const dragAreaStyle = {
-            border: "1px solid black", 
-            display: "inline-block", 
-            width: "fit-content",
-            padding: "10px",
-            margin: "8px",
-        }
-
-        function drag(ev: React.DragEvent<HTMLDivElement>): void {
-            console.log("On drag start");
-            console.log("   Drag target ID => " + (ev.target as HTMLDivElement).id);
-
-            ev.dataTransfer.setData("src", (ev.target as HTMLDivElement).id);
-        }
-
-        function allowDrop(ev: React.DragEvent<HTMLDivElement>): void {
-            ev.preventDefault();
-        }
-
-        function drop(ev: React.DragEvent<HTMLDivElement>): void {
-            console.log("Drop");
-
-            ev.preventDefault();
-
-            const targetAreaChildLength = document.getElementById((ev.target as HTMLDivElement).id)?.childNodes.length;
-
-            if ( (targetAreaChildLength - 1) == 0 ) {
-                console.log("   Dropping on an NO CHILD Area");
-
-                let src = ev.dataTransfer.getData("src");
-
-                console.log("   Origin: " + src + "; Target: " + (ev.target as HTMLDivElement).id);
-            } else {
-                console.log("Have child")
-            }
-        }
-
-
-        const generateTable = (number) => {
+        const generateTargetList = (linesLength:any) => {
             let returnDivArr = [];
-
-            for (let i = 1; i <= number; i++) {
-                for (let j = 1; j <= number; j++){
+            
+            for (let i = 1; i <= linesLength; i++) {
+                for (let j = 1; j <= linesLength; j++) {
                     const id = i.toString() + "," + j.toString();
 
                     returnDivArr.push(
-                        <div 
-                            id={id} 
-                            style={dragAreaStyle}
-                            onDrop={drop}
-                            onDragOver={allowDrop}
-                        >
-                            EMPTY
-                        </div>
-                    )
+                        <DropTarget id={id} />
+                    ) 
 
-                    if (j == number) {
+                    if (j == linesLength) {
                         returnDivArr.push(<br />);
                     }
                 }
+                
             }
-
-            return returnDivArr;
+            console.table(returnDivArr);
+            
+            return returnDivArr
         }
 
         return (
@@ -573,20 +524,99 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     {
                         this.state.currentFormTemplate.lines.map((line, index) => (
                             // console.log("Line: " + JSON.stringify(line, null, 2));
-
-                            <div id={"component" + (index+1).toString()} style={dragItemStyle} draggable={true} onDragStart={drag}>
-                                {/* Field Name */}
-                                <span style={{fontWeight: "bold"}}>{line.elements[0].element.value}</span>
-                                {/* Example */}
-                                : {line.elements[1].element.value}
-                            </div>
+                            <>
+                            <Drag line={line} index={index} />
+                            </>
                         ))
                     }
 
-                    {generateTable(this.state.currentFormTemplate.lines.length).map((element) => (
-                        element
-                    ))}
+                    {
+                        generateTargetList(this.state.currentFormTemplate.lines.length).map((element) => (
+                            element
+                        ))
+                    }
                 </div>
+            </div>
+        )
+    }
+}
+
+class DropTarget extends React.Component<any,any> {
+    
+    render() {
+        const props:any = this.props;
+
+        const dragAreaStyle = {
+            border: "1px solid black", 
+            display: "inline-block", 
+            width: "fit-content",
+            padding: "10px",
+            margin: "8px",
+        }
+
+        function allowDrop(ev: React.DragEvent<HTMLDivElement>): void {
+            ev.preventDefault();
+        }
+
+        function drop(ev: React.DragEvent<HTMLDivElement>): void {
+            console.log("Drop");
+
+            ev.preventDefault();
+
+            const targetAreaChildLength = document.getElementById((ev.target as HTMLDivElement).id)?.childNodes.length;
+            let src = ev.dataTransfer.getData("src");
+
+            if ( (targetAreaChildLength - 1) == 0 ) {
+                console.log("   Dropping on an NO CHILD Area");
+                console.log("   Origin: " + src + "; Target: " + (ev.target as HTMLDivElement).id);
+
+                if (src) {
+                }
+            } else {
+                console.log("Have child")
+            }
+        }
+
+        return(
+            <div 
+                id={this.props.id} 
+                style={dragAreaStyle}
+                onDrop={drop}
+                onDragOver={allowDrop}
+            >
+                EMPTY
+            </div>
+        )
+    }
+}
+
+class Drag extends React.Component<any,any> {
+    id = "component" + (this.props.index + 1).toString();
+
+    
+    render() {
+        const dragItemStyle = {
+            padding: "5px 10px",
+            backgroundColor: "white",
+            width: "fit-content",
+            borderRadius: "10px",
+            margin: "6px 5px",
+            cursor: "grab"
+        } as React.CSSProperties;
+
+        function startDrag(ev: React.DragEvent<HTMLDivElement>): void {
+            console.log("On drag start");
+            console.log("   Drag target ID => " + (ev.target as HTMLDivElement).id);
+
+            ev.dataTransfer.setData("src", (ev.target as HTMLDivElement).id);
+        }
+
+        return(
+            <div id={this.id} style={dragItemStyle} draggable={true} onDragStart={startDrag}>
+                {/* Field Name */}
+                <span style={{fontWeight: "bold"}}>{this.props.line.elements[0].element.value}</span>
+                {/* Example */}
+                : {this.props.line.elements[1].element.value}
             </div>
         )
     }
