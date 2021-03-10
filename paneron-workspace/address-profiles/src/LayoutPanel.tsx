@@ -546,11 +546,18 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         // log.info(table);
 
 
-            let newTable = JSON.parse(JSON.stringify(this.state.table));
+            let newTable = this.state.table.map((x:any)=>x);
+            newTable.forEach((element: React.ReactElement<any>) => {
+                const newTD = React.createElement("td", {children: "EMPTY"});
+
+                element.props.children.push(newTD);
+            })
             console.log(newTable);
 
             this.setState({
                 table: newTable
+            },() => {
+                log.info(this.state.table)
             })
         }
 
