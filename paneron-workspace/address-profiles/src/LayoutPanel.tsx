@@ -332,14 +332,56 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             lines = this.props.currentFormTemplate.lines;
         }
 
+        // convert to 2d array START
+        var lines2d = [];
+        var rowMax=0;
+        var colMax=0;
+        lines.forEach(line => {
+            var aLine = [];
+            var colCount = 0;
+            line.elements.forEach(element => {
+                var aElement;
+                aElement = element;
+                aLine.push(aElement);
+                colCount++;
+            });
+            if(colCount > colMax){
+                colMax = colCount;
+            }
+            lines2d.push(aLine);
+            rowMax++;
+        });
+
+        var table=[];
+        var colCount=0;
+        var rowCount=0;
+        for(let i=0; i<rowMax; i++) {
+            var row=[];
+            for(let j=0; j < colMax; j++) {
+                if(lines2d[i][j]!=undefined){
+                    row.push(<td>{lines2d[i][j].element.value}</td>);
+                } else {
+                    row.push(<td></td>);
+                }
+            }
+           table.push(<tr>{row}</tr>);
+        }
+        log.info(table);
+
+        // convert to 2d array END
+
         this.state={
             currentAddressProfile: this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
             currentFormTemplate: {...this.props.currentFormTemplate, lines: lines},
         
-            dropList: [],
-        }
+            rowMax: rowMax,
+            colMax: colMax,
+            // previewFormArr: [],
 
+            lines2d: lines2d,
+            table: table,
+        }
     }
 
     componentDidMount() {
@@ -447,6 +489,12 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         }
 
+        const previewTdStyle = {
+            padding: "5px 20px",
+            border: "1px solid black",
+            borderRadius: "10px",
+        } as React.CSSProperties;
+
 
         const generateTargetList = (linesLength:any) => {
             let returnDivArr = [];
@@ -470,6 +518,58 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             return returnDivArr
         }
 
+        const handleAddRow = () => {
+            var newRow = [];
+            for(let i = 0; i < this.state.colMax;i++){
+                newRow.push(<td></td>);
+            }
+            this.setState({
+                table: [...this.state.table, <tr>{newRow}</tr>]
+            })
+        }
+
+        const handleAddCol = () => {
+        //     var table=[];
+        //     var colCount=0;
+        //     var rowCount=0;
+        //     for(let i=0; i<rowMax; i++) {
+        //         var row=[];
+        //         for(let j=0; j < colMax; j++) {
+        //             if(lines2d[i][j]!=undefined){
+        //                 row.push(<td>{lines2d[i][j].element.value}</td>);
+        //             } else {
+        //                 row.push(<td></td>);
+        //             }
+        //         }
+        //     table.push(<tr>{row}</tr>);
+        // }
+        // log.info(table);
+
+
+            let newTable = JSON.parse(JSON.stringify(this.state.table));
+            console.log(newTable);
+
+            this.setState({
+                table: newTable
+            })
+        }
+
+        const generateTable = (row:any, col:any) => {
+            let returnDivArr = [];
+            
+            for (let i=1; i<=row; i++) {
+                returnDivArr.push(<tr id={"row"+i.toString()}></tr>);
+                for (let j=1; j<=col; j++){
+                    const id = i.toString() + "," + j.toString();
+                    const innerHTML = "(" + i.toString() + "," + j.toString() + ")";
+
+                    returnDivArr.push(<td id={id} style={previewTdStyle}>{innerHTML}</td>)
+                }
+            }
+            console.table(returnDivArr);
+            return returnDivArr;
+        }
+
         return (
             <div style={{display:"flex"}}>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
@@ -489,52 +589,45 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
                 <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                     {/* demo display */}
-                    {/* {
-                        this.state.currentFormTemplate.lines.map((line)=>(
-                            <div>
-                                {
-                                    line.elements.map((lineElement)=>(
-                                        lineElement.type == "staticText"
-                                        ? <span>{lineElement.element.value}</span>
-                                        : lineElement.type == "data"
-                                            ?this.getComponentType(lineElement.componentKeyBelongTo) == "number"
-                                                ? <input placeholder={lineElement.element.value} type="number" />
-                                                : <input placeholder={lineElement.element.value} type="text" />
-                                            :<></>
-                                    ))
-                                }
-                            </div>
-                        ))
-                    } */}
+                    <AnchorButton onClick={handleAddRow} text="Add Row" intent="success" icon="add-row-bottom" />
+                    <AnchorButton onClick={handleAddCol} text="Add Column" intent="success" icon="add-column-right" />
 
-                    {/* {
-                        this.state.currentFormTemplate.lines.map((line)=>(
-                            <div key={this.state.currentFormTemplate.lines.indexOf(line)}>
-                                {line.elements.map((lineElement)=>(
-                                    <DragDropItem
-                                        key={line.elements.indexOf(lineElement)}
-                                        lineElement={lineElement}
-                                        getComponentType={this.getComponentType.bind(this)}
-                                    />
-                                ))}
-                            </div>
-                        ))
-                    } */}
+                    <br/>
 
-                    {
-                        this.state.currentFormTemplate.lines.map((line, index) => (
-                            // console.log("Line: " + JSON.stringify(line, null, 2));
-                            <>
-                            <Drag line={line} index={index} />
-                            </>
-                        ))
-                    }
-
-                    {
-                        generateTargetList(this.state.currentFormTemplate.lines.length).map((element) => (
-                            element
-                        ))
-                    }
+                    <table>
+                        {/* {
+                            // generateTable(this.state.previewFormRow, this.state.previewFormCol).map((element)=>(
+                            //     element
+                            // ))
+                            this.state.currentFormTemplate.lines.map((line)=>(
+                                <tr>
+                                    {
+                                        line.elements.map((element)=>(
+                                            <td>
+                                                <div>{element.element.value}</div>
+                                            </td>
+                                        ))
+                                    }
+                                </tr>
+                            ))
+                        } */}
+                        {/* {
+                            this.state.lines2d.map((line)=>(
+                                <tr>
+                                    {
+                                        line.map((element,index)=>(
+                                            <td>
+                                                <div>{element.element.value}</div>
+                                            </td>
+                                        ))
+                                    }
+                                </tr>
+                            ))
+                        } */}
+                        {
+                            this.state.table
+                        }
+                    </table>
                 </div>
             </div>
         )
