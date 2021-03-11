@@ -554,11 +554,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             })
             console.log(newTable);
 
-            this.setState({
-                table: newTable
-            },() => {
-                log.info(this.state.table)
-            })
+            // this.setState({
+            //     table: newTable
+            // },() => {
+            //     log.info(this.state.table)
+            // })
+            var dummy = <></>;
+            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
         }
 
         const generateTable = (row:any, col:any) => {
