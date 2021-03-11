@@ -353,8 +353,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         });
 
         var table=[];
-        var colCount=0;
-        var rowCount=0;
         for(let i=0; i<rowMax; i++) {
             var row=[];
             const previewTdStyle = {
@@ -385,7 +383,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         
             rowMax: rowMax,
             colMax: colMax,
-            // previewFormArr: [],
 
             lines2d: lines2d,
             table: table,
@@ -483,20 +480,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             fontSize: "15px",
         }
 
-        // Style for right-hand side Display
-        const displayDivStyle = {
-            borderRadius: "5px",
-            backgroundColor: "white",
-            padding: "5px",
-            margin: "10px 5px"
-        }
-
-        const classTitleComponent = {
-            fontWeight: "bold",
-            textAlign: "center",
-
-        }
-
         const previewTdStyle = {
             padding: "5px 20px",
             borderRadius: "10px",
@@ -505,28 +488,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             cursor: "grab",
         } as React.CSSProperties;
 
-
-        const generateTargetList = (linesLength:any) => {
-            let returnDivArr = [];
-            
-            for (let i = 1; i <= linesLength; i++) {
-                for (let j = 1; j <= linesLength; j++) {
-                    const id = i.toString() + "," + j.toString();
-
-                    returnDivArr.push(
-                        <DropTarget id={id} />
-                    ) 
-
-                    if (j == linesLength) {
-                        returnDivArr.push(<br />);
-                    }
-                }
-                
-            }
-            console.table(returnDivArr);
-            
-            return returnDivArr
-        }
 
         const handleAddRow = () => {
             var newRow = [];
@@ -539,22 +500,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         }
 
         const handleAddCol = () => {
-        //     var table=[];
-        //     var colCount=0;
-        //     var rowCount=0;
-        //     for(let i=0; i<rowMax; i++) {
-        //         var row=[];
-        //         for(let j=0; j < colMax; j++) {
-        //             if(lines2d[i][j]!=undefined){
-        //                 row.push(<td>{lines2d[i][j].element.value}</td>);
-        //             } else {
-        //                 row.push(<td></td>);
-        //             }
-        //         }
-        //     table.push(<tr>{row}</tr>);
-        // }
-        // log.info(table);
-
 
             let newTable = this.state.table.map((x:any)=>x);
             newTable.forEach((element: React.ReactElement<any>) => {
@@ -564,29 +509,8 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             })
             console.log(newTable);
 
-            // this.setState({
-            //     table: newTable
-            // },() => {
-            //     log.info(this.state.table)
-            // })
             var dummy = <></>;
             this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
-        }
-
-        const generateTable = (row:any, col:any) => {
-            let returnDivArr = [];
-            
-            for (let i=1; i<=row; i++) {
-                returnDivArr.push(<tr id={"row"+i.toString()}></tr>);
-                for (let j=1; j<=col; j++){
-                    const id = i.toString() + "," + j.toString();
-                    const innerHTML = "(" + i.toString() + "," + j.toString() + ")";
-
-                    returnDivArr.push(<td id={id} style={previewTdStyle}>{innerHTML}</td>)
-                }
-            }
-            console.table(returnDivArr);
-            return returnDivArr;
         }
 
         return (
@@ -614,165 +538,12 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     <br/>
 
                     <table style={{width: "100%"}}>
-                        {/* {
-                            // generateTable(this.state.previewFormRow, this.state.previewFormCol).map((element)=>(
-                            //     element
-                            // ))
-                            this.state.currentFormTemplate.lines.map((line)=>(
-                                <tr>
-                                    {
-                                        line.elements.map((element)=>(
-                                            <td>
-                                                <div>{element.element.value}</div>
-                                            </td>
-                                        ))
-                                    }
-                                </tr>
-                            ))
-                        } */}
-                        {/* {
-                            this.state.lines2d.map((line)=>(
-                                <tr>
-                                    {
-                                        line.map((element,index)=>(
-                                            <td>
-                                                <div>{element.element.value}</div>
-                                            </td>
-                                        ))
-                                    }
-                                </tr>
-                            ))
-                        } */}
                         {
                             this.state.table
                         }
                     </table>
                 </div>
             </div>
-        )
-    }
-}
-
-class DropTarget extends React.Component<any,any> {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            haveItemInside: false,
-            itemInside: <></>,
-        }
-    }
-
-    
-    render() {
-        const props:any = this.props;
-
-        const dragAreaStyle = {
-            border: "1px solid black", 
-            display: "inline-block", 
-            width: "fit-content",
-            padding: "10px",
-            margin: "8px",
-        }
-
-        function allowDrop(ev: React.DragEvent<HTMLDivElement>): void {
-            ev.preventDefault();
-        }
-
-        const drop = (ev: React.DragEvent<HTMLDivElement>): void => {
-            console.log("Drop");
-
-            ev.preventDefault();
-
-            const targetAreaChildLength = document.getElementById((ev.target as HTMLDivElement).id)?.childNodes.length;
-            let src = ev.dataTransfer.getData("srcId");
-            let srcText = ev.dataTransfer.getData("srcText");
-
-            if ( (targetAreaChildLength - 1) == 0 ) {
-                console.log("   Dropping on an NO CHILD Area");
-                console.log("   Origin: " + src + "; Target: " + (ev.target as HTMLDivElement).id);
-
-                if (src) {
-                    this.setState({
-                        haveItemInside: true,
-                        itemInside: srcText,
-                    })
-                }
-            } else {
-                console.log("Have child")
-            }
-        }
-
-        return(
-            <div 
-                id={this.props.id} 
-                style={dragAreaStyle}
-                onDrop={drop}
-                onDragOver={allowDrop}
-            >
-                {!this.state.haveItemInside
-                    ? "EMPTY"
-                    : this.state.itemInside
-                }
-            </div>
-        )
-    }
-}
-
-class Drag extends React.Component<any,any> {
-    id = "component" + (this.props.index + 1).toString();
-
-    
-    render() {
-        const dragItemStyle = {
-            padding: "5px 10px",
-            backgroundColor: "white",
-            width: "fit-content",
-            borderRadius: "10px",
-            margin: "6px 5px",
-            cursor: "grab"
-        } as React.CSSProperties;
-
-        function startDrag(ev: React.DragEvent<HTMLDivElement>): void {
-            console.log("On drag start");
-            console.log("   Drag target ID => " + (ev.target as HTMLDivElement).id);
-
-            ev.dataTransfer.setData("srcId", (ev.target as HTMLDivElement).id);
-            ev.dataTransfer.setData("srcText", (ev.target as HTMLDivElement).innerText);
-        }
-
-        return(
-            <div id={this.id} style={dragItemStyle} draggable={true} onDragStart={startDrag}>
-                {/* Field Name */}
-                <span style={{fontWeight: "bold"}}>{this.props.line.elements[0].element.value}</span>
-                {/* Example */}
-                : {this.props.line.elements[1].element.value}
-            </div>
-        )
-    }
-}
-
-class DragDropItem extends React.Component<any,any> {
-    constructor(props) {
-        super(props);
-        this.state={
-            type: this.props.lineElement.type,
-            value: this.props.lineElement.element.value,
-            componentKey: this.props.lineElement.componentKeyBelongTo,
-        }
-    }
-    componentWillReceiveProps() {
-    
-    }
-    render() {
-        return(
-           this.state.type == "staticText"
-            ? <span>{this.state.value}</span>
-            : this.state.type == "data"
-                ?this.props.getComponentType(this.state.componentKey) == "number"
-                    ? <input placeholder={this.state.value} type="number" />
-                    : <input placeholder={this.state.value} type="text" />
-                :<></>
         )
     }
 }
