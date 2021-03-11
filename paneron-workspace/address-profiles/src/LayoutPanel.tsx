@@ -357,11 +357,19 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         var rowCount=0;
         for(let i=0; i<rowMax; i++) {
             var row=[];
+            const previewTdStyle = {
+                padding: "5px 20px",
+                borderRadius: "10px",
+                textAlign: "center",
+                backgroundColor: "white",
+                cursor: "grab",
+            } as React.CSSProperties;
+            
             for(let j=0; j < colMax; j++) {
                 if(lines2d[i][j]!=undefined){
-                    row.push(<td>{lines2d[i][j].element.value}</td>);
+                    row.push(<td style={previewTdStyle} draggable={true}>{lines2d[i][j].element.value}</td>);
                 } else {
-                    row.push(<td></td>);
+                    row.push(<td style={previewTdStyle}></td>);
                 }
             }
            table.push(<tr>{row}</tr>);
@@ -491,8 +499,10 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         const previewTdStyle = {
             padding: "5px 20px",
-            border: "1px solid black",
             borderRadius: "10px",
+            textAlign: "center",
+            backgroundColor: "white",
+            cursor: "grab",
         } as React.CSSProperties;
 
 
@@ -520,8 +530,8 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         const handleAddRow = () => {
             var newRow = [];
-            for(let i = 0; i < this.state.colMax;i++){
-                newRow.push(<td></td>);
+            for(let i = 0; i < this.state.table[0].props.children.length; i++){
+                newRow.push(React.createElement("td", {style: previewTdStyle, children: "EMPTY", draggable: true}));
             }
             this.setState({
                 table: [...this.state.table, <tr>{newRow}</tr>]
@@ -548,7 +558,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
             let newTable = this.state.table.map((x:any)=>x);
             newTable.forEach((element: React.ReactElement<any>) => {
-                const newTD = React.createElement("td", {children: "EMPTY"});
+                const newTD = React.createElement("td", {style: previewTdStyle, children: "EMPTY", draggable: true});
 
                 element.props.children.push(newTD);
             })
@@ -603,7 +613,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
                     <br/>
 
-                    <table>
+                    <table style={{width: "100%"}}>
                         {/* {
                             // generateTable(this.state.previewFormRow, this.state.previewFormCol).map((element)=>(
                             //     element
