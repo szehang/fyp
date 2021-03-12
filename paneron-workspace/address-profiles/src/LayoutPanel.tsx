@@ -352,6 +352,56 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             rowMax++;
         });
 
+        //onDragStart Event handler
+        const startDrag = ev => {
+            console.log("Start Dragging...");
+            console.log("   Dragging ID is => " + ev.target.id);
+            ev.dataTransfer.setData("drag-item", ev.target.id);
+        }
+
+        // onDragOver Event handler
+        const dragOver = ev => {
+            ev.preventDefault();
+        }
+
+        // onDrop Event handler
+        const drop = ev => {
+            console.log("Dropped...");
+            console.log("   Dropped ID is => " + ev.target.id);
+
+            const draggingItemID = ev.dataTransfer.getData("drag-item");
+            const droppedID = ev.target.id;
+
+            let newTable = this.state.table.map((x:any)=>x);
+            let dragItemI = 0, dragItemJ = 0, dropItemI = 0, dropItemJ = 0, temp = null;
+
+            newTable.forEach((element:any, i:any) => {
+                element.props.children.forEach((child:any, j:any) => {
+                    // Find their coordinates in state.table first
+                    if (draggingItemID === child.props.id) {
+                        dragItemI = i;
+                        dragItemJ = j;
+                    }
+
+                    if (droppedID === child.props.id) {
+                        dropItemI = i;
+                        dropItemJ = j;
+                    }
+
+                });
+            });
+
+            // Swap them 
+            temp = newTable[dragItemI].props.children[dragItemJ];
+            newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
+            newTable[dropItemI].props.children[dropItemJ] = temp;
+
+            // Update this.state.table
+            var dummy = <></>;
+            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+        }
+
+
         var table=[];
         for(let i=0; i<rowMax; i++) {
             var row=[];
@@ -364,10 +414,12 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             } as React.CSSProperties;
             
             for(let j=0; j < colMax; j++) {
+                const id=(i+1).toString() + "," + (j+1).toString();
+
                 if(lines2d[i][j]!=undefined){
-                    row.push(<td style={previewTdStyle} draggable={true}>{lines2d[i][j].element.value}</td>);
+                    row.push(<td id={id} style={previewTdStyle} draggable={true} onDragStart={startDrag} onDragOver={dragOver} onDrop={drop}>{lines2d[i][j].element.value}</td>);
                 } else {
-                    row.push(<td style={previewTdStyle}></td>);
+                    row.push(<td id={id} style={previewTdStyle} draggable={true}><pre>    </pre></td>);
                 }
             }
            table.push(<tr>{row}</tr>);
@@ -488,11 +540,60 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             cursor: "grab",
         } as React.CSSProperties;
 
+        const startDrag = ev => {
+            console.log("Start Dragging...");
+            console.log("   Dragging ID is => " + ev.target.id);
+            ev.dataTransfer.setData("drag-item", ev.target.id);
+        }
+
+        // onDragOver Event handler
+        const dragOver = ev => {
+            ev.preventDefault();
+        }
+
+        // onDrop Event handler
+        const drop = ev => {
+            console.log("Dropped...");
+            console.log("   Dropped ID is => " + ev.target.id);
+
+            const draggingItemID = ev.dataTransfer.getData("drag-item");
+            const droppedID = ev.target.id;
+
+            let newTable = this.state.table.map((x:any)=>x);
+            let dragItemI = 0, dragItemJ = 0, dropItemI = 0, dropItemJ = 0, temp = null;
+
+            newTable.forEach((element:any, i:any) => {
+                element.props.children.forEach((child:any, j:any) => {
+                    // Find their coordinates in state.table first
+                    if (draggingItemID === child.props.id) {
+                        dragItemI = i;
+                        dragItemJ = j;
+                    }
+
+                    if (droppedID === child.props.id) {
+                        dropItemI = i;
+                        dropItemJ = j;
+                    }
+
+                });
+            });
+
+            // Swap them 
+            temp = newTable[dragItemI].props.children[dragItemJ];
+            newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
+            newTable[dropItemI].props.children[dropItemJ] = temp;
+
+            // Update this.state.table
+            var dummy = <></>;
+            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+        }
 
         const handleAddRow = () => {
             var newRow = [];
+            let rowMax = this.state.table.length;
             for(let i = 0; i < this.state.table[0].props.children.length; i++){
-                newRow.push(React.createElement("td", {style: previewTdStyle, children: "EMPTY", draggable: true}));
+                const id = (rowMax + 1).toString() + "," + (i+1).toString()
+                newRow.push(React.createElement("td", {id:id, style: previewTdStyle, children: "\xa0\xa0\xa0\xa0\xa0", draggable: true, onDragStart: startDrag, onDragOver: dragOver, onDrop: drop}));
             }
             this.setState({
                 table: [...this.state.table, <tr>{newRow}</tr>]
@@ -502,8 +603,10 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         const handleAddCol = () => {
 
             let newTable = this.state.table.map((x:any)=>x);
-            newTable.forEach((element: React.ReactElement<any>) => {
-                const newTD = React.createElement("td", {style: previewTdStyle, children: "EMPTY", draggable: true});
+            newTable.forEach((element: React.ReactElement<any>, index:any) => {
+                let colMax = element.props.children.length;
+                const id = (index+1).toString() + "," + (colMax + 1).toString()
+                const newTD = React.createElement("td", {id:id, style: previewTdStyle, children: "\xa0\xa0\xa0\xa0\xa0", draggable: true, onDragStart: startDrag, onDragOver: dragOver, onDrop: drop});
 
                 element.props.children.push(newTD);
             })
