@@ -417,7 +417,16 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 const id=(i+1).toString() + "," + (j+1).toString();
 
                 if(lines2d[i][j]!=undefined){
-                    row.push(<td id={id} style={previewTdStyle} draggable={true} onDragStart={startDrag} onDragOver={dragOver} onDrop={drop}>{lines2d[i][j].element.value}</td>);
+                    row.push(<td id={id} style={previewTdStyle} draggable={true} onDragStart={startDrag} onDragOver={dragOver} onDrop={drop}>
+                        {/* {lines2d[i][j].element.value} */}
+                        {
+                            lines2d[i][j].type == "staticText"
+                            ?<>{lines2d[i][j].element.value}</>
+                            :lines2d[i][j].type == "data"
+                                ?<input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                                :<></>
+                        }
+                    </td>);
                 } else {
                     row.push(<td id={id} style={previewTdStyle} draggable={true}><pre>    </pre></td>);
                 }
@@ -439,9 +448,125 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             lines2d: lines2d,
             table: table,
         }
+
+        
     }
 
-    componentDidMount() {
+    // componentDidMount() {
+    // }
+
+    // componentWillReceiveProps() {
+    //     
+    // }
+
+    componentDidUpdate(prevProps, prevState) {
+        log.info("updated:"+this.state.currentFormTemplate.lines);
+
+        var lines = JSON.parse(JSON.stringify(this.state.currentFormTemplate.lines));
+        var lines2d = [];
+        var rowMax=0;
+        var colMax=0;
+        lines.forEach(line => {
+            var aLine = [];
+            var colCount = 0;
+            line.elements.forEach(element => {
+                var aElement;
+                aElement = element;
+                aLine.push(aElement);
+                colCount++;
+            });
+            if(colCount > colMax){
+                colMax = colCount;
+            }
+            lines2d.push(aLine);
+            rowMax++;
+        });
+
+         //onDragStart Event handler
+         const startDrag = ev => {
+            console.log("Start Dragging...");
+            console.log("   Dragging ID is => " + ev.target.id);
+            ev.dataTransfer.setData("drag-item", ev.target.id);
+        }
+
+        // onDragOver Event handler
+        const dragOver = ev => {
+            ev.preventDefault();
+        }
+
+        // onDrop Event handler
+        const drop = ev => {
+            console.log("Dropped...");
+            console.log("   Dropped ID is => " + ev.target.id);
+
+            const draggingItemID = ev.dataTransfer.getData("drag-item");
+            const droppedID = ev.target.id;
+
+            let newTable = this.state.table.map((x:any)=>x);
+            let dragItemI = 0, dragItemJ = 0, dropItemI = 0, dropItemJ = 0, temp = null;
+
+            newTable.forEach((element:any, i:any) => {
+                element.props.children.forEach((child:any, j:any) => {
+                    // Find their coordinates in state.table first
+                    if (draggingItemID === child.props.id) {
+                        dragItemI = i;
+                        dragItemJ = j;
+                    }
+
+                    if (droppedID === child.props.id) {
+                        dropItemI = i;
+                        dropItemJ = j;
+                    }
+
+                });
+            });
+
+            // Swap them 
+            temp = newTable[dragItemI].props.children[dragItemJ];
+            newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
+            newTable[dropItemI].props.children[dropItemJ] = temp;
+
+            // Update this.state.table
+            var dummy = <></>;
+            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+        }
+
+
+        var table=[];
+        for(let i=0; i<rowMax; i++) {
+            var row=[];
+            const previewTdStyle = {
+                padding: "5px 20px",
+                borderRadius: "10px",
+                textAlign: "center",
+                backgroundColor: "white",
+                cursor: "grab",
+            } as React.CSSProperties;
+            
+            for(let j=0; j < colMax; j++) {
+                const id=(i+1).toString() + "," + (j+1).toString();
+
+                if(lines2d[i][j]!=undefined){
+                    row.push(<td id={id} style={previewTdStyle} draggable={true} onDragStart={startDrag} onDragOver={dragOver} onDrop={drop}>
+                        {/* {lines2d[i][j].element.value} */}
+                        {
+                            lines2d[i][j].type == "staticText"
+                            ?<>{lines2d[i][j].element.value}</>
+                            :lines2d[i][j].type == "data"
+                                ?<input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                                :<></>
+                        }
+                    </td>);
+                } else {
+                    row.push(<td id={id} style={previewTdStyle} draggable={true}><pre>    </pre></td>);
+                }
+            }
+           table.push(<tr>{row}</tr>);
+        }
+        if(JSON.stringify(prevState.lines2d)!=JSON.stringify(lines2d)){
+            this.setState({lines2d: lines2d, table:table});
+        }
+
     }
 
 
@@ -458,6 +583,9 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         // log.info(newFormTemplate.lines);
         // this.setState({currentFormTemplate: newFormTemplate});
         this.setState({currentFormTemplate: {...this.state.currentFormTemplate, lines: newFormTemplate.lines}}, ()=>{log.info(this.state.currentFormTemplate.lines)});
+        // const dummy = {};
+        // const newCurrentFormTemplate = {...this.state.currentFormTemplate, lines: newFormTemplate.lines};
+        // this.setState({currentFormTemplate: dummy}, ()=>{this.setState({currentFormTemplate: newCurrentFormTemplate})});
     }
 
     getComponentType(componentKey: string) {
@@ -584,8 +712,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             newTable[dropItemI].props.children[dropItemJ] = temp;
 
             // Update this.state.table
-            var dummy = <></>;
-            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+            // var dummy = <></>;
+            // this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+
+            //sync parent state
+
         }
 
         const handleAddRow = () => {

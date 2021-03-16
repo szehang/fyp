@@ -1,41 +1,44 @@
-- id: '0'
+- id: 0
   countries:
-    - HKG
     - TWN
   addressProfiles:
     - id: boxAddress
       type: regular
-      localization: L01
-      description: this is box address
-      signature: SIGN 01
+      localization: TW
+      description: regular box address
+      signature: S001
       areaApplicability:
-        - NT
         - HK
       timeToLive: 10
-      validity: V01
+      validity: V001
       componentProfiles:
         - addressComponentProfileKey: boxNum
           addressComponentSpecification:
             maxCardinality: 1
             minCardinality: 1
-        - addressComponentProfileKey: jhbjkl;
-          addressComponentSpecification:
-            maxCardinality: 10
-            minCardinality: 0
+      formTemplates:
+        - id: pf001
+          name: PublicForm001
+          description: Form for Public
+          localization:
+            locale: TW
+            script: Chinese
+            writingSystem: Chinese
+            textDirection: leftToRightTopToBottom
+          dimensions: []
+          orientation: null
+          lines: []
+      displayTemplates: []
   componentProfiles:
     - key: boxNum
-      description: box number 123
-      example: Box 001 123
+      description: box number of the house
+      example: Box 001
       attributeProfiles:
         - attributeProfileName: number
         - attributeProfileName: string
-    - key: jhbjkl;
-      description: hbjknj
-      example: jbhbkj
-      attributeProfiles: []
   attributeProfiles:
     - name: number
-      maxCardinality: 10
+      maxCardinality: 1
       minCardinality: 1
       valueType: number
     - name: string
