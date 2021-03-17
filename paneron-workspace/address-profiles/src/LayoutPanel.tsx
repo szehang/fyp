@@ -393,12 +393,12 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             });
 
             // Swap them 
-            let newLines2d = this.state.lines2d.map((x:any)=>x);
-            let tempElement = newLines2d[dragItemI][dragItemJ];
-            // log.info("tempElement:" + tempElement.componentKeyBelongTo);
-            newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
-            newLines2d[dropItemI][dropItemJ] = tempElement;
-            // console.log("newLines2d:" + newLines2d);
+            // let newLines2d = this.state.lines2d.map((x:any)=>x);
+            // let tempElement = newLines2d[dragItemI][dragItemJ];
+            // // log.info("tempElement:" + tempElement.componentKeyBelongTo);
+            // newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
+            // newLines2d[dropItemI][dropItemJ] = tempElement;
+            // // console.log("newLines2d:" + newLines2d);
 
             temp = newTable[dragItemI].props.children[dragItemJ];
             newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
@@ -408,7 +408,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             var dummy = <></>;
             this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
         }
-
 
         var table=[];
         for(let i=0; i<rowMax; i++) {
@@ -425,16 +424,33 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 const id=(i+1).toString() + "," + (j+1).toString();
 
                 if(lines2d[i][j]!=undefined){
-                    row.push(<td id={id} style={previewTdStyle} draggable={true} onDragStart={startDrag} onDragOver={dragOver} onDrop={drop}>
-                        {/* {lines2d[i][j].element.value} */}
-                        {
-                            lines2d[i][j].type == "staticText"
-                            ?<>{lines2d[i][j].element.value}</>
-                            :lines2d[i][j].type == "data"
-                                ?<input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
-                                :<></>
-                        }
-                    </td>);
+                    let child;
+                    let componentKeyBelongTo = lines2d[i][j].componentKeyBelongTo;
+                    let type = lines2d[i][j].type;
+                    let element = lines2d[i][j].element;
+
+                    if(lines2d[i][j].type == "staticText") {
+                        child = <>{lines2d[i][j].element.value}</>;
+                    }else if (lines2d[i][j].type == "data") {
+                        child = <input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                    }else {
+                        child = <></>;
+                    }
+
+                    const newTd = React.createElement("td", {
+                        id: id, 
+                        children: child, 
+                        style: previewTdStyle, 
+                        draggable: true, 
+                        onDragStart: startDrag, 
+                        onDragOver: dragOver, 
+                        onDrop: drop,
+                        componentKeyBelongTo: componentKeyBelongTo,
+                        type: type,
+                        element: element,
+                    })
+
+                    row.push(newTd);
                 } else {
                     row.push(<td id={id} style={previewTdStyle} draggable={true}><pre>    </pre></td>);
                 }
@@ -457,8 +473,6 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             lines2d: lines2d,
             table: table,
         }
-
-        
     }
 
     // componentDidMount() {
@@ -531,12 +545,12 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             });
 
             // Swap them 
-            let newLines2d = this.state.lines2d.map((x:any)=>x);
-            let tempElement = newLines2d[dragItemI][dragItemJ];
-            // log.info("tempElement:" + tempElement.componentKeyBelongTo);
-            newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
-            newLines2d[dropItemI][dropItemJ] = tempElement;
-            // console.log("newLines2d:" + newLines2d);
+            // let newLines2d = this.state.lines2d.map((x:any)=>x);
+            // let tempElement = newLines2d[dragItemI][dragItemJ];
+            // // log.info("tempElement:" + tempElement.componentKeyBelongTo);
+            // newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
+            // newLines2d[dropItemI][dropItemJ] = tempElement;
+            // // console.log("newLines2d:" + newLines2d);
 
             temp = newTable[dragItemI].props.children[dragItemJ];
             newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
@@ -563,18 +577,37 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 const id=(i+1).toString() + "," + (j+1).toString();
 
                 if(lines2d[i][j]!=undefined){
-                    row.push(<td id={id} style={previewTdStyle} draggable={true} onDragStart={startDrag} onDragOver={dragOver} onDrop={drop}>
-                        {/* {lines2d[i][j].element.value} */}
-                        {
-                            lines2d[i][j].type == "staticText"
-                            ?<>{lines2d[i][j].element.value}</>
-                            :lines2d[i][j].type == "data"
-                                ?this.getComponentType(lines2d[i][j].componentKeyBelongTo) == "number"
-                                    ?<input style={{cursor:"grab"}} type="number" placeholder={lines2d[i][j].element.value} />
-                                    :<input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
-                                :<></>
+                    let child;
+                    let componentKeyBelongTo = lines2d[i][j].componentKeyBelongTo;
+                    let type = lines2d[i][j].type;
+                    let element = lines2d[i][j].element;
+
+                    if(lines2d[i][j].type == "staticText") {
+                        child = <>{lines2d[i][j].element.value}</>;
+                    }else if (lines2d[i][j].type == "data") {
+                        if (this.getComponentType(lines2d[i][j].componentKeyBelongTo) == "number") {
+                            child = <input style={{cursor:"grab"}} type="number" placeholder={lines2d[i][j].element.value} />
+                        }else {
+                            child = <input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
                         }
-                    </td>);
+                    }else {
+                        child = <></>;
+                    }
+
+                    const newTd = React.createElement("td", {
+                        id: id, 
+                        children: child, 
+                        style: previewTdStyle, 
+                        draggable: true, 
+                        onDragStart: startDrag, 
+                        onDragOver: dragOver, 
+                        onDrop: drop,
+                        componentKeyBelongTo: componentKeyBelongTo,
+                        type: type,
+                        element: element,
+                    })
+
+                    row.push(newTd);
                 } else {
                     row.push(<td id={id} style={previewTdStyle} draggable={true}><pre>    </pre></td>);
                 }
@@ -725,12 +758,12 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             });
 
             // Swap them 
-            let newLines2d = this.state.lines2d.map((x:any)=>x);
-            let tempElement = newLines2d[dragItemI][dragItemJ];
-            // log.info("tempElement:" + tempElement.componentKeyBelongTo);
-            newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
-            newLines2d[dropItemI][dropItemJ] = tempElement;
-            // console.log("newLines2d:" + newLines2d);
+            // let newLines2d = this.state.lines2d.map((x:any)=>x);
+            // let tempElement = newLines2d[dragItemI][dragItemJ];
+            // // log.info("tempElement:" + tempElement.componentKeyBelongTo);
+            // newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
+            // newLines2d[dropItemI][dropItemJ] = tempElement;
+            // // console.log("newLines2d:" + newLines2d);
             
             temp = newTable[dragItemI].props.children[dragItemJ];
             newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
