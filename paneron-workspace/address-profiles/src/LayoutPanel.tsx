@@ -393,6 +393,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             });
 
             // Swap them 
+            let newLines2d = this.state.lines2d.map((x:any)=>x);
+            let tempElement = newLines2d[dragItemI][dragItemJ];
+            // log.info("tempElement:" + tempElement.componentKeyBelongTo);
+            newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
+            newLines2d[dropItemI][dropItemJ] = tempElement;
+            // console.log("newLines2d:" + newLines2d);
+
             temp = newTable[dragItemI].props.children[dragItemJ];
             newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
             newTable[dropItemI].props.children[dropItemJ] = temp;
@@ -524,6 +531,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             });
 
             // Swap them 
+            let newLines2d = this.state.lines2d.map((x:any)=>x);
+            let tempElement = newLines2d[dragItemI][dragItemJ];
+            // log.info("tempElement:" + tempElement.componentKeyBelongTo);
+            newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
+            newLines2d[dropItemI][dropItemJ] = tempElement;
+            // console.log("newLines2d:" + newLines2d);
+
             temp = newTable[dragItemI].props.children[dragItemJ];
             newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
             newTable[dropItemI].props.children[dropItemJ] = temp;
@@ -711,6 +725,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             });
 
             // Swap them 
+            let newLines2d = this.state.lines2d.map((x:any)=>x);
+            let tempElement = newLines2d[dragItemI][dragItemJ];
+            // log.info("tempElement:" + tempElement.componentKeyBelongTo);
+            newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
+            newLines2d[dropItemI][dropItemJ] = tempElement;
+            // console.log("newLines2d:" + newLines2d);
+            
             temp = newTable[dragItemI].props.children[dragItemJ];
             newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
             newTable[dropItemI].props.children[dropItemJ] = temp;
@@ -730,6 +751,9 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             this.setState({
                 table: [...this.state.table, <tr>{newRow}</tr>]
             })
+
+            let newLines2d = this.state.lines2d.map((x:any)=>x);
+            //todo
         }
 
         const handleAddCol = () => {
@@ -746,11 +770,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
             var dummy = <></>;
             this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+
+            let newLines2d = this.state.lines2d.map((x:any)=>x);
+            //todo
         }
 
         const handelSaveChange = () => {
             //scan table
-            
 
             //update root state
             this.state.changeStateHandler("class", "edit", newCurrentClassProfile);
