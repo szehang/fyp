@@ -289,7 +289,8 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                 <FormTemplateEditPanel 
                                     currentAddressProfile={this.state.currentAddressProfile} 
                                     currentClassProfile={this.state.currentClassProfile} 
-                                    currentFormTemplate={this.state.currentFormTemplate} 
+                                    currentFormTemplate={this.state.currentFormTemplate}
+                                    changeStateHandler={this.state.changeStateHandler}
                                 />
                         </Collapse>
                     </div>
@@ -441,6 +442,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             currentAddressProfile: this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
             currentFormTemplate: {...this.props.currentFormTemplate, lines: lines},
+            changeStateHandler: this.props.changeStateHandler,
         
             rowMax: rowMax,
             colMax: colMax,
@@ -553,7 +555,9 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                             lines2d[i][j].type == "staticText"
                             ?<>{lines2d[i][j].element.value}</>
                             :lines2d[i][j].type == "data"
-                                ?<input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                                ?this.getComponentType(lines2d[i][j].componentKeyBelongTo) == "number"
+                                    ?<input style={{cursor:"grab"}} type="number" placeholder={lines2d[i][j].element.value} />
+                                    :<input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
                                 :<></>
                         }
                     </td>);
@@ -712,11 +716,8 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             newTable[dropItemI].props.children[dropItemJ] = temp;
 
             // Update this.state.table
-            // var dummy = <></>;
-            // this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
-
-            //sync parent state
-
+            var dummy = <></>;
+            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
         }
 
         const handleAddRow = () => {
@@ -747,37 +748,50 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
         }
 
+        const handelSaveChange = () => {
+            //scan table
+            
+
+            //update root state
+            this.state.changeStateHandler("class", "edit", newCurrentClassProfile);
+        }
+
         return (
-            <div style={{display:"flex"}}>
-                <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
-                    {/* component display */}
-                    {
-                        this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
-                            <EditableFieldItem 
-                                key={componentPointer.addressComponentProfileKey}
-                                componentPointer={componentPointer} 
-                                currentAddressProfile={this.state.currentAddressProfile} 
-                                currentFormTemplate={this.state.currentFormTemplate}
-                                handleUpdate={this.handleUpdate.bind(this)} 
-                            />
-                        ))
-                    }                    
-                </div>
-                <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
-                <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
-                    {/* demo display */}
-                    <AnchorButton onClick={handleAddRow} text="Add Row" intent="success" icon="add-row-bottom" />
-                    <AnchorButton onClick={handleAddCol} text="Add Column" intent="success" icon="add-column-right" />
-
-                    <br/>
-
-                    <table style={{width: "100%"}}>
+            <>
+                <div style={{display:"flex"}}>
+                    <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
+                        {/* component display */}
                         {
-                            this.state.table
-                        }
-                    </table>
+                            this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
+                                <EditableFieldItem 
+                                    key={componentPointer.addressComponentProfileKey}
+                                    componentPointer={componentPointer} 
+                                    currentAddressProfile={this.state.currentAddressProfile} 
+                                    currentFormTemplate={this.state.currentFormTemplate}
+                                    handleUpdate={this.handleUpdate.bind(this)} 
+                                />
+                            ))
+                        }                    
+                    </div>
+                    <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
+                    <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
+                        {/* demo display */}
+                        <AnchorButton onClick={handleAddRow} text="Add Row" intent="success" icon="add-row-bottom" />
+                        <AnchorButton onClick={handleAddCol} text="Add Column" intent="success" icon="add-column-right" />
+
+                        <br/>
+
+                        <table style={{width: "100%"}}>
+                            {
+                                this.state.table
+                            }
+                        </table>
+                    </div>
                 </div>
-            </div>
+                <div>
+                    <AnchorButton onClick={handelSaveChange} fill={true} text="Save Change" intent="success" />
+                </div>
+            </>
         )
     }
 }
