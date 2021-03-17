@@ -107,12 +107,20 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}});
     }
 
-    handleEditFormTemplate(formId:string){
-        this.state.currentClassProfile.formTemplates.forEach(formTemplate => {
-            if(formTemplate.id == formId) {
-                this.setState({currentFormTemplate: formTemplate});
-            }
-        });
+    handleEditFormTemplate(formId:string | null){
+        if(formId == null) {
+            this.setState({currentFormTemplate: null});
+        } else {
+            this.state.currentClassProfile.formTemplates.forEach(formTemplate => {
+                if(formTemplate.id == formId) {
+                    this.setState({currentFormTemplate: formTemplate});
+                }
+            });
+        }
+    }
+
+    updateCurrentClassProfile(currentClassProfile){
+        this.setState({currentClassProfile: currentClassProfile});
     }
 
     createTemplate() {
@@ -291,6 +299,8 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                     currentClassProfile={this.state.currentClassProfile} 
                                     currentFormTemplate={this.state.currentFormTemplate}
                                     changeStateHandler={this.state.changeStateHandler}
+                                    handleEditFormTemplate={this.handleEditFormTemplate.bind(this)}
+                                    updateCurrentClassProfile={this.updateCurrentClassProfile.bind(this)}
                                 />
                         </Collapse>
                     </div>
@@ -432,7 +442,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     if(lines2d[i][j].type == "staticText") {
                         child = <>{lines2d[i][j].element.value}</>;
                     }else if (lines2d[i][j].type == "data") {
-                        child = <input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                        if (this.getComponentType(lines2d[i][j].componentKeyBelongTo) == "number") {
+                            child = <input style={{cursor:"grab"}} type="number" placeholder={lines2d[i][j].element.value} />
+                        }else {
+                            child = <input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                        }
                     }else {
                         child = <></>;
                     }
@@ -465,6 +479,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             currentAddressProfile: this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
             currentFormTemplate: {...this.props.currentFormTemplate, lines: lines},
+            
             changeStateHandler: this.props.changeStateHandler,
         
             rowMax: rowMax,
@@ -642,11 +657,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     getComponentType(componentKey: string) {
         var result = "string"
 
-        this.state.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+        this.props.currentAddressProfile.componentProfiles.forEach(componentProfile => {
             if(componentProfile.key == componentKey) {
                 var type = "number";
                 componentProfile.attributeProfiles.forEach((attributeProfilePointer)=>{
-                    this.state.currentAddressProfile.attributeProfiles.forEach(attributeProfile => {
+                    this.props.currentAddressProfile.attributeProfiles.forEach(attributeProfile => {
                         if(attributeProfile.name == attributeProfilePointer.attributeProfileName){
                             if(attributeProfile.valueType != "number"){
                                 type = "string";
@@ -785,8 +800,8 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 table: [...this.state.table, <tr>{newRow}</tr>]
             })
 
-            let newLines2d = this.state.lines2d.map((x:any)=>x);
-            //todo
+            // let newLines2d = this.state.lines2d.map((x:any)=>x);
+            // //todo
         }
 
         const handleAddCol = () => {
@@ -804,15 +819,96 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             var dummy = <></>;
             this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
 
-            let newLines2d = this.state.lines2d.map((x:any)=>x);
-            //todo
+            // let newLines2d = this.state.lines2d.map((x:any)=>x);
+            // //todo
         }
 
         const handelSaveChange = () => {
             //scan table
+            let newLines = [];
+            let rowSize = 0;
+            let colSize = 0;
+            this.state.table.forEach((tr: React.ReactElement<any>, rowIndex:any) => {
+                let newLineElements = [];
+                colSize = 0;
+                tr.props.children.forEach((td: React.ReactElement<any>, colIndex:any)=>{
+                    if(td.props.componentKeyBelongTo != undefined) {
+                        let componentKeyBelongTo = td.props.componentKeyBelongTo;
+                        let type = td.props.type;
+                        let element = td.props.element;
+
+                        newLineElements.push({componentKeyBelongTo: componentKeyBelongTo, type: type, element: element});
+                    } else {
+                        let componentKeyBelongTo = null;
+                        let type = "staticText";
+                        let element = {value: "\xa0\xa0\xa0\xa0\xa0"};
+
+                        newLineElements.push({componentKeyBelongTo: componentKeyBelongTo, type: type, element: element});
+                    }
+                    colSize++;
+                });
+                let newLine = {elements: newLineElements};
+                newLines.push(newLine);
+                rowSize++;
+            });
+
+            let isRowsEmpty = Array(rowSize).fill(true);
+            let isColsEmpty = Array(colSize).fill(true);
+            newLines.forEach((line, rowIndex)=>{
+                let isEmtyRow = true;
+                line.elements.forEach((element, colIndex) => {
+                    if(element.componentKeyBelongTo != null) {
+                        isColsEmpty[colIndex] = false;
+                        isEmtyRow = false;
+                    }
+                });
+                isRowsEmpty[rowIndex] = isEmtyRow;
+            });
+
+            newLines.forEach((line, rowIndex)=>{
+                if(isRowsEmpty[rowIndex])
+                newLines.splice(rowIndex, 1);
+                line.elements.forEach((element, colIndex) => {
+                   if(isColsEmpty[colIndex]) {
+                       line.elements.splice(colIndex, 1, {trim: true});
+                   } 
+                }); 
+            }); 
+            newLines.forEach((line, rowIndex)=>{
+                line.elements.forEach((element, colIndex) => {
+                   if(element.trim != undefined) {
+                        line.elements.splice(colIndex, 1);
+                   } 
+                }); 
+            });
+
+            
+            let newClassProfile = JSON.parse(JSON.stringify(this.state.currentClassProfile));
+            let newFormTemplate = null;
+            newClassProfile.formTemplates.forEach((formTemplate)=>{
+                if(formTemplate.id == this.state.currentFormTemplate.id) {
+                    formTemplate.lines = newLines;
+                    newFormTemplate = formTemplate;
+                }
+            });
+
+            //trim empyt row and column
+            //todo
+
+            console.log("newClassProfile:" + JSON.stringify(newClassProfile, null, 2));
 
             //update root state
-            this.state.changeStateHandler("class", "edit", newCurrentClassProfile);
+            this.state.changeStateHandler("class", "edit", newClassProfile);
+            this.props.updateCurrentClassProfile(newClassProfile);
+
+            //update local state
+            this.setState({
+                currentClassProfile: newClassProfile,
+                currentFormTemplate: newFormTemplate,
+            });
+
+            //update ui
+            this.props.handleEditFormTemplate();
         }
 
         return (
