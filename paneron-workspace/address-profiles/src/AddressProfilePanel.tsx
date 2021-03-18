@@ -107,7 +107,7 @@ class AddressParser extends React.Component {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify({ address: address })
     };
-    const url = "http://beebeebeeebeee.com:894/"
+    const url = "http://34.92.169.157:8080/"
 
     const response = await fetch(url, requestOptions);
     const data =await response.json();
@@ -134,6 +134,8 @@ class AddressParser extends React.Component {
         value={this.state.parserInput}
       />
       <AnchorButton text="GO"  intent="primary" icon="comment" fill={true} onClick={handleParserSubmit} />
+
+        {JSON.stringify(this.state.parserResult, null, 2)}
 
       <br/>
       </>
