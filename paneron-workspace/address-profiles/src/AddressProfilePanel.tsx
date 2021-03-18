@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Title } from "./Utility"; //DropDown
 import * as iso3166code from "./iso3166code"
 import { AddressProfile } from "./AddressProfile";
+import { AnchorButton, InputGroup } from "@blueprintjs/core";
+import log from "electron-log"
+
+Object.assign(console, log);
 
 
 export class AddressProfilePanel extends React.Component<any, any> {
+
   render() {
     const divStyle = {
       backgroundColor: "rgb(226, 226, 226)",
@@ -23,7 +28,7 @@ export class AddressProfilePanel extends React.Component<any, any> {
       <div style={divStyle}>
         <Title name="Profile Setting" />
         <div style={contentStyle}>
-          Set Address Profile Country:
+          <span style={{fontWeight: "bold"}}>Set Address Profile Country:</span>
           <br />
           <AddressProfileSelect 
               currentAddressProfileCode={this.props.currentAddressProfileCode}
@@ -32,20 +37,21 @@ export class AddressProfilePanel extends React.Component<any, any> {
               handleTogglePanel = {this.props.handleTogglePanel}
           />
           <div>{this.props.currentAddressProfileCode}</div>
+
+          <br/>
+
+          <span style={{fontWeight: "bold"}}>A.I. Address Parser</span>
+          <br/>
+          <AddressParser />
+
         </div>
+
       </div>
     );
   }
 }
 
 class AddressProfileSelect extends React.Component<AddressProfileSelectProps> {
-  constructor(props){
-    super(props)
-    this.state={
-      
-    }
-  }
-
   handleSelectOnChange = (event) => {
     this.props.changeAddressProfile(event.target.value);
     this.props.handleTogglePanel();
@@ -75,6 +81,63 @@ class AddressProfileSelect extends React.Component<AddressProfileSelectProps> {
               }
           </select>
       );
+  }
+}
+
+class AddressParser extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      parserInput: "casa del gelato, 10A 24-26 high street road mount waverley vic 3183",
+      parserResult: {},
+    }
+  }
+
+  componentDidMount() {
+
+  }
+
+  async getParsedAddress(address:string) {
+    console.log(`Sending ${address} to Server...`);
+
+    // Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({ address: address })
+    };
+    const url = "http://beebeebeeebeee.com:894/"
+
+    const response = await fetch(url, requestOptions);
+    const data =await response.json();
+    this.setState({parserResult: data});
+
+    console.log("Finish")
+
+  }
+  
+  
+  render() {
+    const handleParserSubmit = (ev:any) => {      
+      this.getParsedAddress(this.state.parserInput);
+    }
+
+
+    return(
+      <>
+      <InputGroup 
+        placeholder="Enter your address..."
+        onChange={(event:any)=>{this.setState({parserInput: event.target.value})}}
+        fill={true}
+        type="text"
+        value={this.state.parserInput}
+      />
+      <AnchorButton text="GO"  intent="primary" icon="comment" fill={true} onClick={handleParserSubmit} />
+
+      <br/>
+      </>
+    )
   }
 }
 
