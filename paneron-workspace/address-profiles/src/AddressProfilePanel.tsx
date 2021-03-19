@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Title } from "./Utility"; //DropDown
 import * as iso3166code from "./iso3166code"
 import { AddressProfile } from "./AddressProfile";
-import { AnchorButton, InputGroup } from "@blueprintjs/core";
+import { Alignment, AnchorButton, Checkbox, Icon, InputGroup } from "@blueprintjs/core";
 import log from "electron-log"
 
 Object.assign(console, log);
 
 
 export class AddressProfilePanel extends React.Component<any, any> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isParserWindowOpen: false,
+    }
+  }
 
   render() {
     const divStyle = {
@@ -23,6 +30,12 @@ export class AddressProfilePanel extends React.Component<any, any> {
       margin: "0 5px",
       padding: "11px",
     } as React.CSSProperties;
+
+    const handleParserOpen = () => {
+      this.setState({
+        isParserWindowOpen: !this.state.isParserWindowOpen,
+      })
+    }
 
     return (
       <div style={divStyle}>
@@ -40,10 +53,14 @@ export class AddressProfilePanel extends React.Component<any, any> {
 
           <br/>
 
-          <span style={{fontWeight: "bold"}}>A.I. Address Parser</span>
+          <span style={{fontWeight: "bold"}}>Utilities</span>
           <br/>
-          <AddressParser />
-
+          {/* <AddressParser /> */}
+          <AnchorButton text="A.I. Address Parser"  intent="primary" icon="comment" fill={true} onClick={handleParserOpen} />
+          {this.state.isParserWindowOpen
+            ? <AddressParserWindow parserOpenHandler={handleParserOpen} />
+            : <></>
+          }
         </div>
 
       </div>
@@ -59,47 +76,43 @@ class AddressProfileSelect extends React.Component<AddressProfileSelectProps> {
 
   render() {
       const selectStyle = {
-          width: "100%",
-          borderRadius: "5px",
-          border: "0",
-          background: "#FFFFFF",
-          padding: "10px",
-          marginTop: "10px",
-        } as React.CSSProperties;
+        width: "100%",
+        borderRadius: "5px",
+        border: "0",
+        background: "#FFFFFF",
+        padding: "10px",
+        marginTop: "10px",
+      } as React.CSSProperties;
 
-      return(
-          <select style={selectStyle} onChange={ (event) => this.handleSelectOnChange(event) } value={this.props.currentAddressProfileCode}>
-              <option value={"null"}>{"Select Address Profile"}</option>
-              {
-                  iso3166code.Countries.map((country)=>(
-                      <option key={country["alpha-3"]} value={country["alpha-3"]}>
-                          {country.name}
-                          {" "}
-                          {country["alpha-3"]}
-                      </option>
-                  ))
-              }
-          </select>
-      );
+    return(
+        <select style={selectStyle} onChange={ (event) => this.handleSelectOnChange(event) } value={this.props.currentAddressProfileCode}>
+            <option value={"null"}>{"Select Address Profile"}</option>
+            {
+                iso3166code.Countries.map((country)=>(
+                    <option key={country["alpha-3"]} value={country["alpha-3"]}>
+                        {country.name}
+                        {" "}
+                        {country["alpha-3"]}
+                    </option>
+                ))
+            }
+        </select>
+    );
   }
 }
 
-class AddressParser extends React.Component {
+class AddressParserWindow extends React.Component<any> {
   constructor(props) {
     super(props);
-
     this.state = {
       parserInput: "casa del gelato, 10A 24-26 high street road mount waverley vic 3183",
       parserResult: {},
+      selectedAttribute: [],
     }
   }
 
-  componentDidMount() {
-
-  }
-
   async getParsedAddress(address:string) {
-    console.log(`Sending ${address} to Server...`);
+    console.log(`Sending ${address} to Server for parsing...`);
 
     // Simple POST request with a JSON body using fetch
     const requestOptions = {
@@ -112,33 +125,91 @@ class AddressParser extends React.Component {
     const response = await fetch(url, requestOptions);
     const data =await response.json();
     this.setState({parserResult: data});
-
-    console.log("Finish")
-
   }
-  
-  
+
   render() {
+    const mainDivStyle = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "white",
+        width: "60%",
+        borderRadius: "20px",
+        padding: "15px 25px",
+        zIndex: "999",
+    };
+
+    const parserTable = {
+      textAlign: "left",
+      width: "100%",
+    }
+
     const handleParserSubmit = (ev:any) => {      
       this.getParsedAddress(this.state.parserInput);
     }
 
+    const handleCloseWindow = (ev:any) => {
+      this.props.parserOpenHandler();
+    }
+
+    const handleCreateSelected = () => {
+      // to be done
+      console.log(this.state.selectedAttribute)
+
+    }
+
+    const handleSelectAttribute = (ev:any) => {
+      this.setState({
+        selectedAttribute: [...this.state.selectedAttribute, ev.target.value]
+      })
+    }
 
     return(
-      <>
-      <InputGroup 
-        placeholder="Enter your address..."
-        onChange={(event:any)=>{this.setState({parserInput: event.target.value})}}
-        fill={true}
-        type="text"
-        value={this.state.parserInput}
-      />
-      <AnchorButton text="GO"  intent="primary" icon="comment" fill={true} onClick={handleParserSubmit} />
+      <div style={mainDivStyle}>
+        <div>
+          <span style={{fontWeight: "bold"}}>A.I. Address Parser</span>
+          <span style={{float: "right", cursor: "pointer"}}><Icon icon="cross" intent="danger" iconSize={25} onClick={handleCloseWindow} /></span>
+        </div>
+        <hr/>
+        <span style={{fontWeight: "bold"}}>Enter your address that you intended to parse in ENGLISH</span>
+        <br/>
+        <InputGroup 
+          placeholder="Enter your address..."
+          onChange={(event:any)=>{this.setState({parserInput: event.target.value})}}
+          fill={true}
+          type="text"
+          value={this.state.parserInput}
+        />
+        <AnchorButton text="Parse" intent="primary" icon="direction-right" fill={true} onClick={handleParserSubmit} />
+        {/* <pre>{JSON.stringify(this.state.parserResult, null, 2)}</pre> */}
+        {Object.keys(this.state.parserResult).length !== 0
+          ?
+            <div>
+              <table style={parserTable}>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Attribute Type</th>
+                    <th>Attribute Value</th>
+                  </tr>
+                </thead>
+                {
+                  Object.keys(this.state.parserResult).map((key) => (
+                    <tr>
+                      <td style={{display: "inline-block"}}><input type="checkbox" name={key} value={key} onChange={handleSelectAttribute} /></td>
+                      <td>{key}</td>
+                      <td>{this.state.parserResult[key]}</td>
+                    </tr>
+                  ))
+                }
+              </table>
+            <AnchorButton text="Create Selected Attribute Profile" intent="success" icon="new-object" fill={true} onClick={handleCreateSelected} />
 
-        {JSON.stringify(this.state.parserResult, null, 2)}
-
-      <br/>
-      </>
+            </div>
+          :<></>
+        }
+      </div>
     )
   }
 }
