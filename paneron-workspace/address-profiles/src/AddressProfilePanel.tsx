@@ -31,6 +31,17 @@ export class AddressProfilePanel extends React.Component<any, any> {
       padding: "11px",
     } as React.CSSProperties;
 
+    const backDivStyle = {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "100%",
+      backgroundColor: "black",
+      opacity: "50%",
+      zIndex: "998",
+    }
+
     const handleParserOpen = () => {
       this.setState({
         isParserWindowOpen: !this.state.isParserWindowOpen,
@@ -58,7 +69,10 @@ export class AddressProfilePanel extends React.Component<any, any> {
           {/* <AddressParser /> */}
           <AnchorButton text="A.I. Address Parser"  intent="primary" icon="comment" fill={true} onClick={handleParserOpen} />
           {this.state.isParserWindowOpen
-            ? <AddressParserWindow parserOpenHandler={handleParserOpen} />
+            ? <>
+              <div style={backDivStyle}></div>
+              <AddressParserWindow parserOpenHandler={handleParserOpen} />
+              </>
             : <></>
           }
         </div>
@@ -108,6 +122,7 @@ class AddressParserWindow extends React.Component<any> {
       parserInput: "casa del gelato, 10A 24-26 high street road mount waverley vic 3183",
       parserResult: {},
       selectedAttribute: [],
+      isSpinning: false,
     }
   }
 
@@ -124,7 +139,7 @@ class AddressParserWindow extends React.Component<any> {
 
     const response = await fetch(url, requestOptions);
     const data =await response.json();
-    this.setState({parserResult: data});
+    this.setState({parserResult: data, isSpinning: false});
   }
 
   render() {
@@ -145,7 +160,14 @@ class AddressParserWindow extends React.Component<any> {
       width: "100%",
     }
 
+    const parserFormStyle = {
+      
+    } as React.CSSProperties;
+
     const handleParserSubmit = (ev:any) => {      
+      this.setState({isSpinning: true}); // Start the spinner
+      this.setState({selectedAttribute: []}) // Clear the array in case of re-search
+
       this.getParsedAddress(this.state.parserInput);
     }
 
@@ -160,28 +182,42 @@ class AddressParserWindow extends React.Component<any> {
     }
 
     const handleSelectAttribute = (ev:any) => {
-      this.setState({
-        selectedAttribute: [...this.state.selectedAttribute, ev.target.value]
-      })
+      const index = this.state.selectedAttribute.indexOf(ev.target.value);
+
+      // if the selected is not yet in the state
+      if (index === -1) {
+        this.setState({
+          selectedAttribute: [...this.state.selectedAttribute, ev.target.value]
+        })
+      }else {
+        let copy = [...this.state.selectedAttribute];
+        copy.splice(index, 1);
+        this.setState({selectedAttribute: copy});
+      }
     }
 
     return(
       <div style={mainDivStyle}>
         <div>
-          <span style={{fontWeight: "bold"}}>A.I. Address Parser</span>
+          <span style={{fontWeight: "bold", fontSize: "1.3rem"}}>A.I. Address Parser</span>
           <span style={{float: "right", cursor: "pointer"}}><Icon icon="cross" intent="danger" iconSize={25} onClick={handleCloseWindow} /></span>
         </div>
+
         <hr/>
-        <span style={{fontWeight: "bold"}}>Enter your address that you intended to parse in ENGLISH</span>
-        <br/>
-        <InputGroup 
-          placeholder="Enter your address..."
-          onChange={(event:any)=>{this.setState({parserInput: event.target.value})}}
-          fill={true}
-          type="text"
-          value={this.state.parserInput}
-        />
-        <AnchorButton text="Parse" intent="primary" icon="direction-right" fill={true} onClick={handleParserSubmit} />
+        
+        <div style={parserFormStyle}>
+          <span style={{fontWeight: "bold"}}>Enter your address in ENGLISH</span>
+          <br/>
+          <InputGroup 
+            placeholder="Enter your address..."
+            onChange={(event:any)=>{this.setState({parserInput: event.target.value})}}
+            fill={true}
+            type="text"
+            value={this.state.parserInput}
+          />
+          <AnchorButton text="Parse" intent="primary" icon="direction-right" loading={this.state.isSpinning} fill={true} onClick={handleParserSubmit} />
+        </div>
+
         {/* <pre>{JSON.stringify(this.state.parserResult, null, 2)}</pre> */}
         {Object.keys(this.state.parserResult).length !== 0
           ?
