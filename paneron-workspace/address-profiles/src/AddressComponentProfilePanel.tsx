@@ -115,8 +115,7 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
     }
 
     handleBundleAddProfiles = (parserForms:any) => {
-      console.log("Bundle!");
-      console.log(parserForms);
+      let dataSetToBeAdded:any = [];
 
       parserForms.forEach((form:any) => {
         // If the "Profile key" or "Description" field is empty
@@ -160,10 +159,11 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             example: form.example,
             attributeProfiles: [],
         }
-
-        this.props.changeStateHandler( "component", "add", dataToBeAdded);
-
+        dataSetToBeAdded.push(dataToBeAdded);
+        // this.props.changeStateHandler( "component", "add", dataToBeAdded);
+        
       });
+      this.props.changeStateHandler( "components", "addSet", dataSetToBeAdded);
       this.handleParserOpen();
     }
 
@@ -346,7 +346,6 @@ class AddressParserWindow extends React.Component<any, any> {
         parserForm: [...this.state.parserForm, obj]
       })
     })
-    console.log(this.state.parserForm)
   }
 
   render() {
@@ -386,10 +385,7 @@ class AddressParserWindow extends React.Component<any, any> {
     }
 
     const handleOpenCreateForm = () => {
-      console.log(this.state.selectedAttribute)
       this.setState({isCreateFormOpen: !this.state.isCreateFormOpen});
-
-      console.log(this.state.parserForm);
     }
     
     const handleSelectAttribute = (ev:any) => {

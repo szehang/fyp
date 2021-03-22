@@ -83,6 +83,10 @@ class Container extends React.Component<any, State> {
         return this.changeStateComponent(mode, object);
       }
       break;
+      case "components":{
+        return this.changeStateComponent(mode, object);
+      }
+      break;
       case "attribute":{
         return this.changeStateAttribute(mode, object);
       }
@@ -144,6 +148,13 @@ class Container extends React.Component<any, State> {
             output_yaml(newAddressProfiles, "output"); //save state data to yml file
           }
           break;
+          case "addSet": {
+            object.forEach(component => {
+              components.splice(components.length, 0, component); //push new profile to the components array
+            });
+            this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
+            output_yaml(newAddressProfiles, "output"); //save state data to yml file
+          } break;
           case "edit": {
             components.forEach(component => { //locate the target componentProfile //component = target componentProfile
                   if(component.key==object.key) {
