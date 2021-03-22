@@ -123,6 +123,7 @@ class AddressParserWindow extends React.Component<any> {
       parserResult: {},
       selectedAttribute: [],
       isSpinning: false,
+      isCreateFormOpen: false,
     }
   }
 
@@ -175,10 +176,14 @@ class AddressParserWindow extends React.Component<any> {
       this.props.parserOpenHandler();
     }
 
+    const handleOpenCreateForm = () => {
+      console.log(this.state.selectedAttribute)
+      this.setState({isCreateFormOpen: !this.state.isCreateFormOpen});
+    }
+    
     const handleCreateSelected = () => {
       // to be done
-      console.log(this.state.selectedAttribute)
-
+      console.log("HIHI")
     }
 
     const handleSelectAttribute = (ev:any) => {
@@ -204,47 +209,114 @@ class AddressParserWindow extends React.Component<any> {
         </div>
 
         <hr/>
-        
-        <div style={parserFormStyle}>
-          <span style={{fontWeight: "bold"}}>Enter your address in ENGLISH</span>
-          <br/>
-          <InputGroup 
-            placeholder="Enter your address..."
-            onChange={(event:any)=>{this.setState({parserInput: event.target.value})}}
-            fill={true}
-            type="text"
-            value={this.state.parserInput}
-          />
-          <AnchorButton text="Parse" intent="primary" icon="direction-right" loading={this.state.isSpinning} fill={true} onClick={handleParserSubmit} />
-        </div>
+        {this.state.isCreateFormOpen
+        ?
+          <div>
+            {this.state.selectedAttribute.map((selectedKey:any) => (
+              <AddressComponentForm profileKey={selectedKey} example={this.state.parserResult[selectedKey]} />
+            ))
+            }
 
-        {/* <pre>{JSON.stringify(this.state.parserResult, null, 2)}</pre> */}
-        {Object.keys(this.state.parserResult).length !== 0
-          ?
-            <div>
-              <table style={parserTable}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Attribute Type</th>
-                    <th>Attribute Value</th>
-                  </tr>
-                </thead>
-                {
-                  Object.keys(this.state.parserResult).map((key) => (
+            <br/>
+
+            <AnchorButton text="Create Component Profiles" intent="success" icon="new-object" loading={this.state.isSpinning} fill={true} onClick={handleCreateSelected} />
+          </div>
+        :
+          <>
+          <div style={parserFormStyle}>
+            <span style={{fontWeight: "bold"}}>Enter your address in ENGLISH</span>
+            <br/>
+            <InputGroup 
+              placeholder="Enter your address..."
+              onChange={(event:any)=>{this.setState({parserInput: event.target.value})}}
+              fill={true}
+              type="text"
+              value={this.state.parserInput}
+            />
+            <AnchorButton text="Parse" intent="primary" icon="direction-right" loading={this.state.isSpinning} fill={true} onClick={handleParserSubmit} />
+          </div>
+
+          {/* <pre>{JSON.stringify(this.state.parserResult, null, 2)}</pre> */}
+          {Object.keys(this.state.parserResult).length !== 0
+            ?
+              <div>
+                <table style={parserTable}>
+                  <thead>
                     <tr>
-                      <td style={{display: "inline-block"}}><input type="checkbox" name={key} value={key} onChange={handleSelectAttribute} /></td>
-                      <td>{key}</td>
-                      <td>{this.state.parserResult[key]}</td>
+                      <th></th>
+                      <th>Component Type</th>
+                      <th>Component Value</th>
                     </tr>
-                  ))
-                }
-              </table>
-            <AnchorButton text="Create Selected Attribute Profile" intent="success" icon="new-object" fill={true} onClick={handleCreateSelected} />
+                  </thead>
+                  {
+                    Object.keys(this.state.parserResult).map((key) => (
+                      <tr>
+                        <td style={{display: "inline-block"}}><input type="checkbox" name={key} value={key} onChange={handleSelectAttribute} /></td>
+                        <td>{key}</td>
+                        <td>{this.state.parserResult[key]}</td>
+                      </tr>
+                    ))
+                  }
+                </table>
+              <AnchorButton text="Next" intent="success" icon="arrow-right" fill={true} onClick={handleOpenCreateForm} />
 
-            </div>
-          :<></>
+              </div>
+            :<></>
+          }
+          </>
+          
         }
+      </div>
+    )
+  }
+}
+
+class AddressComponentForm extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      key: this.props.profileKey,
+      description: "",
+      example: this.props.example,
+    }
+  }
+
+  render() {
+    const itemBodyStyle = {
+      padding: "5px",
+      width: "100%",
+    } as React.CSSProperties;
+
+    const tdStyle = {
+        fontWeight: "bold",
+    }
+
+    return(
+      <div style={itemBodyStyle}>
+        <table>
+            <tr>
+                <td style={tdStyle}>Profile Key<span style={{color: "red"}}>*</span></td>
+                <td>:</td>
+                <td>
+                    <InputGroup value={this.state.key} onChange={(event)=>{this.setState({key: event.target.value})}}/>  
+                </td>
+            </tr>
+            <tr>
+                <td style={tdStyle}>Description<span style={{color: "red"}}>*</span></td>
+                <td>:</td>
+                <td>
+                <InputGroup value={this.state.description} onChange={(event)=>{this.setState({description: event.target.value})}}/>
+                </td>
+            </tr>
+            <tr>
+                <td style={tdStyle}>Example</td>
+                <td>:</td>
+                <td>
+                <InputGroup value={this.state.example} onChange={(event)=>{this.setState({example: event.target.value})}}/>
+                </td>
+            </tr>
+            {/* todo - add the attribute selector */}
+        </table>
       </div>
     )
   }
