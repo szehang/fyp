@@ -49,6 +49,9 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             description: "",
             example: "",
             attributeProfiles: [],
+
+            //A.I. Parser
+            isParserWindowOpen: false,
         }
     }
 
@@ -127,7 +130,14 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             description: "",
             example: "",
             attributeProfiles: [],
+
         });
+    }
+
+    handleParserOpen = () => {
+        this.setState({
+            isParserWindowOpen: !this.state.isParserWindowOpen,
+        })
     }
 
     render(){
@@ -167,6 +177,17 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             fontWeight: "bold",
         }
 
+        const backDivStyle = {
+            position: "absolute",
+            top: "0",
+            left: "0",
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "black",
+            opacity: "50%",
+            zIndex: "998",
+          }
+
         return(
             <div style={itemStyle}>
                 <div style={{...itemHeadButtonStyle, ...rightStyle}}>
@@ -178,7 +199,12 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                 <div style={itemHeadButtonStyle}>
                     {this.state.isOpeningForm
                         ?<AnchorButton onClick={this.handleDiscardForm} intent="danger" icon="delete" text="Discard Profile" />
-                        :<AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Component Profile" />
+                        :
+                        <>
+                            <AnchorButton onClick={this.handleOpenForm} intent="success" icon="add" text="Create New Component Profile" />
+
+                            <AnchorButton text="A.I. Address Parser" intent="primary" icon="comment" onClick={this.handleParserOpen} />
+                        </>
                     }
                 </div>
                 {
@@ -213,6 +239,13 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                         </div>
                     </>
                     :<></>
+                }
+                {this.state.isParserWindowOpen
+                    ? <>
+                    <div style={backDivStyle}></div>
+                    {/* <AddressParserWindow parserOpenHandler={this.handleParserOpen} /> */}
+                    </>
+                    : <></>
                 }
             </div>
         );
