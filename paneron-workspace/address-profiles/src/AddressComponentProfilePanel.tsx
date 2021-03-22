@@ -114,6 +114,59 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
         });
     }
 
+    handleBundleAddProfiles = (parserForms:any) => {
+      console.log("Bundle!");
+      console.log(parserForms);
+
+      parserForms.forEach((form:any) => {
+        // If the "Profile key" or "Description" field is empty
+        if (!form.key) {
+            alert("\"Profile Key\" cannot not be empty");
+
+            return;
+        } else if(!form.description) {
+            alert("\"Description\" cannot not be empty");
+
+            return;
+        }
+
+        // If some optional field is missing
+        if (!form.example) {
+            if (!window.confirm("Optional field \"Example\" are missing.\nConfirm to create?")) {
+                return;
+            }
+        }
+
+        // All form checking is Done
+        // Check if the Unique ID (i.e. Profile key) is being 
+        let isIdUsed = false;
+
+        this.props.currentAddressProfile.componentProfiles.forEach((componentProfile) => {
+            if ( (componentProfile.key.toLowerCase()) === (form.key.toLowerCase())) {
+                isIdUsed = true;
+                return;
+            }
+        });
+
+        if (isIdUsed) {
+            alert("\"" + form.key + "\"" + " is being used.\nTry another one");
+
+            return;
+        }
+
+        const dataToBeAdded: AddressComponentProfile = {
+            key: form.key,
+            description: form.description,
+            example: form.example,
+            attributeProfiles: [],
+        }
+
+        this.props.changeStateHandler( "component", "add", dataToBeAdded);
+
+      });
+      this.handleParserOpen();
+    }
+
     handleDiscardForm = () => {
         // If one of the field is not empty
         if ( this.state.key || this.state.description || this.state.example ) {
@@ -243,7 +296,7 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                 {this.state.isParserWindowOpen
                     ? <>
                     <div style={backDivStyle}></div>
-                    <AddressParserWindow parserOpenHandler={this.handleParserOpen} />
+                    <AddressParserWindow parserOpenHandler={this.handleParserOpen} bundleAddProfilesHandler={this.handleBundleAddProfiles} />
                     </>
                     : <></>
                 }
@@ -252,7 +305,7 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
     }
 }
 
-class AddressParserWindow extends React.Component<any> {
+class AddressParserWindow extends React.Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
@@ -261,6 +314,8 @@ class AddressParserWindow extends React.Component<any> {
       selectedAttribute: [],
       isSpinning: false,
       isCreateFormOpen: false,
+
+      parserForm: [],
     }
   }
 
@@ -278,6 +333,20 @@ class AddressParserWindow extends React.Component<any> {
     const response = await fetch(url, requestOptions);
     const data = await response.json();
     this.setState({parserResult: data, isSpinning: false});
+  }
+
+  fillParserForm() {
+    this.state.selectedAttribute.forEach((selectedKey:any) => {
+      const obj = {
+        key: selectedKey,
+        description: "",
+        example: this.state.parserResult[selectedKey],
+      }
+      this.setState({
+        parserForm: [...this.state.parserForm, obj]
+      })
+    })
+    console.log(this.state.parserForm)
   }
 
   render() {
@@ -307,6 +376,7 @@ class AddressParserWindow extends React.Component<any> {
     const handleParserSubmit = (ev:any) => {      
       this.setState({isSpinning: true}); // Start the spinner
       this.setState({selectedAttribute: []}) // Clear the array in case of re-search
+      this.setState({parserForm: []}) // Clear the array in case of re-search
 
       this.getParsedAddress(this.state.parserInput);
     }
@@ -318,26 +388,53 @@ class AddressParserWindow extends React.Component<any> {
     const handleOpenCreateForm = () => {
       console.log(this.state.selectedAttribute)
       this.setState({isCreateFormOpen: !this.state.isCreateFormOpen});
+
+      console.log(this.state.parserForm);
     }
     
-    const handleCreateSelected = () => {
-      // to be done
-      console.log("HIHI")
-    }
-
     const handleSelectAttribute = (ev:any) => {
       const index = this.state.selectedAttribute.indexOf(ev.target.value);
 
       // if the selected is not yet in the state
       if (index === -1) {
         this.setState({
-          selectedAttribute: [...this.state.selectedAttribute, ev.target.value]
+          selectedAttribute: [...this.state.selectedAttribute, ev.target.value],
+          parserForm: [...this.state.parserForm, 
+          {
+            id: ev.target.value,
+            key: ev.target.value,
+            description: "",
+            example: this.state.parserResult[ev.target.value]
+          }]
         })
+
       }else {
         let copy = [...this.state.selectedAttribute];
         copy.splice(index, 1);
         this.setState({selectedAttribute: copy});
+
+        this.state.parserForm.forEach((obj:any, index:any) => {
+          if (obj.id === ev.target.value) {
+            let copy = [...this.state.parserForm];
+            copy.splice(index, 1);
+            this.setState({parserForm: copy});
+          }
+        });
       }
+    }
+
+    const handleChangeStateForm = (stateFromHandler:any) => {
+      this.state.parserForm.forEach((obj:any, index:any) => {
+        if (obj.id === stateFromHandler.id) {
+          let copy = [...this.state.parserForm];
+          copy.splice(index, 1, stateFromHandler);
+          this.setState({parserForm: copy});
+        }
+      });
+    }
+
+    const handleCreateProfiles = () => {
+      this.props.bundleAddProfilesHandler(this.state.parserForm);
     }
 
     return(
@@ -353,15 +450,14 @@ class AddressParserWindow extends React.Component<any> {
           <div>
             {this.state.selectedAttribute.map((selectedKey:any) => (
               <>
-              <AddressComponentForm profileKey={selectedKey} example={this.state.parserResult[selectedKey]} />
+              <AddressComponentForm profileKey={selectedKey} example={this.state.parserResult[selectedKey]} changeStateFormHandler={handleChangeStateForm} />
               <hr />
               </>
             ))
             }
-
             <br/>
 
-            <AnchorButton text="Create Component Profiles" intent="success" icon="new-object" loading={this.state.isSpinning} fill={true} onClick={handleCreateSelected} />
+            <AnchorButton text="Create Component Profiles" intent="success" icon="new-object" loading={this.state.isSpinning} fill={true} onClick={handleCreateProfiles} />
           </div>
         :
           <>
@@ -413,7 +509,7 @@ class AddressParserWindow extends React.Component<any> {
   }
 }
 
-class AddressComponentForm extends React.Component<any, any> {
+class AddressComponentForm extends React.Component<any, any, any> {
   constructor(props) {
     super(props);
     this.state = {
@@ -433,6 +529,24 @@ class AddressComponentForm extends React.Component<any, any> {
         fontWeight: "bold",
     } as React.CSSProperties;
 
+    const handleChangeKey = (ev:any) => {
+      this.setState({key: ev.target.value}, () => {
+        this.props.changeStateFormHandler({...this.state, id: this.props.profileKey});
+      })
+    }
+
+    const handleChangeDescription = (ev:any) => {
+      this.setState({description: ev.target.value}, () => {
+        this.props.changeStateFormHandler({...this.state, id: this.props.profileKey});
+      });
+    }
+
+    const handleChangeExample = (ev:any) => {
+      this.setState({example: ev.target.value}, () => {
+        this.props.changeStateFormHandler({...this.state, id: this.props.profileKey});
+      });
+    }
+
     return(
       <div style={itemBodyStyle}>
         <table>
@@ -440,21 +554,21 @@ class AddressComponentForm extends React.Component<any, any> {
                 <td style={tdStyle}>Profile Key<span style={{color: "red"}}>*</span></td>
                 <td>:</td>
                 <td>
-                    <InputGroup value={this.state.key} onChange={(event:any)=>{this.setState({key: event.target.value})}}/>  
+                    <InputGroup value={this.state.key} onChange={handleChangeKey}/>  
                 </td>
             </tr>
             <tr>
                 <td style={tdStyle}>Description<span style={{color: "red"}}>*</span></td>
                 <td>:</td>
                 <td>
-                <InputGroup value={this.state.description} onChange={(event:any)=>{this.setState({description: event.target.value})}}/>
+                <InputGroup value={this.state.description} onChange={handleChangeDescription}/>
                 </td>
             </tr>
             <tr>
                 <td style={tdStyle}>Example</td>
                 <td>:</td>
                 <td>
-                <InputGroup value={this.state.example} onChange={(event:any)=>{this.setState({example: event.target.value})}}/>
+                <InputGroup value={this.state.example} onChange={handleChangeExample}/>
                 </td>
             </tr>
             {/* todo - add the attribute selector */}
