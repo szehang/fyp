@@ -1,4 +1,4 @@
-import { AnchorButton, Collapse, Icon, InputGroup, NumericInput, TagInput } from "@blueprintjs/core";
+import { AnchorButton, Collapse, Icon, InputGroup, Intent, NumericInput, TagInput } from "@blueprintjs/core";
 import * as React from "react";
 import { AddressComponentProfile, AddressProfile, AttributeProfile } from "./AddressProfile";
 import { AttributeProfilePanel } from "./AttributeProfilePanel";
@@ -434,6 +434,43 @@ class AddressParserWindow extends React.Component<any, any> {
             this.props.bundleAddProfilesHandler(this.state.parserForm);
         }
 
+        const handleImageBtnClick = (ev:any) => {
+            const inputTag = document.getElementById("fileInput");
+            inputTag?.click();
+        }
+
+        const handleFileChange = (event:any) => {
+            const imageFile = event.target.files.item(0);
+            console.log(imageFile);
+            
+            let formData = new FormData();
+            console.log(formData);
+            formData.append("file", imageFile);
+
+            // Simple POST request with a JSON body using fetch
+            const requestOptions = {
+                method: "POST",
+                body: formData,
+                // ****** Not need any header here, from the Internet: https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
+            };
+            const url = "http://34.92.169.157:3000/api"
+
+            fetch(url, requestOptions)
+                .then(response => response.json())
+                .then(data => {console.log(data)})
+                .catch(err => {console.error(err)})
+        }
+
+        const imageButton = (
+            <AnchorButton 
+                icon="media"
+                intent={Intent.PRIMARY}
+                minimal={true}
+                onClick={handleImageBtnClick}
+            />
+        );
+
+
         return (
             <div style={mainDivStyle}>
                 <div>
@@ -462,13 +499,18 @@ class AddressParserWindow extends React.Component<any, any> {
                             <span style={{ fontWeight: "bold", marginBottom: "5px" }}>Enter your address in ENGLISH</span>
                             <br />
                             <InputGroup
-                                placeholder="Enter your address..."
+                                placeholder="Enter address..."
                                 onChange={(event: any) => { this.setState({ parserInput: event.target.value }) }}
                                 fill={true}
                                 type="text"
                                 value={this.state.parserInput}
-                                style={{ marginBottom: "5px"  }}
+                                style={{ marginBottom: "5px" }}
+                                rightElement={imageButton}
                             />
+                            <form id="imageForm" action="" method="post" style={{display: "none"}}>
+                                <input type="file" id="fileInput" onChange={handleFileChange} style={{display: "none"}} />
+
+                            </form>
                             <AnchorButton text="Parse" intent="primary" icon="direction-right" loading={this.state.isSpinning} fill={true} onClick={handleParserSubmit} />
                         </div>
 
