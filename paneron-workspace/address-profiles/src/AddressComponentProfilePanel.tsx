@@ -434,35 +434,40 @@ class AddressParserWindow extends React.Component<any, any> {
             this.props.bundleAddProfilesHandler(this.state.parserForm);
         }
 
-        const handleImageBtnClick = (ev:any) => {
+        const handleImageBtnClick = (ev: any) => {
             const inputTag = document.getElementById("fileInput");
             inputTag?.click();
         }
 
-        const handleFileChange = (event:any) => {
-            const imageFile = event.target.files.item(0);
-            console.log(imageFile);
-            
-            let formData = new FormData();
-            console.log(formData);
-            formData.append("file", imageFile);
+        const handleFileChange = async (event: any) => {
+            try {
+                const imageFile = event.target.files.item(0);
+                console.log(imageFile);
 
-            // Simple POST request with a JSON body using fetch
-            const requestOptions = {
-                method: "POST",
-                body: formData,
-                // ****** Not need any header here, from the Internet: https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
-            };
-            const url = "http://34.92.169.157:3000/api"
+                var formData = new window.FormData();
+                formData.append("file", imageFile);
+                console.log(formData);
 
-            fetch(url, requestOptions)
-                .then(response => response.json())
-                .then(data => {console.log(data)})
-                .catch(err => {console.error(err)})
+                // Simple POST request with a JSON body using fetch
+                const requestOptions = {
+                    method: "POST",
+                    body: formData,
+                    // ****** Not need any header here, from the Internet: https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
+                };
+                const url = "http://34.92.169.157:3000/api"
+
+                console.log("fetching image text...")
+                const response = await fetch(url, requestOptions);
+                const data = await response.json();
+                this.setState({ parserInput:data.text });
+            } catch (e) {
+                console.log(e)
+            }
+
         }
 
         const imageButton = (
-            <AnchorButton 
+            <AnchorButton
                 icon="media"
                 intent={Intent.PRIMARY}
                 minimal={true}
@@ -507,8 +512,8 @@ class AddressParserWindow extends React.Component<any, any> {
                                 style={{ marginBottom: "5px" }}
                                 rightElement={imageButton}
                             />
-                            <form id="imageForm" action="" method="post" style={{display: "none"}}>
-                                <input type="file" id="fileInput" onChange={handleFileChange} style={{display: "none"}} />
+                            <form id="imageForm" action="" method="post" style={{ display: "none" }}>
+                                <input type="file" id="fileInput" onChange={handleFileChange} style={{ display: "none" }} />
 
                             </form>
                             <AnchorButton text="Parse" intent="primary" icon="direction-right" loading={this.state.isSpinning} fill={true} onClick={handleParserSubmit} />
