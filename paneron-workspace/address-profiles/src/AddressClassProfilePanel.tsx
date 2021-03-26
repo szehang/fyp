@@ -8,7 +8,7 @@ import { stat } from "fs";
 Object.assign(console, log);
 
 export class AddressClassProfilePanel extends React.Component<AddressClassProfilePanelProps> {
-    constructor(props){
+    constructor(props:any){
         super(props)
         this.state={
     
@@ -39,8 +39,8 @@ export class AddressClassProfilePanel extends React.Component<AddressClassProfil
     }
 }
 
-class AddressClassProfileForm extends React.Component<AddressClassProfileFormProps> {
-    constructor(props) {
+class AddressClassProfileForm extends React.Component<AddressClassProfileFormProps, any> {
+    constructor(props:any) {
         super(props);
         this.state={
             isOpeningForm: false,
@@ -222,7 +222,7 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
 
         const tdStyle = {
             fontWeight: "bold",
-        }
+        } as React.CSSProperties;
 
         return(
             <div style={itemStyle}>
@@ -248,35 +248,35 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
                                     <td style={tdStyle}>Profile ID<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.id} onChange={(event)=>{this.setState({id: event.target.value})}}/>  
+                                        <InputGroup value={this.state.id} onChange={(event:any)=>{this.setState({id: event.target.value})}}/>  
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style={tdStyle}>Type<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.type} onChange={(event)=>{this.setState({type: event.target.value})}}/>
+                                        <InputGroup value={this.state.type} onChange={(event:any)=>{this.setState({type: event.target.value})}}/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style={tdStyle}>Localization<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.localization} onChange={(event)=>{this.setState({localization: event.target.value})}}/>
+                                        <InputGroup value={this.state.localization} onChange={(event:any)=>{this.setState({localization: event.target.value})}}/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style={tdStyle}>Description<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.description} onChange={(event)=>{this.setState({description: event.target.value})}}/>
+                                        <InputGroup value={this.state.description} onChange={(event:any)=>{this.setState({description: event.target.value})}}/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style={tdStyle}>Signature</td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.signature} onChange={(event)=>{this.setState({signature: event.target.value})}}/>
+                                        <InputGroup value={this.state.signature} onChange={(event:any)=>{this.setState({signature: event.target.value})}}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -298,7 +298,7 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
                                     <td style={tdStyle}>Validity<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.validity} onChange={(event)=>{this.setState({validity: event.target.value})}}/>
+                                        <InputGroup value={this.state.validity} onChange={(event:any)=>{this.setState({validity: event.target.value})}}/>
                                     </td>
                                 </tr>
                                 {/* todo - add the component selector */}
@@ -329,8 +329,8 @@ class AddressClassProfileList extends React.Component<AddressClassProfileListPro
     }
 }
 
-class AddressClassProfileListItem extends React.Component<AddressClassProfileListItemProps> {
-    constructor(props){
+class AddressClassProfileListItem extends React.Component<AddressClassProfileListItemProps, any> {
+    constructor(props:any){
         super(props);
         this.state = {
             // Form state
@@ -501,7 +501,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
 
     removeIncludedComponent = (componentKey:string) => {
         const newComponentProfiles = JSON.parse(JSON.stringify(this.state.componentProfiles));//deep copy the state.addressProfiles
-        newComponentProfiles.forEach((newComponent)=>{
+        newComponentProfiles.forEach((newComponent:any)=>{
             if(componentKey == newComponent.addressComponentProfileKey){
                 const index = newComponentProfiles.indexOf(newComponent);
                 newComponentProfiles.splice(index, 1);
@@ -561,13 +561,13 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
         const subItemSytle = {
             backgroundColor: "#99BB99",
             // color: "#FFF",
-        }
+        } as React.CSSProperties;
 
         const subItemHeadSytle ={
             padding: "0.5em 0 1.5em 0",
             fontSize: "1.1em",
             textAlign: "center"
-        }
+        } as React.CSSProperties;
 
         const centerStyle = {
             fontSize: "1.2em",
@@ -575,7 +575,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
             cursor: "pointer",
             paddingBottom: "1em",
             lineHeight: "0",
-        }
+        } as React.CSSProperties;
 
         const addButtonStyle = {
             backgroundColor: "#509970",
@@ -583,43 +583,43 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
             lineHeight: "normal",
             padding: "5px 0",
             borderRadius: "5px",
-        }
+        } as React.CSSProperties;
 
         const rightDivStyle = {
             float: "right",
-        }
+        } as React.CSSProperties;
 
         const subSubItemSytle = {
             backgroundColor: "#779977",
             marginLeft: "5px",
             marginRight: "5px", 
             // color: "#FFF",
-        }
+        } as React.CSSProperties;
 
         const subSubItemHeadStyle = {
             padding: "7px 5px 5px",
             fontSize: "15px",
             height: "unset",
-        }
+        } as React.CSSProperties;
 
         const subSubitemBodyStyle = {
             fontSize: "15px",
-        }
+        } as React.CSSProperties;
 
         const selectStyle = {
             width: "100%",
             marginBottom: "5px",
             padding: "5px",
             borderRadius: "5px",
-        }
+        } as React.CSSProperties;
 
         const tdStyle = {
             fontWeight: "bold",
-        }
+        } as React.CSSProperties;
 
         const insideFormStyle = {
             color: "white",
-        }
+        } as React.CSSProperties;
 
         return(
             <div style={itemStyle}>
@@ -649,7 +649,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <InputGroup value={this.state.type} onChange={(event)=>{this.setState({type: event.target.value})}}/>
+                                    ? <InputGroup value={this.state.type} onChange={(event:any)=>{this.setState({type: event.target.value})}}/>
                                     : <>{this.state.type}</>
                                 }    
                             </td>
@@ -660,7 +660,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <InputGroup value={this.state.localization} onChange={(event)=>{this.setState({localization: event.target.value})}}/>
+                                    ? <InputGroup value={this.state.localization} onChange={(event:any)=>{this.setState({localization: event.target.value})}}/>
                                     : <>{this.state.localization}</>
                                 }    
                             </td>
@@ -671,7 +671,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <InputGroup value={this.state.description} onChange={(event)=>{this.setState({description: event.target.value})}}/>
+                                    ? <InputGroup value={this.state.description} onChange={(event:any)=>{this.setState({description: event.target.value})}}/>
                                     : <>{this.state.description}</>
                                 }    
                             </td>
@@ -682,7 +682,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <InputGroup value={this.state.signature} onChange={(event)=>{this.setState({signature: event.target.value})}}/>
+                                    ? <InputGroup value={this.state.signature} onChange={(event:any)=>{this.setState({signature: event.target.value})}}/>
                                     : <>{this.state.signature}</>
                                 }    
                             </td>
@@ -697,7 +697,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                                     // <InputGroup value={this.state.areaApplicability} onChange={(event)=>{this.setState({type: event.target.areaApplicability})}}/>
                                     : <>
                                         {
-                                            this.state.areaApplicability.map((area)=>(
+                                            this.state.areaApplicability.map((area:any)=>(
                                                 <div style={{padding:"2px 5px", borderRadius: "5px", background: "lightgrey", display: "inline", marginRight:"5px"}} key={area}>{area}</div>
                                             ))
                                         }
@@ -723,7 +723,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <InputGroup value={this.state.validity} onChange={(event)=>{this.setState({validity: event.target.value})}}/>
+                                    ? <InputGroup value={this.state.validity} onChange={(event:any)=>{this.setState({validity: event.target.value})}}/>
                                     : <>{this.state.validity}</>
                                 }    
                             </td>
@@ -735,7 +735,7 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
                         <hr style={itemHrStyle} />
                         <Collapse isOpen={this.state.isListOpen} style={itemBodyStyle}>
                                 {
-                                    this.state.componentProfiles.map((component)=>(
+                                    this.state.componentProfiles.map((component:any)=>(
                                         <ClassIncludedComponentItem
                                             key = {component.addressComponentProfileKey}
                                             componentKey = {component.addressComponentProfileKey}
@@ -789,10 +789,10 @@ class AddressClassProfileListItem extends React.Component<AddressClassProfileLis
     }
 }
 
-const ComponentOption = (props) => {
+const ComponentOption = (props:any) => {
     var isIncluded = false;
 
-    props.componentIncluded.forEach(element => {
+    props.componentIncluded.forEach((element:any) => {
         if(element.addressComponentProfileKey == props.componentKey){
             isIncluded = true;
         }
@@ -835,28 +835,28 @@ const ClassIncludedComponentItem = (props: ClassIncludedComponentItemProps) => {
 
     const rightDivStyle = {
         float: "right",
-    }
+    } as React.CSSProperties;
 
     const subSubItemSytle = {
         backgroundColor: "#779977",
         marginLeft: "5px",
         marginRight: "5px", 
         // color: "#FFF",
-    }
+    } as React.CSSProperties;
 
     const subSubItemHeadStyle = {
         padding: "10px 5px 5px",
         fontSize: "15px",
         height: "unset",
-    }
+    } as React.CSSProperties;
 
     const subSubitemBodyStyle = {
         fontSize: "15px",
-    }
+    } as React.CSSProperties;
 
     const tdStyle = {
         fontWeight: "bold",
-    }
+    } as React.CSSProperties;
 
     let output = <></>
 

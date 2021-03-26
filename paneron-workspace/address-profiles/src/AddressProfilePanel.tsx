@@ -10,7 +10,7 @@ Object.assign(console, log);
 
 export class AddressProfilePanel extends React.Component<any, any> {
 
-  constructor(props) {
+  constructor(props:any) {
     super(props);
     this.state = {
       isParserWindowOpen: false,

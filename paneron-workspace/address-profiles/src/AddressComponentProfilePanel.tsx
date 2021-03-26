@@ -7,7 +7,7 @@ import log from "electron-log"
 Object.assign(console, log);
 
 export class AddressComponentProfilePanel extends React.Component<AddressComponentProfilePanelProps> {
-    constructor(props) {
+    constructor(props:any) {
         super(props)
         this.state = {
 
@@ -38,8 +38,8 @@ export class AddressComponentProfilePanel extends React.Component<AddressCompone
     }
 }
 
-class AddressComponentProfileForm extends React.Component<AddressComponentProfileFormProps> {
-    constructor(props) {
+class AddressComponentProfileForm extends React.Component<AddressComponentProfileFormProps, any> {
+    constructor(props:any) {
         super(props);
         this.state = {
             isOpeningForm: false,
@@ -270,21 +270,21 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                                         <td style={tdStyle}>Profile Key<span style={{ color: "red" }}>*</span></td>
                                         <td>:</td>
                                         <td>
-                                            <InputGroup value={this.state.key} onChange={(event) => { this.setState({ key: event.target.value }) }} />
+                                            <InputGroup value={this.state.key} onChange={(event:any) => { this.setState({ key: event.target.value }) }} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style={tdStyle}>Description<span style={{ color: "red" }}>*</span></td>
                                         <td>:</td>
                                         <td>
-                                            <InputGroup value={this.state.description} onChange={(event) => { this.setState({ description: event.target.value }) }} />
+                                            <InputGroup value={this.state.description} onChange={(event:any) => { this.setState({ description: event.target.value }) }} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style={tdStyle}>Example</td>
                                         <td>:</td>
                                         <td>
-                                            <InputGroup value={this.state.example} onChange={(event) => { this.setState({ example: event.target.value }) }} />
+                                            <InputGroup value={this.state.example} onChange={(event:any) => { this.setState({ example: event.target.value }) }} />
                                         </td>
                                     </tr>
                                     {/* todo - add the attribute selector */}
@@ -306,7 +306,7 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
 }
 
 class AddressParserWindow extends React.Component<any, any> {
-    constructor(props) {
+    constructor(props:any) {
         super(props);
         this.state = {
             parserInput: "casa del gelato, 10A 24-26 high street road mount waverley vic 3183",
@@ -554,7 +554,7 @@ class AddressParserWindow extends React.Component<any, any> {
 }
 
 class AddressComponentForm extends React.Component<any, any, any> {
-    constructor(props) {
+    constructor(props:any) {
         super(props);
         this.state = {
             key: this.props.profileKey,
@@ -639,8 +639,8 @@ class AddressComponentProfileList extends React.Component<AddressComponentProfil
     }
 }
 
-class AddressComponentProfileListItem extends React.Component<AddressComponentProfileListItemProps> {
-    constructor(props) {
+class AddressComponentProfileListItem extends React.Component<AddressComponentProfileListItemProps, any> {
+    constructor(props:any) {
         super(props);
         this.state = {
             // Form state
@@ -752,7 +752,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
 
     removeIncludedAttribute = (attributeName: string) => {
         const newAttributeProfiles = JSON.parse(JSON.stringify(this.state.attributeProfiles));//deep copy the state.addressProfiles
-        newAttributeProfiles.forEach((newAttribute) => {
+        newAttributeProfiles.forEach((newAttribute:any) => {
             if (attributeName == newAttribute.attributeProfileName) {
                 const index = newAttributeProfiles.indexOf(newAttribute);
                 newAttributeProfiles.splice(index, 1);
@@ -804,13 +804,13 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
         const subItemSytle = {
             backgroundColor: "#99BB99",
             // color: "#FFF",
-        }
+        } as React.CSSProperties;
 
         const subItemHeadSytle = {
             padding: "0.5em 0 1.5em 0",
             fontSize: "1.1em",
             textAlign: "center"
-        }
+        } as React.CSSProperties;
 
         const centerStyle = {
             fontSize: "1.2em",
@@ -818,7 +818,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             cursor: "pointer",
             paddingBottom: "1em",
             lineHeight: "0",
-        }
+        } as React.CSSProperties;
 
         const addButtonStyle = {
             backgroundColor: "#509970",
@@ -826,43 +826,43 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
             lineHeight: "normal",
             padding: "5px 0",
             borderRadius: "5px",
-        }
+        } as React.CSSProperties;
 
         const rightDivStyle = {
             float: "right",
-        }
+        } as React.CSSProperties;
 
         const subSubItemSytle = {
             backgroundColor: "#779977",
             marginLeft: "5px",
             marginRight: "5px",
             // color: "#FFF",
-        }
+        } as React.CSSProperties;
 
         const subSubItemHeadStyle = {
             padding: "7px 5px 5px",
             fontSize: "15px",
             height: "unset",
-        }
+        } as React.CSSProperties;
 
         const subSubitemBodyStyle = {
             fontSize: "15px",
-        }
+        } as React.CSSProperties;
 
         const selectStyle = {
             width: "100%",
             marginBottom: "5px",
             padding: "5px",
             borderRadius: "5px",
-        }
+        } as React.CSSProperties;
 
         const tdStyle = {
             fontWeight: "bold",
-        }
+        } as React.CSSProperties;
 
         const insideFormStyle = {
             color: "white",
-        }
+        } as React.CSSProperties;
 
         return (
             <div style={itemStyle}>
@@ -892,7 +892,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                             <td>
                                 {
                                     this.state.isEditingForm
-                                        ? <InputGroup value={this.state.description} onChange={(event) => { this.setState({ description: event.target.value }) }} />
+                                        ? <InputGroup value={this.state.description} onChange={(event:any) => { this.setState({ description: event.target.value }) }} />
                                         : <>{this.state.description}</>
                                 }
                             </td>
@@ -903,7 +903,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                             <td>
                                 {
                                     this.state.isEditingForm
-                                        ? <InputGroup value={this.state.example} onChange={(event) => { this.setState({ example: event.target.value }) }} />
+                                        ? <InputGroup value={this.state.example} onChange={(event:any) => { this.setState({ example: event.target.value }) }} />
                                         : <>{this.state.example}</>
                                 }
                             </td>
@@ -914,7 +914,7 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
                         <hr style={itemHrStyle} />
                         <Collapse isOpen={this.state.isListOpen} style={itemBodyStyle}>
                             {
-                                this.state.attributeProfiles.map((attribute) => (
+                                this.state.attributeProfiles.map((attribute:any) => (
                                     <ComponentIncludedAttributeItem
                                         key={attribute.attributeProfileName}
                                         attributeName={attribute.attributeProfileName}
@@ -950,10 +950,10 @@ class AddressComponentProfileListItem extends React.Component<AddressComponentPr
     }
 }
 
-const AttributeOption = (props) => {
+const AttributeOption = (props:any) => {
     var isIncluded = false;
 
-    props.attributeIncluded.forEach(element => {
+    props.attributeIncluded.forEach((element:any) => {
         if (element.attributeProfileName == props.attributeName) {
             isIncluded = true;
         }

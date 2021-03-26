@@ -6,7 +6,7 @@ import log from "electron-log"
 Object.assign(console, log);
 
 export class AttributeProfilePanel extends React.Component<AttributeProfilePanelProps> {
-    constructor(props){
+    constructor(props:any){
         super(props)
         this.state={
     
@@ -35,8 +35,8 @@ export class AttributeProfilePanel extends React.Component<AttributeProfilePanel
     }
 }
 
-class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
-    constructor(props) {
+class AttributeProfileForm extends React.Component<AttributeProfileFormProps, any> {
+    constructor(props:any) {
         super(props);
         this.state={
             isOpeningForm: false,
@@ -167,7 +167,7 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
 
         const tdStyle = {
             fontWeight: "bold",
-        }
+        } as React.CSSProperties;
 
         return(
             <div style={itemStyle}>
@@ -193,7 +193,7 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
                                     <td style={tdStyle}>Profile Name<span style={{color: "red"}}>*</span></td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.name} onChange={(event)=>{this.setState({name: event.target.value})}}/>  
+                                        <InputGroup value={this.state.name} onChange={(event:any)=>{this.setState({name: event.target.value})}}/>  
                                     </td>
                                 </tr>
                                 <tr>
@@ -214,7 +214,7 @@ class AttributeProfileForm extends React.Component<AttributeProfileFormProps> {
                                     <td style={tdStyle}>Value Type</td>
                                     <td>:</td>
                                     <td>
-                                        <InputGroup value={this.state.valueType} onChange={(event)=>{this.setState({valueType: event.target.value})}}/>  
+                                        <InputGroup value={this.state.valueType} onChange={(event:any)=>{this.setState({valueType: event.target.value})}}/>  
                                     </td>
                                 </tr>
                             </table>
@@ -243,8 +243,8 @@ class AttributeProfileList extends React.Component<AttributeProfileListProps> {
     }
 }
 
-class AttributeProfileListItem extends React.Component<AttributeProfileListItemProps> {
-    constructor(props){
+class AttributeProfileListItem extends React.Component<AttributeProfileListItemProps, any> {
+    constructor(props:any){
         super(props);
         this.state = {
             // Form state
@@ -331,7 +331,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
         const includedComponents = this.props.changeStateHandler("attribute", "checkIncludedInComponent", dataToBeDeleted);
         if (includedComponents!=null){
             let message = "";
-            includedComponents.forEach((component)=>{
+            includedComponents.forEach((component:any)=>{
                 message += "\n   " + component.key.toString();
             });
 
@@ -378,7 +378,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
 
         const tdStyle = {
             fontWeight: "bold",
-        }
+        } as React.CSSProperties;
 
         return(
             <div style={itemStyle}>
@@ -430,7 +430,7 @@ class AttributeProfileListItem extends React.Component<AttributeProfileListItemP
                             <td>
                                 {
                                     this.state.isEditingForm
-                                    ? <InputGroup value={this.state.valueType} onChange={(event)=>{this.setState({valueType: event.target.value})}}/>
+                                    ? <InputGroup value={this.state.valueType} onChange={(event:any)=>{this.setState({valueType: event.target.value})}}/>
                                     : <>{this.state.valueType}</>
                                 }    
                             </td>

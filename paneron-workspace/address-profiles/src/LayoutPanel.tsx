@@ -12,7 +12,7 @@ import { parse } from "path";
 Object.assign(console, log);
 
 export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
-    constructor(props){
+    constructor(props:any){
         super(props);
         this.state={
             currentClassProfile: null,
@@ -30,7 +30,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                     <div>
                         <span style={{fontSize:"16px",}}>Address Class Profile:&nbsp;</span>
                         <select style={{display:"inline",}} value={this.state.currentClassProfile? this.state.currentClassProfile.id: this.state.currentClassProfile} onChange={(event)=>{this.changeCurrentClassProfile(event.target.value)}}>
-                            <option value={null} disabled selected>Select Class Profile</option>
+                            <option value={""} disabled selected>Select Class Profile</option>
                             {
                                 this.props.currentAddressProfile.addressProfiles.map((addressClassProfile)=>(
                                     <option key={addressClassProfile.id} value={addressClassProfile.id}>{addressClassProfile.id}</option>
@@ -62,7 +62,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
 }
 
 class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
-    constructor(props){
+    constructor(props:any){
         super(props);
         this.state={
             currentAddressProfile : this.props.currentAddressProfile,
@@ -111,7 +111,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         if(formId == null) {
             this.setState({currentFormTemplate: null});
         } else {
-            this.state.currentClassProfile.formTemplates.forEach(formTemplate => {
+            this.state.currentClassProfile.formTemplates.forEach((formTemplate:any) => {
                 if(formTemplate.id == formId) {
                     this.setState({currentFormTemplate: formTemplate});
                 }
@@ -119,7 +119,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         }
     }
 
-    updateCurrentClassProfile(currentClassProfile){
+    updateCurrentClassProfile(currentClassProfile:any){
         this.setState({currentClassProfile: currentClassProfile});
     }
 
@@ -178,7 +178,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                         : <></>
                     }
                     {
-                        this.state.currentClassProfile.formTemplates.map((form)=>(
+                        this.state.currentClassProfile.formTemplates.map((form:any)=>(
                             <div key={form.id} style={{padding:"5px", display:"flex", justifyContent:"space-between"}}>
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.id}: {form.name}</div>
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.description}</div>
@@ -203,21 +203,21 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                 <td>ID</td>
                                 <td>:</td>
                                 <td>
-                                    <InputGroup value={this.state.id} onChange={(event)=>{this.setState({id: event.target.value})}}/>
+                                    <InputGroup value={this.state.id} onChange={(event:any)=>{this.setState({id: event.target.value})}}/>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Name</td>
                                 <td>:</td>
                                 <td>
-                                    <InputGroup value={this.state.name} onChange={(event)=>{this.setState({name: event.target.value})}}/>
+                                    <InputGroup value={this.state.name} onChange={(event:any)=>{this.setState({name: event.target.value})}}/>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Description</td>
                                 <td>:</td>
                                 <td>
-                                    <InputGroup value={this.state.description} onChange={(event)=>{this.setState({description: event.target.value})}}/>
+                                    <InputGroup value={this.state.description} onChange={(event:any)=>{this.setState({description: event.target.value})}}/>
                                 </td>
                             </tr>
                             <tr>
@@ -230,7 +230,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                             <td>:</td>
                                             <td style={{padding:"0"}}>
                                                 <InputGroup value={this.state.localization.locale}
-                                                    onChange={(event)=>{
+                                                    onChange={(event:any)=>{
                                                         this.setState({localization: {...this.state.localization, locale: event.target.value,}})}
                                                     }
                                                 />
@@ -241,7 +241,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                             <td>:</td>
                                             <td style={{padding:"0"}}>
                                                 <InputGroup value={this.state.localization.script}
-                                                        onChange={(event)=>{
+                                                        onChange={(event:any)=>{
                                                             this.setState({localization: {...this.state.localization, script: event.target.value,}})}
                                                         }
                                                     />
@@ -252,7 +252,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                             <td>:</td>
                                             <td style={{padding:"0"}}>
                                                 <InputGroup value={this.state.localization.writingSystem}
-                                                        onChange={(event)=>{
+                                                        onChange={(event:any)=>{
                                                             this.setState({localization: {...this.state.localization, writingSystem: event.target.value,}})}
                                                         }
                                                     />
@@ -312,7 +312,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 }
 
 class FormTemplateEditPanel extends React.Component<any, any>{
-    constructor(props){
+    constructor(props:any){
         super(props);
 
         // this.state={
@@ -321,11 +321,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         //     currentFormTemplate: this.props.currentFormTemplate,
         // }
 
-        var lines=[];
+        var lines: any[]=[];
         if(this.props.currentFormTemplate.lines.length === 0) {
             //auto fill all component to the array
-            this.props.currentClassProfile.componentProfiles.forEach((componentPointer)=>{
-                this.props.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+            this.props.currentClassProfile.componentProfiles.forEach((componentPointer:any)=>{
+                this.props.currentAddressProfile.componentProfiles.forEach((componentProfile:any) => {
                     if(componentProfile.key == componentPointer.addressComponentProfileKey) {
                         const newStaticText = componentProfile.key;
                         const newData = componentProfile.example;
@@ -344,13 +344,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         }
 
         // convert to 2d array START
-        var lines2d = [];
+        var lines2d: any[][] = [];
         var rowMax=0;
         var colMax=0;
         lines.forEach(line => {
-            var aLine = [];
+            var aLine: any[] = [];
             var colCount = 0;
-            line.elements.forEach(element => {
+            line.elements.forEach((element:any) => {
                 var aElement;
                 aElement = element;
                 aLine.push(aElement);
@@ -364,19 +364,19 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         });
 
         //onDragStart Event handler
-        const startDrag = ev => {
+        const startDrag = (ev:any) => {
             console.log("Start Dragging...");
             console.log("   Dragging ID is => " + ev.target.id);
             ev.dataTransfer.setData("drag-item", ev.target.id);
         }
 
         // onDragOver Event handler
-        const dragOver = ev => {
+        const dragOver = (ev:any) => {
             ev.preventDefault();
         }
 
         // onDrop Event handler
-        const drop = ev => {
+        const drop = (ev:any) => {
             console.log("Dropped...");
             console.log("   Dropped ID is => " + ev.target.id);
 
@@ -497,17 +497,17 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     //     
     // }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps:any, prevState:any) {
         log.info("updated:"+this.state.currentFormTemplate.lines);
 
         var lines = JSON.parse(JSON.stringify(this.state.currentFormTemplate.lines));
-        var lines2d = [];
+        var lines2d: any[][] = [];
         var rowMax=0;
         var colMax=0;
-        lines.forEach(line => {
-            var aLine = [];
+        lines.forEach((line:any) => {
+            var aLine: any[] = [];
             var colCount = 0;
-            line.elements.forEach(element => {
+            line.elements.forEach((element:any) => {
                 var aElement;
                 aElement = element;
                 aLine.push(aElement);
@@ -521,19 +521,19 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         });
 
          //onDragStart Event handler
-         const startDrag = ev => {
+         const startDrag = (ev:any) => {
             console.log("Start Dragging...");
             console.log("   Dragging ID is => " + ev.target.id);
             ev.dataTransfer.setData("drag-item", ev.target.id);
         }
 
         // onDragOver Event handler
-        const dragOver = ev => {
+        const dragOver = (ev:any) => {
             ev.preventDefault();
         }
 
         // onDrop Event handler
-        const drop = ev => {
+        const drop = (ev:any) => {
             console.log("Dropped...");
             console.log("   Dropped ID is => " + ev.target.id);
 
@@ -639,8 +639,8 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     handleUpdate(targetComponentKey: string, type: string, data: string) {
         var newFormTemplate = JSON.parse(JSON.stringify(this.state.currentFormTemplate));
 
-        newFormTemplate.lines.forEach(line => {
-            line.elements.forEach((lineElement)=>{
+        newFormTemplate.lines.forEach((line:any) => {
+            line.elements.forEach((lineElement:any)=>{
                 if(lineElement.componentKeyBelongTo == targetComponentKey && lineElement.type == type) {
                     lineElement.element.value = data;
                 }
@@ -657,11 +657,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     getComponentType(componentKey: string) {
         var result = "string"
 
-        this.props.currentAddressProfile.componentProfiles.forEach(componentProfile => {
+        this.props.currentAddressProfile.componentProfiles.forEach((componentProfile:any) => {
             if(componentProfile.key == componentKey) {
                 var type = "number";
-                componentProfile.attributeProfiles.forEach((attributeProfilePointer)=>{
-                    this.props.currentAddressProfile.attributeProfiles.forEach(attributeProfile => {
+                componentProfile.attributeProfiles.forEach((attributeProfilePointer:any)=>{
+                    this.props.currentAddressProfile.attributeProfiles.forEach((attributeProfile:any) => {
                         if(attributeProfile.name == attributeProfilePointer.attributeProfileName){
                             if(attributeProfile.valueType != "number"){
                                 type = "string";
@@ -707,24 +707,24 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     
         const rightDivStyle = {
             float: "right",
-        }
+        } as React.CSSProperties;
     
         const subSubItemSytle = {
             backgroundColor: "#3DCC91",
             marginLeft: "5px",
             marginRight: "5px", 
             // color: "#FFF",
-        }
+        } as React.CSSProperties;
     
         const subSubItemHeadStyle = {
             padding: "10px 5px 5px",
             fontSize: "15px",
             height: "unset",
-        }
+        } as React.CSSProperties;
     
         const subSubitemBodyStyle = {
             fontSize: "15px",
-        }
+        } as React.CSSProperties;
 
         const previewTdStyle = {
             padding: "5px 20px",
@@ -734,19 +734,19 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             cursor: "grab",
         } as React.CSSProperties;
 
-        const startDrag = ev => {
+        const startDrag = (ev:any) => {
             console.log("Start Dragging...");
             console.log("   Dragging ID is => " + ev.target.id);
             ev.dataTransfer.setData("drag-item", ev.target.id);
         }
 
         // onDragOver Event handler
-        const dragOver = ev => {
+        const dragOver = (ev:any) => {
             ev.preventDefault();
         }
 
         // onDrop Event handler
-        const drop = ev => {
+        const drop = (ev:any) => {
             console.log("Dropped...");
             console.log("   Dropped ID is => " + ev.target.id);
 
@@ -825,11 +825,11 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         const handelSaveChange = () => {
             //scan table
-            let newLines = [];
+            let newLines: { elements: any[]; }[] = [];
             let rowSize = 0;
             let colSize = 0;
             this.state.table.forEach((tr: React.ReactElement<any>, rowIndex:any) => {
-                let newLineElements = [];
+                let newLineElements: { componentKeyBelongTo: any; type: any; element: any; }[] = [];
                 colSize = 0;
                 tr.props.children.forEach((td: React.ReactElement<any>, colIndex:any)=>{
                     if(td.props.componentKeyBelongTo != undefined) {
@@ -885,7 +885,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             
             let newClassProfile = JSON.parse(JSON.stringify(this.state.currentClassProfile));
             let newFormTemplate = null;
-            newClassProfile.formTemplates.forEach((formTemplate)=>{
+            newClassProfile.formTemplates.forEach((formTemplate:any)=>{
                 if(formTemplate.id == this.state.currentFormTemplate.id) {
                     formTemplate.lines = newLines;
                     newFormTemplate = formTemplate;
@@ -917,7 +917,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
                         {/* component display */}
                         {
-                            this.state.currentClassProfile.componentProfiles.map((componentPointer)=>(
+                            this.state.currentClassProfile.componentProfiles.map((componentPointer:any)=>(
                                 <EditableFieldItem 
                                     key={componentPointer.addressComponentProfileKey}
                                     componentPointer={componentPointer} 
@@ -952,14 +952,14 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 }
 
 class EditableFieldItem extends React.Component<any, any>{
-    constructor(props) {
+    constructor(props:any) {
         super(props);
 
 
         var fieldName= "";
         var example=""
-        this.props.currentFormTemplate.lines.forEach(line => {
-            line.elements.forEach((lineElement)=>{
+        this.props.currentFormTemplate.lines.forEach((line:any) => {
+            line.elements.forEach((lineElement:any)=>{
                 // log.info(lineElement.componentKeyBelongTo + "|" + this.props.componentPointer.addressComponentProfileKey);
                 if(lineElement.componentKeyBelongTo == this.props.componentPointer.addressComponentProfileKey){
                     if(lineElement.type == "staticText"){
@@ -1005,12 +1005,12 @@ class EditableFieldItem extends React.Component<any, any>{
         // });
     }
 
-    updateFieldName(data) {
+    updateFieldName(data:any) {
         this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "staticText", data);
         this.setState({fieldName: data})
     }
 
-    updateExample(data) {
+    updateExample(data:any) {
         this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "data", data);
         this.setState({example: data})
     }
@@ -1047,24 +1047,24 @@ class EditableFieldItem extends React.Component<any, any>{
     
         const rightDivStyle = {
             float: "right",
-        }
+        } as React.CSSProperties;
     
         const subSubItemSytle = {
             backgroundColor: "#3DCC91",
             marginLeft: "5px",
             marginRight: "5px", 
             // color: "#FFF",
-        }
+        } as React.CSSProperties;
     
         const subSubItemHeadStyle = {
             padding: "10px 5px 5px",
             fontSize: "15px",
             height: "unset",
-        }
+        } as React.CSSProperties;
     
         const subSubitemBodyStyle = {
             fontSize: "15px",
-        }
+        } as React.CSSProperties;
         
         return(
             <div style={{...itemStyle, ...subSubItemSytle, marginBottom: "5px"}}>
@@ -1081,14 +1081,14 @@ class EditableFieldItem extends React.Component<any, any>{
                             <td style={{fontWeight: "bold",}}>Field Name</td>
                             <td>:</td>
                             <td>
-                                <InputGroup value={this.state.fieldName} onChange={(event)=>{this.updateFieldName(event.target.value)}} />
+                                <InputGroup value={this.state.fieldName} onChange={(event:any)=>{this.updateFieldName(event.target.value)}} />
                             </td>
                         </tr>
                         <tr>
                             <td style={{fontWeight: "bold",}}>Example</td>
                             <td>:</td>
                             <td>
-                                <InputGroup value={this.state.example} onChange={(event)=>{this.updateExample(event.target.value)}} />
+                                <InputGroup value={this.state.example} onChange={(event:any)=>{this.updateExample(event.target.value)}} />
                             </td>
                         </tr>
                     </table>
@@ -1116,7 +1116,7 @@ class EditableFieldItem extends React.Component<any, any>{
 }
 
 class DisplayableFieldItem extends React.Component<any, any>{
-    constructor(props) {
+    constructor(props:any) {
         super(props);
         this.state={
 
@@ -1155,37 +1155,37 @@ class DisplayableFieldItem extends React.Component<any, any>{
     
         const rightDivStyle = {
             float: "right",
-        }
+        } as React.CSSProperties;
     
         const subSubItemSytle = {
             backgroundColor: "#3DCC91",
             marginLeft: "5px",
             marginRight: "5px", 
             // color: "#FFF",
-        }
+        } as React.CSSProperties;
     
         const subSubItemHeadStyle = {
             padding: "10px 5px 5px",
             fontSize: "15px",
             height: "unset",
-        }
+        } as React.CSSProperties;
     
         const subSubitemBodyStyle = {
             fontSize: "15px",
-        }
+        } as React.CSSProperties;
 
         const displayDivStyle = {
             borderRadius: "5px",
             backgroundColor: "white",
             padding: "5px",
             margin: "10px 5px"
-        }
+        } as React.CSSProperties;
 
         const classTitleComponent = {
             fontWeight: "bold",
             textAlign: "center",
 
-        }
+        } as React.CSSProperties;
 
 
         return(
@@ -1211,7 +1211,7 @@ class DisplayableFieldItem extends React.Component<any, any>{
 }
 
 class DisplayTemplatePanel extends React.Component<DisplayTemplateProps, any>{
-    constructor(props){
+    constructor(props:any){
         super(props);
         this.state={
             

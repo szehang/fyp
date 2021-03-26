@@ -16,7 +16,7 @@ export class ProfileCreateForm extends React.Component<ProfileCreateFormProps, a
         this.setState({ createProfileBtnClicked: !this.state.createProfileBtnClicked })
     }
 
-    handleInputChange(event) {
+    handleInputChange(event:any) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;

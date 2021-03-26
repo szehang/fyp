@@ -35,7 +35,7 @@ class Container extends React.Component<any, State> {
   changeAddressProfile = (addressProfileCode:string) => {
     this.setState({currentAddressProfile: null});
     this.state.addressProfiles.forEach(profile=> {
-      profile.countries.forEach(countryCode => {
+      profile.countries?.forEach(countryCode => {
         if(countryCode==addressProfileCode){
           this.setState({currentAddressProfile: profile});
         }
@@ -97,8 +97,8 @@ class Container extends React.Component<any, State> {
   changeStateClass = (mode:string, object: any) => {
     const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
         
-    newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
-      if(profile.id == this.state.currentAddressProfile.id){
+    newAddressProfiles.forEach((profile:any) => { //locate the current addressProfile in the new array
+      if(profile.id == this.state.currentAddressProfile!.id){
         const classProfiles = profile.addressProfiles;
 
         switch(mode){
@@ -107,7 +107,7 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "edit": {
-            classProfiles.forEach(classProfile => { //locate the target classProfile //
+            classProfiles.forEach((classProfile:any) => { //locate the target classProfile //
                   if(classProfile.id==object.id) {
                     const index = classProfiles.indexOf(classProfile);
                     classProfiles.splice(index, 1, object) //remove replace the old component with the new data
@@ -116,7 +116,7 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "delete": {
-            classProfiles.forEach(classProfile => { //locate the target classProfile //
+            classProfiles.forEach((classProfile:any) => { //locate the target classProfile //
               if(classProfile.id==object.id) {
                 const index = classProfiles.indexOf(classProfile);
                 classProfiles.splice(index, 1) //remove target element
@@ -136,8 +136,8 @@ class Container extends React.Component<any, State> {
     const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
     let result;    
 
-    newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
-      if(profile.id == this.state.currentAddressProfile.id){
+    newAddressProfiles.forEach((profile:any) => { //locate the current addressProfile in the new array
+      if(profile.id == this.state.currentAddressProfile!.id){
         const components = profile.componentProfiles;
 
         switch(mode){
@@ -149,14 +149,14 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "addSet": {
-            object.forEach(component => {
+            object.forEach((component:any) => {
               components.splice(components.length, 0, component); //push new profile to the components array
             });
             this.setState({addressProfiles: newAddressProfiles, currentAddressProfile: profile}); //refresh state by replace by the new one
             output_yaml(newAddressProfiles, "output"); //save state data to yml file
           } break;
           case "edit": {
-            components.forEach(component => { //locate the target componentProfile //component = target componentProfile
+            components.forEach((component:any) => { //locate the target componentProfile //component = target componentProfile
                   if(component.key==object.key) {
                     const index = components.indexOf(component);
                     components.splice(index, 1, object) //remove replace the old component with the new data
@@ -168,7 +168,7 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "delete": {
-            components.forEach(component => { //locate the target componentProfile //component = target componentProfile
+            components.forEach((component:any) => { //locate the target componentProfile //component = target componentProfile
               if(component.key==object.key) {
                 const index = components.indexOf(component);
                 components.splice(index, 1) //remove target element
@@ -177,8 +177,8 @@ class Container extends React.Component<any, State> {
 
 
             //remove the component from the included class profile            
-            profile.addressProfiles.forEach((addressProfile)=>{
-              addressProfile.componentProfiles.forEach((componentProfile)=>{
+            profile.addressProfiles.forEach((addressProfile:any)=>{
+              addressProfile.componentProfiles.forEach((componentProfile:any)=>{
                 if(componentProfile.addressComponentProfileKey == object.key) {
                   log.info(addressProfile);
                   const index = addressProfile.componentProfiles.indexOf(componentProfile);
@@ -192,19 +192,19 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "checkIncludedInClass": {
-            let includedClasses = [];
-            this.state.currentAddressProfile.addressProfiles.forEach((classProfile)=>{
+            let includedClasses: any[] | null = [];
+            this.state.currentAddressProfile?.addressProfiles.forEach((classProfile)=>{
               classProfile.componentProfiles.forEach((componentProfile)=>{
                 if(componentProfile.addressComponentProfileKey == object.key){
-                  includedClasses.splice(includedClasses.length, 0, classProfile);
+                  includedClasses!.splice(includedClasses!.length, 0, classProfile);
                   log.info("classes: "+classProfile.id);
                 }
               });
             });
-            if(includedClasses.length==0){
+            if(includedClasses!.length==0){
               includedClasses = null;
             }
-            result = includedClasses;
+            result = includedClasses!;
           }
           break;
         }
@@ -217,8 +217,8 @@ class Container extends React.Component<any, State> {
     const newAddressProfiles = JSON.parse(JSON.stringify(this.state.addressProfiles));//deep copy the state.addressProfiles
     let result;    
 
-    newAddressProfiles.forEach(profile => { //locate the current addressProfile in the new array
-      if(profile.id == this.state.currentAddressProfile.id){
+    newAddressProfiles.forEach((profile:any) => { //locate the current addressProfile in the new array
+      if(profile.id == this.state.currentAddressProfile!.id){
         const attributes = profile.attributeProfiles;
 
         switch(mode){
@@ -227,7 +227,7 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "edit": {
-            attributes.forEach(attribute => { //locate the target attributeProfile //attribute = target attrubiteProfile
+            attributes.forEach((attribute:any) => { //locate the target attributeProfile //attribute = target attrubiteProfile
                   if(attribute.name==object.name) {
                     const index = attributes.indexOf(attribute);
                     attributes.splice(index, 1, object) //remove replace the old attrubite with the new data
@@ -236,7 +236,7 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "delete": {
-            attributes.forEach(attribute => { //locate the target attributeProfile //attribute = target attrubiteProfile
+            attributes.forEach((attribute:any) => { //locate the target attributeProfile //attribute = target attrubiteProfile
               if(attribute.name==object.name) {
                 const index = attributes.indexOf(attribute);
                 attributes.splice(index, 1) //remove target element
@@ -244,8 +244,8 @@ class Container extends React.Component<any, State> {
             });
 
             //remove the attribute from the included component profile            
-            profile.componentProfiles.forEach((componentProfile)=>{
-              componentProfile.attributeProfiles.forEach((attributeProfile)=>{
+            profile.componentProfiles.forEach((componentProfile:any)=>{
+              componentProfile.attributeProfiles.forEach((attributeProfile:any)=>{
                 if(attributeProfile.attributeProfileName == object.name) {
                   const index = componentProfile.attributeProfiles.indexOf(attributeProfile);
                   componentProfile.attributeProfiles.splice(index, 1);
@@ -255,11 +255,11 @@ class Container extends React.Component<any, State> {
           }
           break;
           case "checkIncludedInComponent": {
-            let includedComponents = [];
-            this.state.currentAddressProfile.componentProfiles.forEach((componentProfile)=>{
+            let includedComponents: any[] | null = [];
+            this.state.currentAddressProfile!.componentProfiles.forEach((componentProfile)=>{
               componentProfile.attributeProfiles.forEach((attributeProfile)=>{
                 if(attributeProfile.attributeProfileName == object.name){
-                  includedComponents.splice(includedComponents.length, 0, componentProfile);
+                  includedComponents!.splice(includedComponents!.length, 0, componentProfile);
                 }
               });
             });
