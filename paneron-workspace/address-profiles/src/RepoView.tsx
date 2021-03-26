@@ -298,6 +298,7 @@ class Container extends React.Component<any, State> {
       lineHeight: "50",
       backgroundColor: "lightgray",
       color: "white",
+      cursor: this.state.isLeftPanelOpen ? "w-resize" : "e-resize",
     } as React.CSSProperties;
 
     return (

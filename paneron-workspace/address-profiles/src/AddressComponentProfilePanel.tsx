@@ -228,7 +228,7 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
 
         const tdStyle = {
             fontWeight: "bold",
-        }
+        } as React.CSSProperties;
 
         const backDivStyle = {
             position: "absolute",
@@ -238,8 +238,8 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             height: "100vh",
             backgroundColor: "black",
             opacity: "50%",
-            zIndex: "998",
-        }
+            zIndex: 998,
+        } as React.CSSProperties;
 
         return (
             <div style={itemStyle}>
@@ -312,10 +312,11 @@ class AddressParserWindow extends React.Component<any, any> {
             parserInput: "casa del gelato, 10A 24-26 high street road mount waverley vic 3183",
             parserResult: {},
             selectedAttribute: [],
-            isSpinning: false,
-            isCreateFormOpen: false,
-
             parserForm: [],
+            isCreateFormOpen: false,
+            
+            isParserLoading: false,
+            isImageLoading: false,
         }
     }
 
@@ -332,7 +333,7 @@ class AddressParserWindow extends React.Component<any, any> {
 
         const response = await fetch(url, requestOptions);
         const data = await response.json();
-        this.setState({ parserResult: data, isSpinning: false });
+        this.setState({ parserResult: data, isParserLoading: false });
     }
 
     fillParserForm() {
@@ -351,9 +352,9 @@ class AddressParserWindow extends React.Component<any, any> {
     render() {
         const mainDivStyle = {
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, 0%)",
+            top: "50vh",
+            left: "50vw",
+            transform: "translate(-50%, -60%)",
             backgroundColor: "white",
             width: "60%",
             borderRadius: "10px",
@@ -374,7 +375,7 @@ class AddressParserWindow extends React.Component<any, any> {
         } as React.CSSProperties;
 
         const handleParserSubmit = (ev: any) => {
-            this.setState({ isSpinning: true }); // Start the spinner
+            this.setState({ isParserLoading: true }); // Start the spinner
             this.setState({ selectedAttribute: [] }) // Clear the array in case of re-search
             this.setState({ parserForm: [] }) // Clear the array in case of re-search
 
@@ -441,25 +442,25 @@ class AddressParserWindow extends React.Component<any, any> {
 
         const handleFileChange = async (event: any) => {
             try {
+                this.setState({isImageLoading: true});
+
                 const imageFile = event.target.files.item(0);
-                console.log(imageFile);
 
                 var formData = new window.FormData();
                 formData.append("file", imageFile);
-                console.log(formData);
 
                 // Simple POST request with a JSON body using fetch
                 const requestOptions = {
                     method: "POST",
                     body: formData,
-                    // ****** Not need any header here, from the Internet: https://muffinman.io/blog/uploading-files-using-fetch-multipart-form-data/
+                    // ****** Not need any header here
                 };
                 const url = "http://34.92.169.157:3000/api"
 
-                console.log("fetching image text...")
+                console.log("Sending image to Server...")
                 const response = await fetch(url, requestOptions);
                 const data = await response.json();
-                this.setState({ parserInput:data.text });
+                this.setState({ parserInput:data.text, isImageLoading: false });
             } catch (e) {
                 console.log(e)
             }
@@ -472,6 +473,7 @@ class AddressParserWindow extends React.Component<any, any> {
                 intent={Intent.PRIMARY}
                 minimal={true}
                 onClick={handleImageBtnClick}
+                loading={this.state.isImageLoading}
             />
         );
 
@@ -496,7 +498,7 @@ class AddressParserWindow extends React.Component<any, any> {
                         }
                         <br />
 
-                        <AnchorButton text="Create Component Profiles" intent="success" icon="new-object" loading={this.state.isSpinning} fill={true} onClick={handleCreateProfiles} />
+                        <AnchorButton text="Create Component Profiles" intent="success" icon="new-object" fill={true} onClick={handleCreateProfiles} />
                     </div>
                     :
                     <>
@@ -512,11 +514,8 @@ class AddressParserWindow extends React.Component<any, any> {
                                 style={{ marginBottom: "5px" }}
                                 rightElement={imageButton}
                             />
-                            <form id="imageForm" action="" method="post" style={{ display: "none" }}>
-                                <input type="file" id="fileInput" onChange={handleFileChange} style={{ display: "none" }} />
-
-                            </form>
-                            <AnchorButton text="Parse" intent="primary" icon="direction-right" loading={this.state.isSpinning} fill={true} onClick={handleParserSubmit} />
+                            <input type="file" id="fileInput" onChange={handleFileChange} style={{ display: "none" }} />
+                            <AnchorButton text="Parse" intent="primary" icon="direction-right" loading={this.state.isParserLoading} fill={true} onClick={handleParserSubmit} />
                         </div>
 
                         {/* <pre>{JSON.stringify(this.state.parserResult, null, 2)}</pre> */}
