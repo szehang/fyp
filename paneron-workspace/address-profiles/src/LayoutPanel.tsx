@@ -177,19 +177,20 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                         ? <>there is no existing form template</>
                         : <></>
                     }
+                    <div>
                     {
                         this.state.currentClassProfile.formTemplates.map((form:any)=>(
                             <div key={form.id} style={{padding:"5px", display:"flex", justifyContent:"space-between"}}>
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.id}: {form.name}</div>
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.description}</div>
                                 <div>
-                                    <AnchorButton text={"edit"} onClick={()=>{this.handleEditFormTemplate(form.id)}}/>
-                                    <AnchorButton text={"delete"}/>
+                                    <AnchorButton intent="success" icon="edit" text={"Edit"} onClick={()=>{this.handleEditFormTemplate(form.id)}}/>
+                                    <AnchorButton intent="danger" icon="delete" text={"Delete"}/>
                                 </div>
                             </div>
                         ))
                     }
-                    
+                    </div>
 
                 </Collapse>
                 {this.state.isFormOpen
