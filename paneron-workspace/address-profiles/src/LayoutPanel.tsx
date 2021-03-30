@@ -2,7 +2,7 @@ import { AnchorButton, Code, Collapse, Divider, InputGroup, Tab, TabId, Tabs } f
 
 import { stat } from "fs";
 import React from "react";
-import { AddressClassProfile, AddressComponentProfile, AddressProfile, FormTemplate } from "./AddressProfile";
+import { AddressClassProfile, AddressComponentProfile, AddressProfile, FormLine, FormTemplate } from "./AddressProfile";
 
 
 import log from "electron-log"
@@ -119,6 +119,23 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
         }
     }
 
+    handlDeleteFormTemplate(formId: string) {
+        // Alert before deleting
+        if (!window.confirm("Confirm to delete this Form Template?")) {
+            return;
+        }
+        let newClassProfile = JSON.parse(JSON.stringify(this.state.currentClassProfile));
+        newClassProfile.formTemplates.forEach((formTemplate:FormTemplate) => {
+            if(formTemplate.id == formId) {
+                let index = newClassProfile.formTemplates.indexOf(formTemplate);
+                newClassProfile.formTemplates.splice(index, 1);
+            }
+        });
+
+        this.state.changeStateHandler("class", "edit", newClassProfile);
+        this.setState({currentClassProfile: newClassProfile});
+    }
+
     updateCurrentClassProfile(currentClassProfile:any){
         this.setState({currentClassProfile: currentClassProfile});
     }
@@ -129,8 +146,8 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 
         let isIdUsed = false;
 
-        newCurrentClassProfile.formTemplates.forEach(item => {
-            if(item.id == this.state.id) {
+        newCurrentClassProfile.formTemplates.forEach((formTemplate:FormTemplate) => {
+            if(formTemplate.id == this.state.id) {
                 isIdUsed = true;
             }
         });
@@ -140,6 +157,23 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             return;
         }
 
+        let lines: any[] = [];
+        this.props.currentClassProfile.componentProfiles.forEach((componentPointer:any)=>{
+            this.props.currentAddressProfile.componentProfiles.forEach((componentProfile:any) => {
+                if(componentProfile.key == componentPointer.addressComponentProfileKey) {
+                    const newStaticText = componentProfile.key;
+                    const newData = componentProfile.example;
+
+                    const newLine = {elements: [
+                        {componentKeyBelongTo: componentProfile.key, type: "staticText", element: {value: newStaticText},},
+                        {componentKeyBelongTo: componentProfile.key, type: "data", element: {value: newData},},
+                    ]};
+
+                    lines.splice(lines.length, 0, newLine);
+                }
+            });
+        });
+
         const formTemplate = {
             id: this.state.id,
             name : this.state.name,
@@ -147,7 +181,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             localization: this.state.localization,
             dimensions: [],
             orientation: null,
-            lines:[],
+            lines: lines,
         }
 
         newCurrentClassProfile.formTemplates.splice(newCurrentClassProfile.length, 0 , formTemplate)
@@ -185,7 +219,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.description}</div>
                                 <div>
                                     <AnchorButton intent="success" icon="edit" text={"Edit"} onClick={()=>{this.handleEditFormTemplate(form.id)}}/>
-                                    <AnchorButton intent="danger" icon="delete" text={"Delete"}/>
+                                    <AnchorButton intent="danger" icon="delete" text={"Delete"} onClick={()=>{this.handlDeleteFormTemplate(form.id)}}/>
                                 </div>
                             </div>
                         ))
@@ -799,7 +833,7 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             }
             this.setState({
                 table: [...this.state.table, <tr>{newRow}</tr>]
-            })
+            },()=>{console.log("table:" + JSON.stringify(this.state.table, null, 2));})
 
             // let newLines2d = this.state.lines2d.map((x:any)=>x);
             // //todo
@@ -912,6 +946,15 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             this.props.handleEditFormTemplate();
         }
 
+        const handelDiscardChange = () => {
+            // Alert before deleting
+            if (!window.confirm("Confirm to discard change?")) {
+                return;
+            }
+            //update ui
+            this.props.handleEditFormTemplate();
+        }
+
         return (
             <>
                 <div style={{display:"flex"}}>
@@ -946,6 +989,41 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 </div>
                 <div>
                     <AnchorButton onClick={handelSaveChange} fill={true} text="Save Change" intent="success" />
+                </div>
+                <div>
+                    <AnchorButton onClick={handelDiscardChange} fill={true} text="Discard Change" intent="danger" />
+                </div>
+                <div>
+                    <div>
+                        <table style={{width: "100%"}}>
+                            {
+                                React.isValidElement(this.state.table)
+                                ?<></>
+                                :
+                                this.state.table.map((tr:any)=>(
+                                    <tr>
+                                        {
+                                            tr.props.children.map((td:any)=>(
+                                                <td>
+                                                    {
+                                                        td.props.children == "\xa0\xa0\xa0\xa0\xa0"
+                                                        ?<></>
+                                                        :
+                                                        td.props.children.type=="input"
+                                                        ?<input type={td.props.children.props.type} placeholder={td.props.children.props.placeholder}></input>
+                                                        :<>{td.props.children.props.children}</>
+                                                    }
+                                                </td>
+                                            ))
+                                        }
+                                    </tr>
+                                ))
+                            }
+                                {/* {
+                                    this.state.table
+                                } */}
+                        </table>
+                    </div>
                 </div>
             </>
         )
