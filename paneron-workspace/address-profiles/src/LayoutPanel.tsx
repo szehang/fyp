@@ -24,12 +24,21 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
     }
 
     render(){
+        const selectStyle = {
+            width: "25%",
+            borderRadius: "5px",
+            border: "0",
+            background: "rgb(233, 233, 233)",
+            padding: "2px 8px",
+            display:"inline"
+          } as React.CSSProperties;
+
         return (
             <div style={{margin:"5px"}}>
                 <div style={{borderRadius: "5px", backgroundColor: "#FFF", padding:"5px",}}>
                     <div>
                         <span style={{fontSize:"16px",}}>Address Class Profile:&nbsp;</span>
-                        <select style={{display:"inline",}} value={this.state.currentClassProfile? this.state.currentClassProfile.id: this.state.currentClassProfile} onChange={(event)=>{this.changeCurrentClassProfile(event.target.value)}}>
+                        <select style={selectStyle} value={this.state.currentClassProfile? this.state.currentClassProfile.id: this.state.currentClassProfile} onChange={(event)=>{this.changeCurrentClassProfile(event.target.value)}}>
                             <option value={""} disabled selected>Select Class Profile</option>
                             {
                                 this.props.currentAddressProfile.addressProfiles.map((addressClassProfile)=>(
@@ -37,7 +46,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                                 ))
                             }
                         </select>
-                        <div style={{display:"inline"}}><Code>{this.state.currentClassProfile != null? this.state.currentClassProfile.id: "null"}</Code></div>
+                        <div style={{display:"inline"}}><Code style={{marginLeft: "5px", padding: "5px 10px 2px 10px"}}>{this.state.currentClassProfile != null? this.state.currentClassProfile.id: "null"}</Code></div>
                     </div>
                     <Collapse isOpen={this.state.currentClassProfile!=null}>
                         <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId)=>{this.setState({selectedTabId: tabId})}}>
@@ -219,7 +228,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
                                 <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.description}</div>
                                 <div>
                                     <AnchorButton intent="success" icon="edit" text={"Edit"} onClick={()=>{this.handleEditFormTemplate(form.id)}}/>
-                                    <AnchorButton intent="danger" icon="delete" text={"Delete"} onClick={()=>{this.handlDeleteFormTemplate(form.id)}}/>
+                                    <AnchorButton intent="danger" icon="delete" text={"Delete"} style={{marginLeft: "5px"}} onClick={()=>{this.handlDeleteFormTemplate(form.id)}}/>
                                 </div>
                             </div>
                         ))
