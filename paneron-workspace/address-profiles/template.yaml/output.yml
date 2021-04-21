@@ -1,47 +1,97 @@
 - id: 0
   countries:
-    - TWN
+    - ALB
   addressProfiles:
-    - id: boxAddress
-      type: regular
-      localization: TW
-      description: regular box address
-      signature: S001
-      areaApplicability:
-        - HK
-      timeToLive: 10
-      validity: V001
-      componentProfiles:
-        - addressComponentProfileKey: boxNum
-          addressComponentSpecification:
-            maxCardinality: 1
-            minCardinality: 1
+    - id: wa
+      type: aw
+      localization: aw
+      description: aw
+      signature: aaw
+      areaApplicability: []
+      timeToLive: 1
+      validity: wq
+      componentProfiles: []
       formTemplates:
-        - id: pf001
-          name: PublicForm001
-          description: Form for Public
+        - id: adw
+          name: adw
+          description: awd
           localization:
-            locale: TW
-            script: Chinese
-            writingSystem: Chinese
+            locale: awd
+            script: awd
+            writingSystem: awd
             textDirection: leftToRightTopToBottom
           dimensions: []
           orientation: null
           lines: []
       displayTemplates: []
   componentProfiles:
-    - key: boxNum
-      description: box number of the house
-      example: Box 001
+    - key: dwa
+      description: awd
+      example: ''
+      attributeProfiles: []
+  attributeProfiles: []
+- id: 1
+  countries:
+    - DZA
+  addressProfiles:
+    - id: ed
+      type: esf
+      localization: esf
+      description: se
+      signature: es
+      areaApplicability: []
+      timeToLive: 2
+      validity: '2'
+      componentProfiles: []
+      formTemplates:
+        - id: fe
+          name: af
+          description: aw
+          localization:
+            locale: waf
+            script: waf
+            writingSystem: awf
+            textDirection: leftToRightTopToBottom
+          dimensions: []
+          orientation: null
+          lines: []
+      displayTemplates: []
+  componentProfiles: []
+  attributeProfiles: []
+- id: 2
+  countries:
+    - HKG
+  addressProfiles:
+    - id: wa
+      type: wa
+      localization: aw
+      description: aw
+      signature: ''
+      areaApplicability: []
+      timeToLive: 1
+      validity: da
+      componentProfiles: []
+      formTemplates:
+        - id: wad
+          name: awd
+          description: awd
+          localization:
+            locale: awd
+            script: awd
+            writingSystem: awd
+            textDirection: leftToRightTopToBottom
+          dimensions: []
+          orientation: null
+          lines: []
+      displayTemplates: []
+  componentProfiles:
+    - key: wad
+      description: awd
+      example: ''
       attributeProfiles:
-        - attributeProfileName: number
-        - attributeProfileName: string
+        - attributeProfileName: wdaawdawd
   attributeProfiles:
-    - name: number
-      maxCardinality: 1
-      minCardinality: 1
-      valueType: number
-    - name: string
-      maxCardinality: 10
-      minCardinality: 1
-      valueType: string
+    - name: wdaawdawd
+      maxCardinality: ''
+      minCardinality: ''
+      valueType: ''

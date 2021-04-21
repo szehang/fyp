@@ -12,9 +12,9 @@ import { parse } from "path";
 Object.assign(console, log);
 
 export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
-    constructor(props:any){
+    constructor(props: any) {
         super(props);
-        this.state={
+        this.state = {
             currentClassProfile: null,
             currentAddressProfile: this.props.currentAddressProfile,
             changeStateHandler: this.props.changeStateHandler,
@@ -23,33 +23,33 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
         }
     }
 
-    render(){
+    render() {
         const selectStyle = {
             width: "25%",
             borderRadius: "5px",
             border: "0",
             background: "rgb(233, 233, 233)",
             padding: "2px 8px",
-            display:"inline"
-          } as React.CSSProperties;
+            display: "inline"
+        } as React.CSSProperties;
 
         return (
-            <div style={{margin:"5px"}}>
-                <div style={{borderRadius: "5px", backgroundColor: "#FFF", padding:"5px",}}>
+            <div style={{ margin: "5px" }}>
+                <div style={{ borderRadius: "5px", backgroundColor: "#FFF", padding: "5px", }}>
                     <div>
-                        <span style={{fontSize:"16px",}}>Address Class Profile:&nbsp;</span>
-                        <select style={selectStyle} value={this.state.currentClassProfile? this.state.currentClassProfile.id: this.state.currentClassProfile} onChange={(event)=>{this.changeCurrentClassProfile(event.target.value)}}>
+                        <span style={{ fontSize: "16px", }}>Address Class Profile:&nbsp;</span>
+                        <select style={selectStyle} value={this.state.currentClassProfile ? this.state.currentClassProfile.id : this.state.currentClassProfile} onChange={(event) => { this.changeCurrentClassProfile(event.target.value) }}>
                             <option value={""} disabled selected>Select Class Profile</option>
                             {
-                                this.props.currentAddressProfile.addressProfiles.map((addressClassProfile)=>(
+                                this.props.currentAddressProfile.addressProfiles.map((addressClassProfile) => (
                                     <option key={addressClassProfile.id} value={addressClassProfile.id}>{addressClassProfile.id}</option>
                                 ))
                             }
                         </select>
-                        <div style={{display:"inline"}}><Code style={{marginLeft: "5px", padding: "5px 10px 2px 10px"}}>{this.state.currentClassProfile != null? this.state.currentClassProfile.id: "null"}</Code></div>
+                        <div style={{ display: "inline" }}><Code style={{ marginLeft: "5px", padding: "5px 10px 2px 10px" }}>{this.state.currentClassProfile != null ? this.state.currentClassProfile.id : "null"}</Code></div>
                     </div>
-                    <Collapse isOpen={this.state.currentClassProfile!=null}>
-                        <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId)=>{this.setState({selectedTabId: tabId})}}>
+                    <Collapse isOpen={this.state.currentClassProfile != null}>
+                        <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId) => { this.setState({ selectedTabId: tabId }) }}>
                             <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel currentAddressProfile={this.state.currentAddressProfile} currentClassProfile={this.state.currentClassProfile} changeStateHandler={this.state.changeStateHandler} />}></Tab>
                             <Tab id={"displayTemplate"} title={"Display Template"} panel={<DisplayTemplatePanel />}></Tab>
                         </Tabs>
@@ -60,10 +60,10 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
     }
 
     changeCurrentClassProfile(profileId: string | null) {
-        if(profileId != null){
-            this.props.currentAddressProfile.addressProfiles.forEach((addressClassProfile)=>{
-                if(addressClassProfile.id == profileId){
-                    this.setState({currentClassProfile: addressClassProfile});
+        if (profileId != null) {
+            this.props.currentAddressProfile.addressProfiles.forEach((addressClassProfile) => {
+                if (addressClassProfile.id == profileId) {
+                    this.setState({ currentClassProfile: addressClassProfile });
                 }
             });
         }
@@ -71,10 +71,10 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
 }
 
 class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
-    constructor(props:any){
+    constructor(props: any) {
         super(props);
-        this.state={
-            currentAddressProfile : this.props.currentAddressProfile,
+        this.state = {
+            currentAddressProfile: this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
             changeStateHandler: this.props.changeStateHandler,
             currentFormTemplate: null,
@@ -85,44 +85,44 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             id: "",
             name: "",
             description: "",
-            localization: {locale: "", script: "", writingSystem: "", textDirection: "leftToRightTopToBottom"},
+            localization: { locale: "", script: "", writingSystem: "", textDirection: "leftToRightTopToBottom" },
         }
     }
 
     handleFormOpen() {
-        this.setState({isFormOpen: !this.state.isFormOpen});
+        this.setState({ isFormOpen: !this.state.isFormOpen });
     }
 
-    handleTextDirectionChange(verticalValue:string|null, horizontalValue:string|null, callBack: any) {
+    handleTextDirectionChange(verticalValue: string | null, horizontalValue: string | null, callBack: any) {
         let oldVerticalValue = "";
         let oldHorizontalValue = "";
 
         let textDirection = this.state.localization.textDirection;
 
         textDirection.includes("TopToBottom")
-        ? oldVerticalValue = "TopToBottom"
-        : oldVerticalValue = "BottomToTop"
+            ? oldVerticalValue = "TopToBottom"
+            : oldVerticalValue = "BottomToTop"
 
         textDirection.includes("leftToRight")
-        ? oldHorizontalValue = "leftToRight"
-        : oldHorizontalValue = "rightToLeft"
+            ? oldHorizontalValue = "leftToRight"
+            : oldHorizontalValue = "rightToLeft"
 
-        if(verticalValue){
+        if (verticalValue) {
             oldVerticalValue = verticalValue;
-        }else if(horizontalValue){
+        } else if (horizontalValue) {
             oldHorizontalValue = horizontalValue;
         }
 
-        this.setState({localization: {...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue}});
+        this.setState({ localization: { ...this.state.localization, textDirection: oldHorizontalValue + oldVerticalValue } });
     }
 
-    handleEditFormTemplate(formId:string | null){
-        if(formId == null) {
-            this.setState({currentFormTemplate: null});
+    handleEditFormTemplate(formId: string | null) {
+        if (formId == null) {
+            this.setState({ currentFormTemplate: null });
         } else {
-            this.state.currentClassProfile.formTemplates.forEach((formTemplate:any) => {
-                if(formTemplate.id == formId) {
-                    this.setState({currentFormTemplate: formTemplate});
+            this.state.currentClassProfile.formTemplates.forEach((formTemplate: any) => {
+                if (formTemplate.id == formId) {
+                    this.setState({ currentFormTemplate: formTemplate });
                 }
             });
         }
@@ -134,19 +134,19 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             return;
         }
         let newClassProfile = JSON.parse(JSON.stringify(this.state.currentClassProfile));
-        newClassProfile.formTemplates.forEach((formTemplate:FormTemplate) => {
-            if(formTemplate.id == formId) {
+        newClassProfile.formTemplates.forEach((formTemplate: FormTemplate) => {
+            if (formTemplate.id == formId) {
                 let index = newClassProfile.formTemplates.indexOf(formTemplate);
                 newClassProfile.formTemplates.splice(index, 1);
             }
         });
 
         this.state.changeStateHandler("class", "edit", newClassProfile);
-        this.setState({currentClassProfile: newClassProfile});
+        this.setState({ currentClassProfile: newClassProfile });
     }
 
-    updateCurrentClassProfile(currentClassProfile:any){
-        this.setState({currentClassProfile: currentClassProfile});
+    updateCurrentClassProfile(currentClassProfile: any) {
+        this.setState({ currentClassProfile: currentClassProfile });
     }
 
     createTemplate() {
@@ -155,28 +155,30 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 
         let isIdUsed = false;
 
-        newCurrentClassProfile.formTemplates.forEach((formTemplate:FormTemplate) => {
-            if(formTemplate.id == this.state.id) {
+        newCurrentClassProfile.formTemplates.forEach((formTemplate: FormTemplate) => {
+            if (formTemplate.id == this.state.id) {
                 isIdUsed = true;
             }
         });
 
-        if(isIdUsed) {
+        if (isIdUsed) {
             alert("\"" + this.state.id + "\"" + " is being used.\nTry another one");
             return;
         }
 
         let lines: any[] = [];
-        this.props.currentClassProfile.componentProfiles.forEach((componentPointer:any)=>{
-            this.props.currentAddressProfile.componentProfiles.forEach((componentProfile:any) => {
-                if(componentProfile.key == componentPointer.addressComponentProfileKey) {
+        this.props.currentClassProfile.componentProfiles.forEach((componentPointer: any) => {
+            this.props.currentAddressProfile.componentProfiles.forEach((componentProfile: any) => {
+                if (componentProfile.key == componentPointer.addressComponentProfileKey) {
                     const newStaticText = componentProfile.key;
                     const newData = componentProfile.example;
 
-                    const newLine = {elements: [
-                        {componentKeyBelongTo: componentProfile.key, type: "staticText", element: {value: newStaticText},},
-                        {componentKeyBelongTo: componentProfile.key, type: "data", element: {value: newData},},
-                    ]};
+                    const newLine = {
+                        elements: [
+                            { componentKeyBelongTo: componentProfile.key, type: "staticText", element: { value: newStaticText }, },
+                            { componentKeyBelongTo: componentProfile.key, type: "data", element: { value: newData }, },
+                        ]
+                    };
 
                     lines.splice(lines.length, 0, newLine);
                 }
@@ -185,7 +187,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
 
         const formTemplate = {
             id: this.state.id,
-            name : this.state.name,
+            name: this.state.name,
             description: this.state.description,
             localization: this.state.localization,
             dimensions: [],
@@ -193,7 +195,7 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             lines: lines,
         }
 
-        newCurrentClassProfile.formTemplates.splice(newCurrentClassProfile.length, 0 , formTemplate)
+        newCurrentClassProfile.formTemplates.splice(newCurrentClassProfile.length, 0, formTemplate)
 
         this.state.changeStateHandler("class", "edit", newCurrentClassProfile);
 
@@ -205,158 +207,165 @@ class FormTemplatePanel extends React.Component<FormTemplatePanelProps, any>{
             id: "",
             name: "",
             description: "",
-            localization: {locale: "", script: "", writingSystem: "", textDirection: "leftToRightTopToBottom"},
+            localization: { locale: "", script: "", writingSystem: "", textDirection: "leftToRightTopToBottom" },
         });
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <>
-            <Collapse isOpen={this.state.currentClassProfile != null && this.state.currentFormTemplate==null}>
-            <div style={{borderRadius: "5px", backgroundColor: "#15B371",}}>
-                <Collapse isOpen={!this.state.isFormOpen}>
-                    {
-                        this.state.currentClassProfile.formTemplates.length == 0
-                        ? <>there is no existing form template</>
-                        : <></>
-                    }
-                    <div>
-                    {
-                        this.state.currentClassProfile.formTemplates.map((form:any)=>(
-                            <div key={form.id} style={{padding:"5px", display:"flex", justifyContent:"space-between"}}>
-                                <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.id}: {form.name}</div>
-                                <div style={{textOverflow:"ellipsis", whiteSpace:"nowrap", width:"30%", overflow:"hidden"}}>{form.description}</div>
-                                <div>
-                                    <AnchorButton intent="success" icon="edit" text={"Edit"} onClick={()=>{this.handleEditFormTemplate(form.id)}}/>
-                                    <AnchorButton intent="danger" icon="delete" text={"Delete"} style={{marginLeft: "5px"}} onClick={()=>{this.handlDeleteFormTemplate(form.id)}}/>
-                                </div>
+                <Collapse isOpen={this.state.currentClassProfile != null && this.state.currentFormTemplate == null}>
+                    <div style={{ borderRadius: "5px", backgroundColor: "rgb(64 177 156)", }}>
+                        <Collapse isOpen={!this.state.isFormOpen}>
+                            {
+                                this.state.currentClassProfile.formTemplates.length == 0
+                                    ? <div style={{ padding: "5px 15px", textAlign: "center" }}>there is no existing form template</div>
+                                    : <div style={{ padding: "5px 15px", display: "flex", justifyContent: "space-between" }}>
+                                        <div style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "30%", overflow: "hidden", display: "flex", alignItems: "center", fontWeight: "bold" }}>Form ID: Form Name</div>
+                                        <div style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "30%", overflow: "hidden", display: "flex", alignItems: "center", fontWeight: "bold" }}>Description</div>
+                                        <div style={{    width: "16%"}}></div>
+                                    </div>
+                            }
+                            <div>
+                                {
+                                    this.state.currentClassProfile.formTemplates.map((form: any) => (
+                                        <div key={form.id} style={{ padding: "5px 15px", display: "flex", justifyContent: "space-between" }}>
+                                            <div style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "30%", overflow: "hidden", display: "flex", alignItems: "center" }}>{form.id}: {form.name}</div>
+                                            <div style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", width: "30%", overflow: "hidden", display: "flex", alignItems: "center" }}>{form.description}</div>
+                                            <div>
+                                                <AnchorButton intent="success" icon="edit" text={"Edit"} onClick={() => { this.handleEditFormTemplate(form.id) }} />
+                                                <AnchorButton intent="danger" icon="delete" text={"Delete"} style={{ marginLeft: "5px" }} onClick={() => { this.handlDeleteFormTemplate(form.id) }} />
+                                            </div>
+                                        </div>
+                                    ))
+                                }
                             </div>
-                        ))
-                    }
-                    </div>
 
-                </Collapse>
-                {this.state.isFormOpen
-                    ?<div style={{borderRadius: "5px", padding:"5px", textAlign:"center" ,backgroundColor:"#FF7373", cursor:"pointer"}} onClick={()=>{this.handleFormOpen()}}>Discard New Template</div>
-                    :<div style={{borderRadius: "0 0 5px 5px", padding:"5px", textAlign:"center" ,backgroundColor:"#3DCC91", cursor:"pointer"}} onClick={()=>{this.handleFormOpen()}}>New Template</div>
-                }
-                <Collapse isOpen={this.state.isFormOpen}>
-                    <div style={{padding:"5px"}}>
-                        <table>
-                            <tr>
-                                <td>ID</td>
-                                <td>:</td>
-                                <td>
-                                    <InputGroup value={this.state.id} onChange={(event:any)=>{this.setState({id: event.target.value})}}/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Name</td>
-                                <td>:</td>
-                                <td>
-                                    <InputGroup value={this.state.name} onChange={(event:any)=>{this.setState({name: event.target.value})}}/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Description</td>
-                                <td>:</td>
-                                <td>
-                                    <InputGroup value={this.state.description} onChange={(event:any)=>{this.setState({description: event.target.value})}}/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Localization</td>
-                                <td>:</td>
-                                <td style={{padding:"0"}}>
-                                    <table>
-                                        <tr>
-                                            <td>Locale</td>
-                                            <td>:</td>
-                                            <td style={{padding:"0"}}>
-                                                <InputGroup value={this.state.localization.locale}
-                                                    onChange={(event:any)=>{
-                                                        this.setState({localization: {...this.state.localization, locale: event.target.value,}})}
-                                                    }
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Script</td>
-                                            <td>:</td>
-                                            <td style={{padding:"0"}}>
-                                                <InputGroup value={this.state.localization.script}
-                                                        onChange={(event:any)=>{
-                                                            this.setState({localization: {...this.state.localization, script: event.target.value,}})}
-                                                        }
-                                                    />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Writing System</td>
-                                            <td>:</td>
-                                            <td style={{padding:"0"}}>
-                                                <InputGroup value={this.state.localization.writingSystem}
-                                                        onChange={(event:any)=>{
-                                                            this.setState({localization: {...this.state.localization, writingSystem: event.target.value,}})}
-                                                        }
-                                                    />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Text Direction</td>
-                                            <td>:</td>
-                                            <td style={{padding:"0"}}>
-                                                <select
-                                                    style={{width:"130px"}}
-                                                    value={this.state.localization.textDirection.includes("TopToBottom")?"TopToBottom":"BottomToTop"}
-                                                    onChange={(event)=>{this.handleTextDirectionChange(event.target.value, null, this.forceUpdate.bind(this))}}
-                                                >
-                                                    <option value="TopToBottom">Top to Bottom</option>
-                                                    <option value="BottomToTop">Bottom to Top</option>
-                                                </select>
-                                                <select
-                                                    style={{width:"130px", marginLeft:"5px"}}
-                                                    value={this.state.localization.textDirection.includes("leftToRight")?"leftToRight":"rightToLeft"} 
-                                                    onChange={(event)=>{this.handleTextDirectionChange(null,event.target.value, this.forceUpdate.bind(this))}} 
-                                                >
-                                                    <option value="leftToRight">Left to Right</option>
-                                                    <option value="rightToLeft">Right to Left</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
+                        </Collapse>
+                        {this.state.isFormOpen
+                            ? <div style={{ borderRadius: "5px", padding: "5px", textAlign: "center", backgroundColor: "rgb(196 216 208)" }} ><AnchorButton onClick={() => { this.handleFormOpen() }} text="Discard New Template" icon="ban-circle" intent="danger" style={{ cursor: "pointer", padding: "0px 10px" }} /></div>
+                            : <div style={{ borderRadius: "0 0 5px 5px", padding: "5px", textAlign: "center", backgroundColor: "rgb(196 216 208)" }} ><AnchorButton onClick={() => { this.handleFormOpen() }} text="New Template" icon="add" intent="success" style={{ cursor: "pointer", padding: "0px 10px" }} /></div>
+                        }
+                        <Collapse isOpen={this.state.isFormOpen}>
+                            <div style={{ padding: "5px" }}>
+                                <table>
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>:</td>
+                                        <td>
+                                            <InputGroup value={this.state.id} onChange={(event: any) => { this.setState({ id: event.target.value }) }} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>:</td>
+                                        <td>
+                                            <InputGroup value={this.state.name} onChange={(event: any) => { this.setState({ name: event.target.value }) }} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Description</td>
+                                        <td>:</td>
+                                        <td>
+                                            <InputGroup value={this.state.description} onChange={(event: any) => { this.setState({ description: event.target.value }) }} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Localization</td>
+                                        <td>:</td>
+                                        <td style={{ padding: "0" }}>
+                                            <table>
+                                                <tr>
+                                                    <td>Locale</td>
+                                                    <td>:</td>
+                                                    <td style={{ padding: "0" }}>
+                                                        <InputGroup value={this.state.localization.locale}
+                                                            onChange={(event: any) => {
+                                                                this.setState({ localization: { ...this.state.localization, locale: event.target.value, } })
+                                                            }
+                                                            }
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Script</td>
+                                                    <td>:</td>
+                                                    <td style={{ padding: "0" }}>
+                                                        <InputGroup value={this.state.localization.script}
+                                                            onChange={(event: any) => {
+                                                                this.setState({ localization: { ...this.state.localization, script: event.target.value, } })
+                                                            }
+                                                            }
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Writing System</td>
+                                                    <td>:</td>
+                                                    <td style={{ padding: "0" }}>
+                                                        <InputGroup value={this.state.localization.writingSystem}
+                                                            onChange={(event: any) => {
+                                                                this.setState({ localization: { ...this.state.localization, writingSystem: event.target.value, } })
+                                                            }
+                                                            }
+                                                        />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Text Direction</td>
+                                                    <td>:</td>
+                                                    <td style={{ padding: "0" }}>
+                                                        <select
+                                                            style={{ width: "130px" }}
+                                                            value={this.state.localization.textDirection.includes("TopToBottom") ? "TopToBottom" : "BottomToTop"}
+                                                            onChange={(event) => { this.handleTextDirectionChange(event.target.value, null, this.forceUpdate.bind(this)) }}
+                                                        >
+                                                            <option value="TopToBottom">Top to Bottom</option>
+                                                            <option value="BottomToTop">Bottom to Top</option>
+                                                        </select>
+                                                        <select
+                                                            style={{ width: "130px", marginLeft: "5px" }}
+                                                            value={this.state.localization.textDirection.includes("leftToRight") ? "leftToRight" : "rightToLeft"}
+                                                            onChange={(event) => { this.handleTextDirectionChange(null, event.target.value, this.forceUpdate.bind(this)) }}
+                                                        >
+                                                            <option value="leftToRight">Left to Right</option>
+                                                            <option value="rightToLeft">Right to Left</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style={{ borderRadius: "0 0 5px 5px", padding: "5px", textAlign: "center", backgroundColor: "rgb(196, 216, 208)" }} ><AnchorButton onClick={() => { this.createTemplate() }} icon="add" intent="success" text="Create Template"/></div>
+                        </Collapse>
                     </div>
-                    <div style={{borderRadius: "0 0 5px 5px", padding:"5px", textAlign:"center", backgroundColor:"#999", cursor:"pointer"}} onClick={()=>{this.createTemplate()}}>Create Template</div>
-                </Collapse>     
-            </div>
-            </Collapse>
-            {
-                this.state.currentFormTemplate != null && this.state.currentClassProfile != null
-                ?
-                    <div style={{borderRadius: "5px", backgroundColor: "#15B371",marginTop:"5px",}}>
-                        <Collapse isOpen={true}>{/*debug mode*/}
-                                <FormTemplateEditPanel 
-                                    currentAddressProfile={this.state.currentAddressProfile} 
-                                    currentClassProfile={this.state.currentClassProfile} 
+                </Collapse>
+                {
+                    this.state.currentFormTemplate != null && this.state.currentClassProfile != null
+                        ?
+                        <div style={{ borderRadius: "5px", backgroundColor: "#15B371", marginTop: "5px", }}>
+                            <Collapse isOpen={true}>{/*debug mode*/}
+                                <FormTemplateEditPanel
+                                    currentAddressProfile={this.state.currentAddressProfile}
+                                    currentClassProfile={this.state.currentClassProfile}
                                     currentFormTemplate={this.state.currentFormTemplate}
                                     changeStateHandler={this.state.changeStateHandler}
                                     handleEditFormTemplate={this.handleEditFormTemplate.bind(this)}
                                     updateCurrentClassProfile={this.updateCurrentClassProfile.bind(this)}
                                 />
-                        </Collapse>
-                    </div>
-                :<></>
-            }
+                            </Collapse>
+                        </div>
+                        : <></>
+                }
             </>
         )
     }
 }
 
 class FormTemplateEditPanel extends React.Component<any, any>{
-    constructor(props:any){
+    constructor(props: any) {
         super(props);
 
         // this.state={
@@ -365,19 +374,21 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         //     currentFormTemplate: this.props.currentFormTemplate,
         // }
 
-        var lines: any[]=[];
-        if(this.props.currentFormTemplate.lines.length === 0) {
+        var lines: any[] = [];
+        if (this.props.currentFormTemplate.lines.length === 0) {
             //auto fill all component to the array
-            this.props.currentClassProfile.componentProfiles.forEach((componentPointer:any)=>{
-                this.props.currentAddressProfile.componentProfiles.forEach((componentProfile:any) => {
-                    if(componentProfile.key == componentPointer.addressComponentProfileKey) {
+            this.props.currentClassProfile.componentProfiles.forEach((componentPointer: any) => {
+                this.props.currentAddressProfile.componentProfiles.forEach((componentProfile: any) => {
+                    if (componentProfile.key == componentPointer.addressComponentProfileKey) {
                         const newStaticText = componentProfile.key;
                         const newData = componentProfile.example;
 
-                        const newLine = {elements: [
-                            {componentKeyBelongTo: componentProfile.key, type: "staticText", element: {value: newStaticText},},
-                            {componentKeyBelongTo: componentProfile.key, type: "data", element: {value: newData},},
-                        ]};
+                        const newLine = {
+                            elements: [
+                                { componentKeyBelongTo: componentProfile.key, type: "staticText", element: { value: newStaticText }, },
+                                { componentKeyBelongTo: componentProfile.key, type: "data", element: { value: newData }, },
+                            ]
+                        };
 
                         lines.splice(lines.length, 0, newLine);
                     }
@@ -389,18 +400,18 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         // convert to 2d array START
         var lines2d: any[][] = [];
-        var rowMax=0;
-        var colMax=0;
+        var rowMax = 0;
+        var colMax = 0;
         lines.forEach(line => {
             var aLine: any[] = [];
             var colCount = 0;
-            line.elements.forEach((element:any) => {
+            line.elements.forEach((element: any) => {
                 var aElement;
                 aElement = element;
                 aLine.push(aElement);
                 colCount++;
             });
-            if(colCount > colMax){
+            if (colCount > colMax) {
                 colMax = colCount;
             }
             lines2d.push(aLine);
@@ -408,30 +419,30 @@ class FormTemplateEditPanel extends React.Component<any, any>{
         });
 
         //onDragStart Event handler
-        const startDrag = (ev:any) => {
+        const startDrag = (ev: any) => {
             console.log("Start Dragging...");
             console.log("   Dragging ID is => " + ev.target.id);
             ev.dataTransfer.setData("drag-item", ev.target.id);
         }
 
         // onDragOver Event handler
-        const dragOver = (ev:any) => {
+        const dragOver = (ev: any) => {
             ev.preventDefault();
         }
 
         // onDrop Event handler
-        const drop = (ev:any) => {
+        const drop = (ev: any) => {
             console.log("Dropped...");
             console.log("   Dropped ID is => " + ev.target.id);
 
             const draggingItemID = ev.dataTransfer.getData("drag-item");
             const droppedID = ev.target.id;
 
-            let newTable = this.state.table.map((x:any)=>x);
+            let newTable = this.state.table.map((x: any) => x);
             let dragItemI = 0, dragItemJ = 0, dropItemI = 0, dropItemJ = 0, temp = null;
 
-            newTable.forEach((element:any, i:any) => {
-                element.props.children.forEach((child:any, j:any) => {
+            newTable.forEach((element: any, i: any) => {
+                element.props.children.forEach((child: any, j: any) => {
                     // Find their coordinates in state.table first
                     if (draggingItemID === child.props.id) {
                         dragItemI = i;
@@ -460,48 +471,48 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
             // Update this.state.table
             var dummy = <></>;
-            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+            this.setState({ table: dummy }, () => { this.setState({ table: newTable }) });
         }
 
-        var table=[];
-        for(let i=0; i<rowMax; i++) {
-            var row=[];
+        var table = [];
+        for (let i = 0; i < rowMax; i++) {
+            var row = [];
             const previewTdStyle = {
                 padding: "5px 20px",
-                borderRadius: "10px",
+                borderRadius: "5px",
                 textAlign: "center",
                 backgroundColor: "white",
                 cursor: "grab",
             } as React.CSSProperties;
-            
-            for(let j=0; j < colMax; j++) {
-                const id=(i+1).toString() + "," + (j+1).toString();
 
-                if(lines2d[i][j]!=undefined){
+            for (let j = 0; j < colMax; j++) {
+                const id = (i + 1).toString() + "," + (j + 1).toString();
+
+                if (lines2d[i][j] != undefined) {
                     let child;
                     let componentKeyBelongTo = lines2d[i][j].componentKeyBelongTo;
                     let type = lines2d[i][j].type;
                     let element = lines2d[i][j].element;
 
-                    if(lines2d[i][j].type == "staticText") {
+                    if (lines2d[i][j].type == "staticText") {
                         child = <>{lines2d[i][j].element.value}</>;
-                    }else if (lines2d[i][j].type == "data") {
+                    } else if (lines2d[i][j].type == "data") {
                         if (this.getComponentType(lines2d[i][j].componentKeyBelongTo) == "number") {
-                            child = <input style={{cursor:"grab"}} type="number" placeholder={lines2d[i][j].element.value} />
-                        }else {
-                            child = <input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                            child = <input style={{ cursor: "grab" }} type="number" placeholder={lines2d[i][j].element.value} />
+                        } else {
+                            child = <input style={{ cursor: "grab" }} type="text" placeholder={lines2d[i][j].element.value} />
                         }
-                    }else {
+                    } else {
                         child = <></>;
                     }
 
                     const newTd = React.createElement("td", {
-                        id: id, 
-                        children: child, 
-                        style: previewTdStyle, 
-                        draggable: true, 
-                        onDragStart: startDrag, 
-                        onDragOver: dragOver, 
+                        id: id,
+                        children: child,
+                        style: previewTdStyle,
+                        draggable: true,
+                        onDragStart: startDrag,
+                        onDragOver: dragOver,
                         onDrop: drop,
                         componentKeyBelongTo: componentKeyBelongTo,
                         type: type,
@@ -513,19 +524,19 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     row.push(<td id={id} style={previewTdStyle} draggable={true}><pre>    </pre></td>);
                 }
             }
-           table.push(<tr>{row}</tr>);
+            table.push(<tr>{row}</tr>);
         }
         log.info(table);
 
         // convert to 2d array END
 
-        this.state={
+        this.state = {
             currentAddressProfile: this.props.currentAddressProfile,
             currentClassProfile: this.props.currentClassProfile,
-            currentFormTemplate: {...this.props.currentFormTemplate, lines: lines},
-            
+            currentFormTemplate: { ...this.props.currentFormTemplate, lines: lines },
+
             changeStateHandler: this.props.changeStateHandler,
-        
+
             rowMax: rowMax,
             colMax: colMax,
 
@@ -541,54 +552,54 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     //     
     // }
 
-    componentDidUpdate(prevProps:any, prevState:any) {
-        log.info("updated:"+this.state.currentFormTemplate.lines);
+    componentDidUpdate(prevProps: any, prevState: any) {
+        log.info("updated:" + this.state.currentFormTemplate.lines);
 
         var lines = JSON.parse(JSON.stringify(this.state.currentFormTemplate.lines));
         var lines2d: any[][] = [];
-        var rowMax=0;
-        var colMax=0;
-        lines.forEach((line:any) => {
+        var rowMax = 0;
+        var colMax = 0;
+        lines.forEach((line: any) => {
             var aLine: any[] = [];
             var colCount = 0;
-            line.elements.forEach((element:any) => {
+            line.elements.forEach((element: any) => {
                 var aElement;
                 aElement = element;
                 aLine.push(aElement);
                 colCount++;
             });
-            if(colCount > colMax){
+            if (colCount > colMax) {
                 colMax = colCount;
             }
             lines2d.push(aLine);
             rowMax++;
         });
 
-         //onDragStart Event handler
-         const startDrag = (ev:any) => {
+        //onDragStart Event handler
+        const startDrag = (ev: any) => {
             console.log("Start Dragging...");
             console.log("   Dragging ID is => " + ev.target.id);
             ev.dataTransfer.setData("drag-item", ev.target.id);
         }
 
         // onDragOver Event handler
-        const dragOver = (ev:any) => {
+        const dragOver = (ev: any) => {
             ev.preventDefault();
         }
 
         // onDrop Event handler
-        const drop = (ev:any) => {
+        const drop = (ev: any) => {
             console.log("Dropped...");
             console.log("   Dropped ID is => " + ev.target.id);
 
             const draggingItemID = ev.dataTransfer.getData("drag-item");
             const droppedID = ev.target.id;
 
-            let newTable = this.state.table.map((x:any)=>x);
+            let newTable = this.state.table.map((x: any) => x);
             let dragItemI = 0, dragItemJ = 0, dropItemI = 0, dropItemJ = 0, temp = null;
 
-            newTable.forEach((element:any, i:any) => {
-                element.props.children.forEach((child:any, j:any) => {
+            newTable.forEach((element: any, i: any) => {
+                element.props.children.forEach((child: any, j: any) => {
                     // Find their coordinates in state.table first
                     if (draggingItemID === child.props.id) {
                         dragItemI = i;
@@ -617,49 +628,49 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
             // Update this.state.table
             var dummy = <></>;
-            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+            this.setState({ table: dummy }, () => { this.setState({ table: newTable }) });
         }
 
 
-        var table=[];
-        for(let i=0; i<rowMax; i++) {
-            var row=[];
+        var table = [];
+        for (let i = 0; i < rowMax; i++) {
+            var row = [];
             const previewTdStyle = {
                 padding: "5px 20px",
-                borderRadius: "10px",
+                borderRadius: "5px",
                 textAlign: "center",
                 backgroundColor: "white",
                 cursor: "grab",
             } as React.CSSProperties;
-            
-            for(let j=0; j < colMax; j++) {
-                const id=(i+1).toString() + "," + (j+1).toString();
 
-                if(lines2d[i][j]!=undefined){
+            for (let j = 0; j < colMax; j++) {
+                const id = (i + 1).toString() + "," + (j + 1).toString();
+
+                if (lines2d[i][j] != undefined) {
                     let child;
                     let componentKeyBelongTo = lines2d[i][j].componentKeyBelongTo;
                     let type = lines2d[i][j].type;
                     let element = lines2d[i][j].element;
 
-                    if(lines2d[i][j].type == "staticText") {
+                    if (lines2d[i][j].type == "staticText") {
                         child = <>{lines2d[i][j].element.value}</>;
-                    }else if (lines2d[i][j].type == "data") {
+                    } else if (lines2d[i][j].type == "data") {
                         if (this.getComponentType(lines2d[i][j].componentKeyBelongTo) == "number") {
-                            child = <input style={{cursor:"grab"}} type="number" placeholder={lines2d[i][j].element.value} />
-                        }else {
-                            child = <input style={{cursor:"grab"}} type="text" placeholder={lines2d[i][j].element.value} />
+                            child = <input style={{ cursor: "grab" }} type="number" placeholder={lines2d[i][j].element.value} />
+                        } else {
+                            child = <input style={{ cursor: "grab" }} type="text" placeholder={lines2d[i][j].element.value} />
                         }
-                    }else {
+                    } else {
                         child = <></>;
                     }
 
                     const newTd = React.createElement("td", {
-                        id: id, 
-                        children: child, 
-                        style: previewTdStyle, 
-                        draggable: true, 
-                        onDragStart: startDrag, 
-                        onDragOver: dragOver, 
+                        id: id,
+                        children: child,
+                        style: previewTdStyle,
+                        draggable: true,
+                        onDragStart: startDrag,
+                        onDragOver: dragOver,
                         onDrop: drop,
                         componentKeyBelongTo: componentKeyBelongTo,
                         type: type,
@@ -671,10 +682,10 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                     row.push(<td id={id} style={previewTdStyle} draggable={true}><pre>    </pre></td>);
                 }
             }
-           table.push(<tr>{row}</tr>);
+            table.push(<tr>{row}</tr>);
         }
-        if(JSON.stringify(prevState.lines2d)!=JSON.stringify(lines2d)){
-            this.setState({lines2d: lines2d, table:table});
+        if (JSON.stringify(prevState.lines2d) != JSON.stringify(lines2d)) {
+            this.setState({ lines2d: lines2d, table: table });
         }
 
     }
@@ -683,16 +694,16 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     handleUpdate(targetComponentKey: string, type: string, data: string) {
         var newFormTemplate = JSON.parse(JSON.stringify(this.state.currentFormTemplate));
 
-        newFormTemplate.lines.forEach((line:any) => {
-            line.elements.forEach((lineElement:any)=>{
-                if(lineElement.componentKeyBelongTo == targetComponentKey && lineElement.type == type) {
+        newFormTemplate.lines.forEach((line: any) => {
+            line.elements.forEach((lineElement: any) => {
+                if (lineElement.componentKeyBelongTo == targetComponentKey && lineElement.type == type) {
                     lineElement.element.value = data;
                 }
             });
         });
         // log.info(newFormTemplate.lines);
         // this.setState({currentFormTemplate: newFormTemplate});
-        this.setState({currentFormTemplate: {...this.state.currentFormTemplate, lines: newFormTemplate.lines}}, ()=>{log.info(this.state.currentFormTemplate.lines)});
+        this.setState({ currentFormTemplate: { ...this.state.currentFormTemplate, lines: newFormTemplate.lines } }, () => { log.info(this.state.currentFormTemplate.lines) });
         // const dummy = {};
         // const newCurrentFormTemplate = {...this.state.currentFormTemplate, lines: newFormTemplate.lines};
         // this.setState({currentFormTemplate: dummy}, ()=>{this.setState({currentFormTemplate: newCurrentFormTemplate})});
@@ -701,13 +712,13 @@ class FormTemplateEditPanel extends React.Component<any, any>{
     getComponentType(componentKey: string) {
         var result = "string"
 
-        this.props.currentAddressProfile.componentProfiles.forEach((componentProfile:any) => {
-            if(componentProfile.key == componentKey) {
+        this.props.currentAddressProfile.componentProfiles.forEach((componentProfile: any) => {
+            if (componentProfile.key == componentKey) {
                 var type = "number";
-                componentProfile.attributeProfiles.forEach((attributeProfilePointer:any)=>{
-                    this.props.currentAddressProfile.attributeProfiles.forEach((attributeProfile:any) => {
-                        if(attributeProfile.name == attributeProfilePointer.attributeProfileName){
-                            if(attributeProfile.valueType != "number"){
+                componentProfile.attributeProfiles.forEach((attributeProfilePointer: any) => {
+                    this.props.currentAddressProfile.attributeProfiles.forEach((attributeProfile: any) => {
+                        if (attributeProfile.name == attributeProfilePointer.attributeProfileName) {
+                            if (attributeProfile.valueType != "number") {
                                 type = "string";
                             }
                         }
@@ -725,83 +736,83 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             borderRadius: "5px",
             background: "#FFFFFF",
         } as React.CSSProperties;
-    
+
         const itemHeadStyle = {
             padding: "7px 5px 30px 5px",
             height: "15px",
             fontSize: "20px",
             width: "100%",
         } as React.CSSProperties;
-    
+
         const itemHeadButtonStyle = {
             padding: "5px",
             float: "right",
         } as React.CSSProperties;
-    
+
         const itemHrStyle = {
             width: "100%",
             margin: "0 0 7px 0",
             clear: "both",
         } as React.CSSProperties;
-    
+
         const itemBodyStyle = {
             padding: "5px",
             width: "100%",
         } as React.CSSProperties;
-    
+
         const rightDivStyle = {
             float: "right",
         } as React.CSSProperties;
-    
+
         const subSubItemSytle = {
             backgroundColor: "#3DCC91",
             marginLeft: "5px",
-            marginRight: "5px", 
+            marginRight: "5px",
             // color: "#FFF",
         } as React.CSSProperties;
-    
+
         const subSubItemHeadStyle = {
             padding: "10px 5px 5px",
             fontSize: "15px",
             height: "unset",
         } as React.CSSProperties;
-    
+
         const subSubitemBodyStyle = {
             fontSize: "15px",
         } as React.CSSProperties;
 
         const previewTdStyle = {
             padding: "5px 20px",
-            borderRadius: "10px",
+            borderRadius: "5px",
             textAlign: "center",
             backgroundColor: "white",
             cursor: "grab",
         } as React.CSSProperties;
 
-        const startDrag = (ev:any) => {
+        const startDrag = (ev: any) => {
             console.log("Start Dragging...");
             console.log("   Dragging ID is => " + ev.target.id);
             ev.dataTransfer.setData("drag-item", ev.target.id);
         }
 
         // onDragOver Event handler
-        const dragOver = (ev:any) => {
+        const dragOver = (ev: any) => {
             ev.preventDefault();
         }
 
         // onDrop Event handler
-        const drop = (ev:any) => {
+        const drop = (ev: any) => {
             console.log("Dropped...");
             console.log("   Dropped ID is => " + ev.target.id);
 
             const draggingItemID = ev.dataTransfer.getData("drag-item");
             const droppedID = ev.target.id;
 
-            let newTable = this.state.table.map((x:any)=>x);
+            let newTable = this.state.table.map((x: any) => x);
             let dragItemI = 0, dragItemJ = 0, dropItemI = 0, dropItemJ = 0, temp = null;
 
-            newTable.forEach((element:any, i:any) => {
-                element.props.children.forEach((child:any, j:any) => {
+            newTable.forEach((element: any, i: any) => {
+                element.props.children.forEach((child: any, j: any) => {
                     // Find their coordinates in state.table first
                     if (draggingItemID === child.props.id) {
                         dragItemI = i;
@@ -823,26 +834,26 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             // newLines2d[dragItemI][dragItemJ] = newLines2d[dropItemI][dropItemJ];
             // newLines2d[dropItemI][dropItemJ] = tempElement;
             // // console.log("newLines2d:" + newLines2d);
-            
+
             temp = newTable[dragItemI].props.children[dragItemJ];
             newTable[dragItemI].props.children[dragItemJ] = newTable[dropItemI].props.children[dropItemJ];
             newTable[dropItemI].props.children[dropItemJ] = temp;
 
             // Update this.state.table
             var dummy = <></>;
-            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+            this.setState({ table: dummy }, () => { this.setState({ table: newTable }) });
         }
 
         const handleAddRow = () => {
             var newRow = [];
             let rowMax = this.state.table.length;
-            for(let i = 0; i < this.state.table[0].props.children.length; i++){
-                const id = (rowMax + 1).toString() + "," + (i+1).toString()
-                newRow.push(React.createElement("td", {id:id, style: previewTdStyle, children: "\xa0\xa0\xa0\xa0\xa0", draggable: true, onDragStart: startDrag, onDragOver: dragOver, onDrop: drop}));
+            for (let i = 0; i < this.state.table[0].props.children.length; i++) {
+                const id = (rowMax + 1).toString() + "," + (i + 1).toString()
+                newRow.push(React.createElement("td", { id: id, style: previewTdStyle, children: "\xa0\xa0\xa0\xa0\xa0", draggable: true, onDragStart: startDrag, onDragOver: dragOver, onDrop: drop }));
             }
             this.setState({
                 table: [...this.state.table, <tr>{newRow}</tr>]
-            },()=>{console.log("table:" + JSON.stringify(this.state.table, null, 2));})
+            }, () => { console.log("table:" + JSON.stringify(this.state.table, null, 2)); })
 
             // let newLines2d = this.state.lines2d.map((x:any)=>x);
             // //todo
@@ -850,18 +861,18 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         const handleAddCol = () => {
 
-            let newTable = this.state.table.map((x:any)=>x);
-            newTable.forEach((element: React.ReactElement<any>, index:any) => {
+            let newTable = this.state.table.map((x: any) => x);
+            newTable.forEach((element: React.ReactElement<any>, index: any) => {
                 let colMax = element.props.children.length;
-                const id = (index+1).toString() + "," + (colMax + 1).toString()
-                const newTD = React.createElement("td", {id:id, style: previewTdStyle, children: "\xa0\xa0\xa0\xa0\xa0", draggable: true, onDragStart: startDrag, onDragOver: dragOver, onDrop: drop});
+                const id = (index + 1).toString() + "," + (colMax + 1).toString()
+                const newTD = React.createElement("td", { id: id, style: previewTdStyle, children: "\xa0\xa0\xa0\xa0\xa0", draggable: true, onDragStart: startDrag, onDragOver: dragOver, onDrop: drop });
 
                 element.props.children.push(newTD);
             })
             console.log(newTable);
 
             var dummy = <></>;
-            this.setState({table: dummy}, ()=>{this.setState({table: newTable})});
+            this.setState({ table: dummy }, () => { this.setState({ table: newTable }) });
 
             // let newLines2d = this.state.lines2d.map((x:any)=>x);
             // //todo
@@ -872,36 +883,36 @@ class FormTemplateEditPanel extends React.Component<any, any>{
             let newLines: { elements: any[]; }[] = [];
             let rowSize = 0;
             let colSize = 0;
-            this.state.table.forEach((tr: React.ReactElement<any>, rowIndex:any) => {
+            this.state.table.forEach((tr: React.ReactElement<any>, rowIndex: any) => {
                 let newLineElements: { componentKeyBelongTo: any; type: any; element: any; }[] = [];
                 colSize = 0;
-                tr.props.children.forEach((td: React.ReactElement<any>, colIndex:any)=>{
-                    if(td.props.componentKeyBelongTo != undefined) {
+                tr.props.children.forEach((td: React.ReactElement<any>, colIndex: any) => {
+                    if (td.props.componentKeyBelongTo != undefined) {
                         let componentKeyBelongTo = td.props.componentKeyBelongTo;
                         let type = td.props.type;
                         let element = td.props.element;
 
-                        newLineElements.push({componentKeyBelongTo: componentKeyBelongTo, type: type, element: element});
+                        newLineElements.push({ componentKeyBelongTo: componentKeyBelongTo, type: type, element: element });
                     } else {
                         let componentKeyBelongTo = null;
                         let type = "staticText";
-                        let element = {value: "\xa0\xa0\xa0\xa0\xa0"};
+                        let element = { value: "\xa0\xa0\xa0\xa0\xa0" };
 
-                        newLineElements.push({componentKeyBelongTo: componentKeyBelongTo, type: type, element: element});
+                        newLineElements.push({ componentKeyBelongTo: componentKeyBelongTo, type: type, element: element });
                     }
                     colSize++;
                 });
-                let newLine = {elements: newLineElements};
+                let newLine = { elements: newLineElements };
                 newLines.push(newLine);
                 rowSize++;
             });
 
             let isRowsEmpty = Array(rowSize).fill(true);
             let isColsEmpty = Array(colSize).fill(true);
-            newLines.forEach((line, rowIndex)=>{
+            newLines.forEach((line, rowIndex) => {
                 let isEmtyRow = true;
                 line.elements.forEach((element, colIndex) => {
-                    if(element.componentKeyBelongTo != null) {
+                    if (element.componentKeyBelongTo != null) {
                         isColsEmpty[colIndex] = false;
                         isEmtyRow = false;
                     }
@@ -909,28 +920,28 @@ class FormTemplateEditPanel extends React.Component<any, any>{
                 isRowsEmpty[rowIndex] = isEmtyRow;
             });
 
-            newLines.forEach((line, rowIndex)=>{
-                if(isRowsEmpty[rowIndex])
-                newLines.splice(rowIndex, 1);
+            newLines.forEach((line, rowIndex) => {
+                if (isRowsEmpty[rowIndex])
+                    newLines.splice(rowIndex, 1);
                 line.elements.forEach((element, colIndex) => {
-                   if(isColsEmpty[colIndex]) {
-                       line.elements.splice(colIndex, 1, {trim: true});
-                   } 
-                }); 
-            }); 
-            newLines.forEach((line, rowIndex)=>{
+                    if (isColsEmpty[colIndex]) {
+                        line.elements.splice(colIndex, 1, { trim: true });
+                    }
+                });
+            });
+            newLines.forEach((line, rowIndex) => {
                 line.elements.forEach((element, colIndex) => {
-                   if(element.trim != undefined) {
+                    if (element.trim != undefined) {
                         line.elements.splice(colIndex, 1);
-                   } 
-                }); 
+                    }
+                });
             });
 
-            
+
             let newClassProfile = JSON.parse(JSON.stringify(this.state.currentClassProfile));
             let newFormTemplate = null;
-            newClassProfile.formTemplates.forEach((formTemplate:any)=>{
-                if(formTemplate.id == this.state.currentFormTemplate.id) {
+            newClassProfile.formTemplates.forEach((formTemplate: any) => {
+                if (formTemplate.id == this.state.currentFormTemplate.id) {
                     formTemplate.lines = newLines;
                     newFormTemplate = formTemplate;
                 }
@@ -966,69 +977,71 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 
         return (
             <>
-                <div style={{display:"flex"}}>
-                    <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
+                <div style={{ display: "flex", backgroundColor: "white" }}>
+                    <div style={{ flex: "50%", backgroundColor: "#e4e4e4", borderRadius: "5px" }}>
                         {/* component display */}
                         {
-                            this.state.currentClassProfile.componentProfiles.map((componentPointer:any)=>(
-                                <EditableFieldItem 
+                            this.state.currentClassProfile.componentProfiles.map((componentPointer: any) => (
+                                <EditableFieldItem
                                     key={componentPointer.addressComponentProfileKey}
-                                    componentPointer={componentPointer} 
-                                    currentAddressProfile={this.state.currentAddressProfile} 
+                                    componentPointer={componentPointer}
+                                    currentAddressProfile={this.state.currentAddressProfile}
                                     currentFormTemplate={this.state.currentFormTemplate}
-                                    handleUpdate={this.handleUpdate.bind(this)} 
+                                    handleUpdate={this.handleUpdate.bind(this)}
                                 />
                             ))
-                        }                    
+                        }
                     </div>
-                    <div style={{backgroundColor:"gray", width:"2px", margin:"0 2.5px"}}></div>
-                    <div style={{flex:"50%", backgroundColor:"orange", borderRadius:"5px"}}>
+                    <div style={{ backgroundColor: "gray", width: "1px", margin: "0 2.5px" }}></div>
+                    <div style={{ flex: "50%", backgroundColor: "#e4e4e4", borderRadius: "5px" }}>
                         {/* demo display */}
-                        <AnchorButton onClick={handleAddRow} text="Add Row" intent="success" icon="add-row-bottom" />
-                        <AnchorButton onClick={handleAddCol} text="Add Column" intent="success" icon="add-column-right" />
+                        <span style={{padding: "5px"}}>
+                            <AnchorButton style={{ marginRight: "5px" }} onClick={handleAddRow} text="Add Row" intent="success" icon="add-row-bottom" />
+                            <AnchorButton onClick={handleAddCol} text="Add Column" intent="success" icon="add-column-right" />
+                        </span>
+                        <br />
 
-                        <br/>
-
-                        <table style={{width: "100%"}}>
+                        <table style={{ width: "100%" }}>
                             {
                                 this.state.table
                             }
                         </table>
                     </div>
                 </div>
-                <div>
+                <div style={{padding: "5px 0 1px 0", backgroundColor: "white"}}>
                     <AnchorButton onClick={handelSaveChange} fill={true} text="Save Change" intent="success" />
                 </div>
-                <div>
+                <div style={{padding: "1px 0 5px 0", backgroundColor: "white"}}>
                     <AnchorButton onClick={handelDiscardChange} fill={true} text="Discard Change" intent="danger" />
                 </div>
-                <div>
-                    <div>
-                        <table style={{width: "100%"}}>
+                <div style={{backgroundColor: "white", fontSize: "16px"}}>
+                    <div style={{backgroundColor: "rgb(108 167 154)", borderRadius: "2px", textAlign: "center", fontWeight: "bold" }}>Display Demo</div>
+                    <div style={{backgroundColor: "rgb(202 202 202)", borderRadius: "2px"}}>
+                        <table style={{ width: "100%" }}>
                             {
                                 React.isValidElement(this.state.table)
-                                ?<></>
-                                :
-                                this.state.table.map((tr:any)=>(
-                                    <tr>
-                                        {
-                                            tr.props.children.map((td:any)=>(
-                                                <td>
-                                                    {
-                                                        td.props.children == "\xa0\xa0\xa0\xa0\xa0"
-                                                        ?<></>
-                                                        :
-                                                        td.props.children.type=="input"
-                                                        ?<input type={td.props.children.props.type} placeholder={td.props.children.props.placeholder}></input>
-                                                        :<>{td.props.children.props.children}</>
-                                                    }
-                                                </td>
-                                            ))
-                                        }
-                                    </tr>
-                                ))
+                                    ? <></>
+                                    :
+                                    this.state.table.map((tr: any) => (
+                                        <tr>
+                                            {
+                                                tr.props.children.map((td: any) => (
+                                                    <td>
+                                                        {
+                                                            td.props.children == "\xa0\xa0\xa0\xa0\xa0"
+                                                                ? <></>
+                                                                :
+                                                                td.props.children.type == "input"
+                                                                    ? <InputGroup type={td.props.children.props.type} placeholder={td.props.children.props.placeholder} />
+                                                                    : <>{td.props.children.props.children}</>
+                                                        }
+                                                    </td>
+                                                ))
+                                            }
+                                        </tr>
+                                    ))
                             }
-                                {/* {
+                            {/* {
                                     this.state.table
                                 } */}
                         </table>
@@ -1040,20 +1053,20 @@ class FormTemplateEditPanel extends React.Component<any, any>{
 }
 
 class EditableFieldItem extends React.Component<any, any>{
-    constructor(props:any) {
+    constructor(props: any) {
         super(props);
 
 
-        var fieldName= "";
-        var example=""
-        this.props.currentFormTemplate.lines.forEach((line:any) => {
-            line.elements.forEach((lineElement:any)=>{
+        var fieldName = "";
+        var example = ""
+        this.props.currentFormTemplate.lines.forEach((line: any) => {
+            line.elements.forEach((lineElement: any) => {
                 // log.info(lineElement.componentKeyBelongTo + "|" + this.props.componentPointer.addressComponentProfileKey);
-                if(lineElement.componentKeyBelongTo == this.props.componentPointer.addressComponentProfileKey){
-                    if(lineElement.type == "staticText"){
+                if (lineElement.componentKeyBelongTo == this.props.componentPointer.addressComponentProfileKey) {
+                    if (lineElement.type == "staticText") {
                         fieldName = lineElement.element.value;
                     }
-                    if(lineElement.type == "data"){
+                    if (lineElement.type == "data") {
                         example = lineElement.element.value;
                     }
                 }
@@ -1061,7 +1074,7 @@ class EditableFieldItem extends React.Component<any, any>{
         });
 
 
-        this.state={
+        this.state = {
             componentPointer: this.props.componentPointer,
             currentAddressProfile: this.props.currentAddressProfile,
             currentFormTemplate: this.props.currentFormTemplate,
@@ -1093,90 +1106,90 @@ class EditableFieldItem extends React.Component<any, any>{
         // });
     }
 
-    updateFieldName(data:any) {
+    updateFieldName(data: any) {
         this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "staticText", data);
-        this.setState({fieldName: data})
+        this.setState({ fieldName: data })
     }
 
-    updateExample(data:any) {
+    updateExample(data: any) {
         this.state.handleUpdate(this.state.componentPointer.addressComponentProfileKey, "data", data);
-        this.setState({example: data})
+        this.setState({ example: data })
     }
 
-    render(){
+    render() {
         const itemStyle = {
             marginTop: "10px",
             borderRadius: "5px",
             background: "#FFFFFF",
         } as React.CSSProperties;
-    
+
         const itemHeadStyle = {
             padding: "7px 5px 30px 5px",
             height: "15px",
             fontSize: "20px",
             width: "100%",
         } as React.CSSProperties;
-    
+
         const itemHeadButtonStyle = {
             padding: "5px",
             float: "right",
         } as React.CSSProperties;
-    
+
         const itemHrStyle = {
             width: "100%",
             margin: "0 0 7px 0",
             clear: "both",
         } as React.CSSProperties;
-    
+
         const itemBodyStyle = {
             padding: "5px",
             width: "100%",
         } as React.CSSProperties;
-    
+
         const rightDivStyle = {
             float: "right",
         } as React.CSSProperties;
-    
+
         const subSubItemSytle = {
             backgroundColor: "#3DCC91",
             marginLeft: "5px",
-            marginRight: "5px", 
+            marginRight: "5px",
             // color: "#FFF",
         } as React.CSSProperties;
-    
+
         const subSubItemHeadStyle = {
             padding: "10px 5px 5px",
             fontSize: "15px",
             height: "unset",
         } as React.CSSProperties;
-    
+
         const subSubitemBodyStyle = {
             fontSize: "15px",
         } as React.CSSProperties;
-        
-        return(
-            <div style={{...itemStyle, ...subSubItemSytle, marginBottom: "5px"}}>
-                <div style={{...itemHeadStyle, ...subSubItemHeadStyle}}>
-                    <span style={{fontWeight: "bold",}}>{this.state.componentPointer.addressComponentProfileKey}</span>
+
+        return (
+            <div style={{ ...itemStyle, ...subSubItemSytle, marginBottom: "5px" }}>
+                <div style={{ ...itemHeadStyle, ...subSubItemHeadStyle }}>
+                    <span style={{ fontWeight: "bold", }}>{this.state.componentPointer.addressComponentProfileKey}</span>
                     <div style={rightDivStyle}>
-                            min: {this.state.componentPointer.addressComponentSpecification.minCardinality} | max: {this.state.componentPointer.addressComponentSpecification.maxCardinality}
+                        min: {this.state.componentPointer.addressComponentSpecification.minCardinality} | max: {this.state.componentPointer.addressComponentSpecification.maxCardinality}
                     </div>
                 </div>
                 <hr style={itemHrStyle} />
-                <div style={{...itemBodyStyle,...subSubitemBodyStyle}}>
+                <div style={{ ...itemBodyStyle, ...subSubitemBodyStyle }}>
                     <table>
                         <tr>
-                            <td style={{fontWeight: "bold",}}>Field Name</td>
+                            <td style={{ fontWeight: "bold", }}>Field Name</td>
                             <td>:</td>
                             <td>
-                                <InputGroup value={this.state.fieldName} onChange={(event:any)=>{this.updateFieldName(event.target.value)}} />
+                                <InputGroup value={this.state.fieldName} onChange={(event: any) => { this.updateFieldName(event.target.value) }} />
                             </td>
                         </tr>
                         <tr>
-                            <td style={{fontWeight: "bold",}}>Example</td>
+                            <td style={{ fontWeight: "bold", }}>Example</td>
                             <td>:</td>
                             <td>
-                                <InputGroup value={this.state.example} onChange={(event:any)=>{this.updateExample(event.target.value)}} />
+                                <InputGroup value={this.state.example} onChange={(event: any) => { this.updateExample(event.target.value) }} />
                             </td>
                         </tr>
                     </table>
@@ -1204,60 +1217,60 @@ class EditableFieldItem extends React.Component<any, any>{
 }
 
 class DisplayableFieldItem extends React.Component<any, any>{
-    constructor(props:any) {
+    constructor(props: any) {
         super(props);
-        this.state={
+        this.state = {
 
         };
     }
 
-    render(){
+    render() {
         const itemStyle = {
             marginTop: "10px",
             borderRadius: "5px",
             background: "#FFFFFF",
         } as React.CSSProperties;
-    
+
         const itemHeadStyle = {
             padding: "7px 5px 30px 5px",
             height: "15px",
             fontSize: "20px",
             width: "100%",
         } as React.CSSProperties;
-    
+
         const itemHeadButtonStyle = {
             padding: "5px",
             float: "right",
         } as React.CSSProperties;
-    
+
         const itemHrStyle = {
             width: "100%",
             margin: "0 0 7px 0",
             clear: "both",
         } as React.CSSProperties;
-    
+
         const itemBodyStyle = {
             padding: "5px",
             width: "100%",
         } as React.CSSProperties;
-    
+
         const rightDivStyle = {
             float: "right",
         } as React.CSSProperties;
-    
+
         const subSubItemSytle = {
             backgroundColor: "#3DCC91",
             marginLeft: "5px",
-            marginRight: "5px", 
+            marginRight: "5px",
             // color: "#FFF",
         } as React.CSSProperties;
-    
+
         const subSubItemHeadStyle = {
             padding: "10px 5px 5px",
             fontSize: "15px",
             height: "unset",
         } as React.CSSProperties;
-    
+
         const subSubitemBodyStyle = {
             fontSize: "15px",
         } as React.CSSProperties;
@@ -1276,7 +1289,7 @@ class DisplayableFieldItem extends React.Component<any, any>{
         } as React.CSSProperties;
 
 
-        return(
+        return (
             <div style={displayDivStyle}>
                 <div style={classTitleComponent}>
                     {/* Hardcode Data */}
@@ -1284,35 +1297,35 @@ class DisplayableFieldItem extends React.Component<any, any>{
                 </div>
                 <hr style={itemHrStyle} />
                 <table>
-                        <tr>
-                            {/* Hardcode Data */}
-                            <td style={{fontWeight: "bold",}}>Address Number</td><td>:</td><td>23</td>
-                        </tr>
-                        <tr>
-                            {/* Hardcode Data */}
-                            <td style={{fontWeight: "bold",}}>Locality name</td><td>:</td><td>Yuen Long</td>
-                        </tr>
-                    </table>
+                    <tr>
+                        {/* Hardcode Data */}
+                        <td style={{ fontWeight: "bold", }}>Address Number</td><td>:</td><td>23</td>
+                    </tr>
+                    <tr>
+                        {/* Hardcode Data */}
+                        <td style={{ fontWeight: "bold", }}>Locality name</td><td>:</td><td>Yuen Long</td>
+                    </tr>
+                </table>
             </div>
         );
     }
 }
 
 class DisplayTemplatePanel extends React.Component<DisplayTemplateProps, any>{
-    constructor(props:any){
+    constructor(props: any) {
         super(props);
-        this.state={
-            
+        this.state = {
+
         }
     }
-    render(){
-        return(
+    render() {
+        return (
             <></>
         )
     }
 }
 
-export interface LayoutPanelProps{
+export interface LayoutPanelProps {
     currentAddressProfile: AddressProfile,
     changeStateHandler: any,
 }
@@ -1324,5 +1337,5 @@ interface FormTemplatePanelProps {
 }
 
 interface DisplayTemplateProps {
-    
+
 }
