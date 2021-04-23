@@ -117,7 +117,8 @@ export class ProfilesPanel extends React.Component<any, any> {
           <div style={centerStyle} onClick={this.handleSecondPanelOpen}>...</div>
         </Collapse>
 
-        <Title name="Form template and Display template" />
+        {/* <Title name="Form template and Display template" /> */}
+        <Title name="Form template" />
         <Collapse isOpen={this.state.isMainPanelOpen}>
           <div style={centerStyle} onClick={this.handleSecondPanelOpen}>...</div>
         </Collapse>

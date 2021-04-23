@@ -51,7 +51,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                     <Collapse isOpen={this.state.currentClassProfile != null}>
                         <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId) => { this.setState({ selectedTabId: tabId }) }}>
                             <Tab id={"formTemplate"} title={"Form Template"} panel={<FormTemplatePanel currentAddressProfile={this.state.currentAddressProfile} currentClassProfile={this.state.currentClassProfile} changeStateHandler={this.state.changeStateHandler} />}></Tab>
-                            <Tab id={"displayTemplate"} title={"Display Template"} panel={<DisplayTemplatePanel />}></Tab>
+                            {/* <Tab id={"displayTemplate"} title={"Display Template"} panel={<DisplayTemplatePanel />}></Tab> */}
                         </Tabs>
                     </Collapse>
                 </div>

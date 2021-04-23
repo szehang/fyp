@@ -386,7 +386,7 @@ class AddressParserWindow extends React.Component<any, any> {
     constructor(props:any) {
         super(props);
         this.state = {
-            parserInput: "casa del gelato, 10A 24-26 high street road mount waverley vic 3183",
+            parserInput: "",
             parserResult: {},
             selectedAttribute: [],
             parserForm: [],
