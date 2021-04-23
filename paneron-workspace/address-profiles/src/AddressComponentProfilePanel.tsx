@@ -183,7 +183,7 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             description: "",
             example: "",
             attributeProfiles: [],
-
+            addAttributeName: "select",
         });
     }
 
@@ -192,6 +192,28 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             isParserWindowOpen: !this.state.isParserWindowOpen,
         })
     }
+
+    removeIncludedAttribute = (attributeName: string) => {
+        const newAttributeProfiles = JSON.parse(JSON.stringify(this.state.attributeProfiles));//deep copy the state.addressProfiles
+        newAttributeProfiles.forEach((newAttribute:any) => {
+            if (attributeName == newAttribute.attributeProfileName) {
+                const index = newAttributeProfiles.indexOf(newAttribute);
+                newAttributeProfiles.splice(index, 1);
+            }
+        });
+        this.setState({ attributeProfiles: newAttributeProfiles });
+    }
+
+    addIncludedAttribute = (attributeName: string) => {
+        // log.info(attributeName);
+        if (attributeName != "select") {
+            const newAttributeProfiles = JSON.parse(JSON.stringify(this.state.attributeProfiles));//deep copy the state.addressProfiles
+            const index = newAttributeProfiles.length;
+            newAttributeProfiles.splice(index, 0, { attributeProfileName: attributeName });
+            this.setState({ attributeProfiles: newAttributeProfiles, addAttributeName: "select" });
+        }
+    }
+
 
     render() {
 
@@ -241,6 +263,36 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
             zIndex: 998,
         } as React.CSSProperties;
 
+        const subSubItemSytle = {
+            backgroundColor: "#779977",
+            marginLeft: "5px",
+            marginRight: "5px",
+            // color: "#FFF",
+        } as React.CSSProperties;
+        
+        const selectStyle = {
+            width: "100%",
+            marginBottom: "5px",
+            padding: "5px",
+            borderRadius: "5px",
+        } as React.CSSProperties;
+        
+        const centerStyle = {
+            fontSize: "1.2em",
+            textAlign: "center",
+            cursor: "pointer",
+            paddingBottom: "1em",
+            lineHeight: "0",
+        } as React.CSSProperties;
+        
+        const addButtonStyle = {
+            backgroundColor: "#509970",
+            paddingBottom: "0",
+            lineHeight: "normal",
+            padding: "5px 0",
+            borderRadius: "5px",
+        } as React.CSSProperties;
+
         return (
             <div style={itemStyle}>
                 <div style={{ ...itemHeadButtonStyle, ...rightStyle }}>
@@ -286,9 +338,34 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                                         <td>
                                             <InputGroup value={this.state.example} onChange={(event:any) => { this.setState({ example: event.target.value }) }} />
                                         </td>
-                                    </tr>
-                                    {/* todo - add the attribute selector */}
+                                    </tr>                                    
                                 </table>
+                                {/* todo - add the attribute selector */}
+                                {
+                                    this.state.attributeProfiles.map((attribute:any) => (
+                                        <ComponentIncludedAttributeItem
+                                            key={attribute.attributeProfileName}
+                                            attributeName={attribute.attributeProfileName}
+                                            attributeProfiles={this.props.attributeProfiles}
+                                            isEditingForm={this.state.isEditingForm}
+                                            removeIncludedAttribute={this.removeIncludedAttribute}
+                                        />
+                                    ))
+                                }
+                                <div style={{ ...itemStyle, ...subSubItemSytle }}>
+                                    <div style={{ padding: "5px" }}>
+                                        <select style={selectStyle} value={this.state.addAttributeName} onChange={(event) => { this.setState({ addAttributeName: event.target.value }) }}>
+                                            <option value="select">Please select attribute</option>
+                                            {
+                                                this.props.attributeProfiles.map((attribute) => (
+                                                    // <option key={attribute.name} value={attribute.name}>{attribute.name}</option>
+                                                    <AttributeOption key={attribute.name} attributeName={attribute.name} attributeIncluded={this.state.attributeProfiles} />
+                                                ))
+                                            }
+                                        </select>
+                                        <div style={{ ...centerStyle, ...addButtonStyle, fontWeight: "bold" }} onClick={() => { this.addIncludedAttribute(this.state.addAttributeName) }}>Add Included Attribute</div>
+                                    </div>
+                                </div>
                             </div>
                         </>
                         : <></>
