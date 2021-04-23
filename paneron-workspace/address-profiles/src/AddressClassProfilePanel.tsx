@@ -184,7 +184,38 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
 
             formTemplates: [],
             displayTemplates: [],
+
+            addComponentKey: "select",
         });
+    }
+
+    removeIncludedComponent = (componentKey:string) => {
+        const newComponentProfiles = JSON.parse(JSON.stringify(this.state.componentProfiles));//deep copy the state.addressProfiles
+        newComponentProfiles.forEach((newComponent:any)=>{
+            if(componentKey == newComponent.addressComponentProfileKey){
+                const index = newComponentProfiles.indexOf(newComponent);
+                newComponentProfiles.splice(index, 1);
+            }
+        });
+        this.setState({componentProfiles: newComponentProfiles});
+    }
+
+    addIncludedComponent = (componentKey:string, maxCardinality:number, minCardinality:number) => {
+        // log.info(componentKey);
+        if(componentKey != "select") {
+            const newComponentProfiles = JSON.parse(JSON.stringify(this.state.componentProfiles));//deep copy the state.addressProfiles
+            const index = newComponentProfiles.length;
+            newComponentProfiles.splice(index, 0, 
+                {
+                    addressComponentProfileKey: componentKey,
+                    addressComponentSpecification: 
+                        {
+                            maxCardinality: maxCardinality, minCardinality: minCardinality,
+                        },
+                }
+                );
+            this.setState({componentProfiles: newComponentProfiles, addComponentKey: "select", addComponentMaxCardinality: 0, addComponentMinCardinality: 0,});
+        }
     }
 
     render(){
@@ -222,6 +253,36 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
 
         const tdStyle = {
             fontWeight: "bold",
+        } as React.CSSProperties;
+
+        const subSubItemSytle = {
+            backgroundColor: "#779977",
+            marginLeft: "5px",
+            marginRight: "5px", 
+            // color: "#FFF",
+        } as React.CSSProperties;
+        
+        const selectStyle = {
+            width: "100%",
+            marginBottom: "5px",
+            padding: "5px",
+            borderRadius: "5px",
+        } as React.CSSProperties;
+        
+        const centerStyle = {
+            fontSize: "1.2em",
+            textAlign: "center",
+            cursor: "pointer",
+            paddingBottom: "1em",
+            lineHeight: "0",
+        } as React.CSSProperties;
+        
+        const addButtonStyle = {
+            backgroundColor: "#509970",
+            paddingBottom: "0",
+            lineHeight: "normal",
+            padding: "5px 0",
+            borderRadius: "5px",
         } as React.CSSProperties;
 
         return(
@@ -301,8 +362,51 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
                                         <InputGroup value={this.state.validity} onChange={(event:any)=>{this.setState({validity: event.target.value})}}/>
                                     </td>
                                 </tr>
-                                {/* todo - add the component selector */}
                             </table>
+                            {
+                                this.state.componentProfiles.map((component:any)=>(
+                                    <ClassIncludedComponentItem
+                                        key = {component.addressComponentProfileKey}
+                                        componentKey = {component.addressComponentProfileKey}
+                                        componentProfiles = {this.props.componentProfiles}
+                                        maxCardinality = {component.addressComponentSpecification.maxCardinality}
+                                        minCardinality = {component.addressComponentSpecification.minCardinality}
+                                        isEditingForm = {this.state.isEditingForm}
+                                        removeIncludedComponent = {this.removeIncludedComponent}
+                                    />
+                                ))
+                            }
+                            {/* todo - add the component selector */}
+                            <div style={{...itemStyle, ...subSubItemSytle}}>
+                                <div style={{padding: "5px"}}>
+                                    <select style={selectStyle} value={this.state.addComponentKey} onChange={(event)=>{this.setState({addComponentKey: event.target.value})}}>
+                                        <option value="select">Please select component</option>
+                                        {
+                                            this.props.componentProfiles.map((component)=>(
+                                                // <option key={component.key} value={component.key}>{component.key}</option>
+                                                <ComponentOption key={component.key} componentKey={component.key} componentIncluded={this.state.componentProfiles} />
+                                            ))
+                                        }
+                                    </select>
+                                    <table>
+                                        <tr>
+                                            <td style={tdStyle}>Max</td>
+                                            <td>:</td>
+                                            <td>
+                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMaxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMaxCardinality: _v})}}/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style={tdStyle}>Min</td>
+                                            <td>:</td>
+                                            <td>
+                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMinCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMinCardinality: _v})}}/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div style={{...centerStyle, ...addButtonStyle, fontWeight: "bold"}} onClick={()=>{this.addIncludedComponent(this.state.addComponentKey, this.state.addComponentMaxCardinality, this.state.addComponentMinCardinality)}}>Add Included Component</div>
+                                </div>
+                            </div>
                         </div>
                     </>
                     :<></>
