@@ -340,30 +340,32 @@ class AddressComponentProfileForm extends React.Component<AddressComponentProfil
                                         </td>
                                     </tr>                                    
                                 </table>
-                                {/* todo - add the attribute selector */}
-                                {
-                                    this.state.attributeProfiles.map((attribute:any) => (
-                                        <ComponentIncludedAttributeItem
-                                            key={attribute.attributeProfileName}
-                                            attributeName={attribute.attributeProfileName}
-                                            attributeProfiles={this.props.attributeProfiles}
-                                            isEditingForm={this.state.isEditingForm}
-                                            removeIncludedAttribute={this.removeIncludedAttribute}
-                                        />
-                                    ))
-                                }
-                                <div style={{ ...itemStyle, ...subSubItemSytle }}>
-                                    <div style={{ padding: "5px" }}>
-                                        <select style={selectStyle} value={this.state.addAttributeName} onChange={(event) => { this.setState({ addAttributeName: event.target.value }) }}>
-                                            <option value="select">Please select attribute</option>
-                                            {
-                                                this.props.attributeProfiles.map((attribute) => (
-                                                    // <option key={attribute.name} value={attribute.name}>{attribute.name}</option>
-                                                    <AttributeOption key={attribute.name} attributeName={attribute.name} attributeIncluded={this.state.attributeProfiles} />
-                                                ))
-                                            }
-                                        </select>
-                                        <div style={{ ...centerStyle, ...addButtonStyle, fontWeight: "bold" }} onClick={() => { this.addIncludedAttribute(this.state.addAttributeName) }}>Add Included Attribute</div>
+                                <div style={{color: "#FFF"}}>
+                                    {/* todo - add the attribute selector */}
+                                    {
+                                        this.state.attributeProfiles.map((attribute:any) => (
+                                            <ComponentIncludedAttributeItem
+                                                key={attribute.attributeProfileName}
+                                                attributeName={attribute.attributeProfileName}
+                                                attributeProfiles={this.props.attributeProfiles}
+                                                isEditingForm={this.state.isEditingForm}
+                                                removeIncludedAttribute={this.removeIncludedAttribute}
+                                            />
+                                        ))
+                                    }
+                                    <div style={{ ...itemStyle, ...subSubItemSytle }}>
+                                        <div style={{ padding: "5px" }}>
+                                            <select style={selectStyle} value={this.state.addAttributeName} onChange={(event) => { this.setState({ addAttributeName: event.target.value }) }}>
+                                                <option value="select">Please select attribute</option>
+                                                {
+                                                    this.props.attributeProfiles.map((attribute) => (
+                                                        // <option key={attribute.name} value={attribute.name}>{attribute.name}</option>
+                                                        <AttributeOption key={attribute.name} attributeName={attribute.name} attributeIncluded={this.state.attributeProfiles} />
+                                                    ))
+                                                }
+                                            </select>
+                                            <div style={{ ...centerStyle, ...addButtonStyle, fontWeight: "bold" }} onClick={() => { this.addIncludedAttribute(this.state.addAttributeName) }}>Add Included Attribute</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

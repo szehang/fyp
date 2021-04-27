@@ -60,7 +60,7 @@ export class AddressProfilePanel extends React.Component<any, any> {
               currentAddressProfile={this.props.currentAddressProfile}
               handleTogglePanel = {this.props.handleTogglePanel}
           />
-          <div>{this.props.currentAddressProfileCode!="null"?this.props.currentAddressProfileCode:""}</div>
+          {/* <div>{this.props.currentAddressProfileCode!="null"?this.props.currentAddressProfileCode:""}</div> */}
         </div>
 
       </div>

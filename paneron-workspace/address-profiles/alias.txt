@@ -1,0 +1,3 @@
+alias build="yarn build && mv ./dist/* /home/user/.config/Electron/plugins/@riboseinc/paneron-extension-address-profiles"
+
+alias dev="env PANERON_DEV_PLUGIN=address-profiles yarn dev"

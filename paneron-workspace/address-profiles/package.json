@@ -1,7 +1,7 @@
 {
   "name": "@riboseinc/paneron-extension-address-profiles",
-  "version": "1.0.0-alpha1",
-  "description": "INSERT_DESCRIPTION_HERE",
+  "version": "1.0.0-alpha3",
+  "description": "ISO19160 extension",
   "main": "plugin.js",
   "repository": "https://github.com/riboseinc/paneron-extension-address-profiles",
   "author": "DEVELOPER NAME <EMAIL>",

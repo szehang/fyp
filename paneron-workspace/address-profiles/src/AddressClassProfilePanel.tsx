@@ -363,48 +363,50 @@ class AddressClassProfileForm extends React.Component<AddressClassProfileFormPro
                                     </td>
                                 </tr>
                             </table>
-                            {
-                                this.state.componentProfiles.map((component:any)=>(
-                                    <ClassIncludedComponentItem
-                                        key = {component.addressComponentProfileKey}
-                                        componentKey = {component.addressComponentProfileKey}
-                                        componentProfiles = {this.props.componentProfiles}
-                                        maxCardinality = {component.addressComponentSpecification.maxCardinality}
-                                        minCardinality = {component.addressComponentSpecification.minCardinality}
-                                        isEditingForm = {this.state.isEditingForm}
-                                        removeIncludedComponent = {this.removeIncludedComponent}
-                                    />
-                                ))
-                            }
-                            {/* todo - add the component selector */}
-                            <div style={{...itemStyle, ...subSubItemSytle}}>
-                                <div style={{padding: "5px"}}>
-                                    <select style={selectStyle} value={this.state.addComponentKey} onChange={(event)=>{this.setState({addComponentKey: event.target.value})}}>
-                                        <option value="select">Please select component</option>
-                                        {
-                                            this.props.componentProfiles.map((component)=>(
-                                                // <option key={component.key} value={component.key}>{component.key}</option>
-                                                <ComponentOption key={component.key} componentKey={component.key} componentIncluded={this.state.componentProfiles} />
-                                            ))
-                                        }
-                                    </select>
-                                    <table>
-                                        <tr>
-                                            <td style={tdStyle}>Max</td>
-                                            <td>:</td>
-                                            <td>
-                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMaxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMaxCardinality: _v})}}/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style={tdStyle}>Min</td>
-                                            <td>:</td>
-                                            <td>
-                                                <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMinCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMinCardinality: _v})}}/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <div style={{...centerStyle, ...addButtonStyle, fontWeight: "bold"}} onClick={()=>{this.addIncludedComponent(this.state.addComponentKey, this.state.addComponentMaxCardinality, this.state.addComponentMinCardinality)}}>Add Included Component</div>
+                            <div style={{color: "#FFF"}}>
+                                {
+                                    this.state.componentProfiles.map((component:any)=>(
+                                        <ClassIncludedComponentItem
+                                            key = {component.addressComponentProfileKey}
+                                            componentKey = {component.addressComponentProfileKey}
+                                            componentProfiles = {this.props.componentProfiles}
+                                            maxCardinality = {component.addressComponentSpecification.maxCardinality}
+                                            minCardinality = {component.addressComponentSpecification.minCardinality}
+                                            isEditingForm = {this.state.isEditingForm}
+                                            removeIncludedComponent = {this.removeIncludedComponent}
+                                        />
+                                    ))
+                                }
+                                {/* todo - add the component selector */}
+                                <div style={{...itemStyle, ...subSubItemSytle}}>
+                                    <div style={{padding: "5px"}}>
+                                        <select style={selectStyle} value={this.state.addComponentKey} onChange={(event)=>{this.setState({addComponentKey: event.target.value})}}>
+                                            <option value="select">Please select component</option>
+                                            {
+                                                this.props.componentProfiles.map((component)=>(
+                                                    // <option key={component.key} value={component.key}>{component.key}</option>
+                                                    <ComponentOption key={component.key} componentKey={component.key} componentIncluded={this.state.componentProfiles} />
+                                                ))
+                                            }
+                                        </select>
+                                        <table>
+                                            <tr>
+                                                <td style={tdStyle}>Max</td>
+                                                <td>:</td>
+                                                <td>
+                                                    <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMaxCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMaxCardinality: _v})}}/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style={tdStyle}>Min</td>
+                                                <td>:</td>
+                                                <td>
+                                                    <NumericInput allowNumericCharactersOnly={true} value={this.state.addComponentMinCardinality} onValueChange={(_v: number, value: string)=>{this.setState({addComponentMinCardinality: _v})}}/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div style={{...centerStyle, ...addButtonStyle, fontWeight: "bold"}} onClick={()=>{this.addIncludedComponent(this.state.addComponentKey, this.state.addComponentMaxCardinality, this.state.addComponentMinCardinality)}}>Add Included Component</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

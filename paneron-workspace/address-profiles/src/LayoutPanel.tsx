@@ -46,7 +46,7 @@ export class LayoutPanel extends React.Component<LayoutPanelProps, any> {
                                 ))
                             }
                         </select>
-                        <div style={{ display: "inline" }}><Code style={{ marginLeft: "5px", padding: "5px 10px 2px 10px" }}>{this.state.currentClassProfile != null ? this.state.currentClassProfile.id : "null"}</Code></div>
+                        {/* <div style={{ display: "inline" }}><Code style={{ marginLeft: "5px", padding: "5px 10px 2px 10px" }}>{this.state.currentClassProfile != null ? this.state.currentClassProfile.id : "null"}</Code></div> */}
                     </div>
                     <Collapse isOpen={this.state.currentClassProfile != null}>
                         <Tabs selectedTabId={this.state.selectedTabId} id={"LayoutPanelTabs"} renderActiveTabPanelOnly={true} onChange={(tabId: TabId) => { this.setState({ selectedTabId: tabId }) }}>
