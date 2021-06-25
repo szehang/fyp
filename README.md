@@ -22,9 +22,8 @@ npm install
 ```
 npm start
 ```
-#paneron
 
-##build
+paneron build
 
 ##### 1. yarn build && cp -R dist/ /Users/harrylam/Library/Application\ Support/Electron/plugins/@riboseinc/paneron-extension-address-profiles
 ##### 2. env PANERON_DEV_PLUGIN=address-profiles yarn dev
